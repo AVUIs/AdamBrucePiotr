@@ -27,12 +27,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "cinder/app/AppNative.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/Camera.h"
-
+// parameters
+#include "ParameterBag.h"
+// OSC
+#include "OSCWrapper.h"
 #include "UIController.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
+using namespace ABP;
 
 
 class ABPApp : public AppNative {
@@ -43,10 +47,16 @@ public:
     void buttonCallback( const bool &pressed );
     void setCount( const int &aCount, const bool &pressed ) { mCount = aCount; }
     void lockZ( const bool &pressed ) { mLockZ = pressed; }
-    
+    MinimalUI::UIControllerRef	mParams;
+	MinimalUI::UIElementRef		sliderXY, sliderRed, sliderGreen, sliderBlue, sliderAlpha;
+	bool mLockFR;
+	void								lockFR(const bool &pressed) { mLockFR = pressed; };
 private:
-    MinimalUI::UIControllerRef mParams;
-    
+	// parameters
+	ParameterBagRef				mParameterBag;
+	// osc
+	OSCRef						mOSC;
+	float mR, mG, mB, mA;
     float mZoom;
     vec2 mXYSize;
     int mCount;
@@ -58,11 +68,16 @@ private:
 
 void ABPApp::setup()
 {
-    mZoom = 1.0f;
+	// parameters
+	mParameterBag = ParameterBag::create();
+	
+	
+	mZoom = 1.0f;
     mXYSize = vec2(1.0);
     mCount = 1;
     mZPosition = 0.0f;
     mLockZ = false;
+	mR = mG = mB = mA = 1.0f;
     
     gl::enableDepthRead();
     gl::enableDepthWrite();
@@ -72,12 +87,17 @@ void ABPApp::setup()
     
     mParams = MinimalUI::UIController::create();
     
+    // 2D Sliders
+	sliderXY = mParams->addSlider2D("XY", &mXYSize, "{ \"minX\":-2.0, \"maxX\":2.0, \"minY\":-2.0, \"maxY\":2.0 }");
     // Slider
     mParams->addSlider( "Zoom", &mZoom );
     
-    // 2D Sliders
-    mParams->addSlider2D( "XY", &mXYSize, "{ \"minX\":-2.0, \"maxX\":2.0, \"minY\":-2.0, \"maxY\":2.0 }" );
-    
+	sliderRed = mParams->addToggleSlider("R", &mR, "a", std::bind(&ABPApp::lockFR, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"handleVisible\":false, \"vertical\":true, \"nameColor\":\"0xEEFF0000\" }", "{ \"width\":9, \"stateless\":false, \"group\":\"fr\", \"exclusive\":true }");
+	//sliderRed = mParams->addSlider("R", &mR, "{ \"handleVisible\":false, \"nameColor\":\"0xEEFF0000\" }");
+	sliderGreen = mParams->addSlider("G", &mG, "{ \"handleVisible\":false, \"nameColor\":\"0xEE00FF00\" }");
+	sliderBlue = mParams->addSlider("B", &mB, "{  \"handleVisible\":false, \"nameColor\":\"0xEE0000FF\" }");
+	sliderAlpha = mParams->addSlider("A", &mA, "{ \"handleVisible\":false, \"nameColor\":\"0x0xFFFFFFFF\" }");
+
     // Simple Button
     mParams->addButton( "Stateless!", std::bind( &ABPApp::buttonCallback, this, std::placeholders::_1 ), "{ \"width\":96, \"clear\":false }" );
     mParams->addButton( "Stateful!", std::bind( &ABPApp::buttonCallback, this, std::placeholders::_1 ), "{ \"width\":96, \"stateless\":false }" );
@@ -95,13 +115,15 @@ void ABPApp::setup()
     
     // Toggle Slider
     mParams->addToggleSlider( "Z Position", &mZPosition, "A", std::bind(&ABPApp::lockZ, this, std::placeholders::_1 ), "{ \"width\":156, \"clear\":false, \"min\": -1, \"max\": 1 }", "{ \"stateless\":false }" );
-
 }
 
 void ABPApp::update()
 {
     mZPosition = mLockZ ? sin( getElapsedFrames() / 100.0f ) : mZPosition;
-    
+	/*sliderRed->setBackgroundColor(ColorA(mR, 0, 0));
+	sliderGreen->setBackgroundColor(ColorA(0, mG, 0));
+	sliderBlue->setBackgroundColor(ColorA(0, 0, mB));
+	sliderAlpha->setBackgroundColor(ColorA(mR, mG, mB, mA));*/
     mParams->update();
 }
 
@@ -113,17 +135,18 @@ void ABPApp::draw()
     
     gl::pushModelView();
     gl::scale( vec3(1.0) * mZoom );
-    gl::color( Color::white() );
+	gl::color(ColorA(mR, mG, mB, mA));
     for ( int i = 0; i < mCount; i++ )
     {
         gl::pushModelView();
         gl::translate( i * 1.5f, 0.0f, mZPosition );
-        gl::drawColorCube( vec3(0.0), vec3( mXYSize, 1.0f ) );
+		gl::drawCube(vec3(0.0), vec3( mXYSize, 1.0f ));
         gl::popModelView();
     }
     gl::popModelView();
     
     mParams->draw();
+
 }
 
 void ABPApp::buttonCallback( const bool &pressed )
