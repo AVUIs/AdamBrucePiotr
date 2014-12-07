@@ -65,9 +65,21 @@ struct TouchPoint {
 	Color			mColor;
 	float			mTimeOfDeath;
 };
+struct brick {
+	int shape;
+	float size;
+	float r;
+	float g;
+	float b;
+	float a;
+	float motionVector;
+	float rotation;
+	float repetition;
+};
 
 class ABPApp : public AppNative {
 public:
+	void						prepareSettings(Settings *settings);
 	void						setup();
 	void						update();
 	void						draw();
@@ -81,9 +93,9 @@ public:
 	void						touchesBegan(TouchEvent event);
 	void						touchesMoved(TouchEvent event);
 	void						touchesEnded(TouchEvent event);
-	void						buttonCallback(const bool &pressed);
 	void						setCount(const int &aCount, const bool &pressed) { mCount = aCount; }
 	void						lockZ(const bool &pressed) { mLockZ = pressed; }
+	void						lockRotation(const bool &pressed) { mLockRotation = pressed; }
 	MinimalUI::UIControllerRef	mParams;
 	MinimalUI::UIElementRef		sliderXY, sliderRed, sliderGreen, sliderBlue, sliderAlpha;
 	bool						mLockFR;
@@ -98,7 +110,9 @@ private:
 	vec2						mXYSize;
 	int							mCount;
 	float						mZPosition;
+	float						mRotation;
 	bool						mLockZ;
+	bool						mLockRotation;
 
 	CameraPersp					mCamera;
 	// touch events
@@ -106,4 +120,10 @@ private:
 	list<TouchPoint>			mDyingPoints;
 	int							mMouseIndex;
 	bool						isMouseDown;
+	// recording
+	bool						isRecording;
+	vector<brick>				bricks;
+	int							presentIndex;
+	void						record(const bool &pressed);
+
 };

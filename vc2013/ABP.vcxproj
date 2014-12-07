@@ -159,6 +159,7 @@
     <ClCompile Include="..\..\..\blocks\OSC\src\ip\win32\UdpSocket.cpp" />
     <ClCompile Include="..\src\OSCWrapper.cpp" />
     <ClCompile Include="..\src\ParameterBag.cpp" />
+    <ClCompile Include="..\src\singleton.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
