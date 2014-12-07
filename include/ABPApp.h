@@ -32,6 +32,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // OSC
 #include "OSCWrapper.h"
 #include "UIController.h"
+#include "singleton.h"
+#include "neRender.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -65,17 +67,6 @@ struct TouchPoint {
 	Color			mColor;
 	float			mTimeOfDeath;
 };
-struct brick {
-	int shape;
-	float size;
-	float r;
-	float g;
-	float b;
-	float a;
-	float motionVector;
-	float rotation;
-	float repetition;
-};
 
 class ABPApp : public AppNative {
 public:
@@ -93,9 +84,12 @@ public:
 	void						touchesBegan(TouchEvent event);
 	void						touchesMoved(TouchEvent event);
 	void						touchesEnded(TouchEvent event);
-	void						setCount(const int &aCount, const bool &pressed) { mCount = aCount; }
+	void						setRepetition(const int &aRepeat, const bool &pressed) { mRepetition = aRepeat; }
+	void						setShape(const int &aShape, const bool &pressed) { mShape = aShape; }
 	void						lockZ(const bool &pressed) { mLockZ = pressed; }
 	void						lockRotation(const bool &pressed) { mLockRotation = pressed; }
+	void						lockSize(const bool &pressed) { mLockSize = pressed; }
+	void						lockMotionVector(const bool &pressed) { mLockMotionVector = pressed; }
 	MinimalUI::UIControllerRef	mParams;
 	MinimalUI::UIElementRef		sliderXY, sliderRed, sliderGreen, sliderBlue, sliderAlpha;
 	bool						mLockFR;
@@ -108,11 +102,16 @@ private:
 	float						mR, mG, mB, mA;
 	float						mZoom;
 	vec2						mXYSize;
-	int							mCount;
+	int							mRepetition;
+	int							mShape;
 	float						mZPosition;
 	float						mRotation;
 	bool						mLockZ;
 	bool						mLockRotation;
+	bool						mLockSize;
+	bool						mLockMotionVector;
+	float						mSize;
+	float						mMotionVector;
 
 	CameraPersp					mCamera;
 	// touch events
@@ -122,8 +121,8 @@ private:
 	bool						isMouseDown;
 	// recording
 	bool						isRecording;
-	vector<brick>				bricks;
+	int							timer;
 	int							presentIndex;
 	void						record(const bool &pressed);
-
+	neRenderer					neRender;
 };

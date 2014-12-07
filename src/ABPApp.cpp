@@ -10,35 +10,62 @@ void ABPApp::prepareSettings(Settings *settings)
 }
 void ABPApp::setup()
 {
+
 	// parameters
 	mParameterBag = ParameterBag::create();
 	// instanciate the OSC class
 	mOSC = OSC::create(mParameterBag);
 
 	mMouseIndex = 0;
+	timer = 0;
 	isMouseDown = false;
 	isRecording = false;
 	mZoom = 0.3f;
 	mXYSize = vec2(1.0);
-	mCount = 1;
+	mRepetition = 1;
+	mShape = 1;
 	mZPosition = 0.0f;
 	mRotation = 0.0f;
+	mSize = 1.0f;
+	mMotionVector = 1.0f;
 	mLockZ = false;
 	mLockRotation = false;
+	mLockSize = false;
+	mLockMotionVector = false;
 	mR = mG = mB = mA = 0.2f;
+	singleton::Instance()->presentIndex = 0;
 	// init one brick
-	brick newBrick;
+	/*singleton::brick newBrick;
 	newBrick.r = 0.7f;
 	newBrick.g = 0.0f;
 	newBrick.b = 0.0f;
 	newBrick.a = 0.7f;
-	bricks.push_back(newBrick);
+	newBrick.shape = mShape;
+	newBrick.size = 0.7f;
+	newBrick.motionVector = 0.7f;
+	newBrick.rotation = 0.7f;
+	newBrick.repetition = 2.0f;
 
-	gl::enableDepthRead();
-	gl::enableDepthWrite();
+	singleton::Instance()->bricks.push_back(newBrick); */
+	for (int i = 0; i<600; i++) {
+		singleton::brick newBrick;
+		newBrick.r = 1;
+		newBrick.g = 1;
+		newBrick.b = 1;
+		newBrick.a = .5;
+		newBrick.shape = 1;
+		newBrick.size = i / 10;
+		newBrick.rotation = 50;
+		newBrick.motionVector = 1;
+		newBrick.repetition = 1;
+		singleton::Instance()->bricks.push_back(newBrick);
+	}
+	timer = 0;
+//	gl::enableDepthRead();
+//	gl::enableDepthWrite();
 
-	mCamera = CameraPersp(getWindowWidth(), getWindowHeight(), 60.0f, 1.0f, 1000.0f);
-	mCamera.lookAt(vec3(-2, 2, 2), vec3(0.0));
+//	mCamera = CameraPersp(getWindowWidth(), getWindowHeight(), 60.0f, 1.0f, 1000.0f);
+//	mCamera.lookAt(vec3(-2, 2, 2), vec3(0.0));
 
 	mParams = MinimalUI::UIController::create();
 
@@ -56,17 +83,30 @@ void ABPApp::setup()
 	mParams->addSeparator();
 
 	// Label
-	mParams->addLabel("Count", "{ \"clear\":false }");
+	mParams->addLabel("Repetitions", "{ \"clear\":false }");
 
 	// Button Group
-	mParams->addButton("1", std::bind(&ABPApp::setCount, this, 1, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"count\", \"exclusive\":true, \"pressed\":true }");
-	mParams->addButton("2", std::bind(&ABPApp::setCount, this, 2, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"count\", \"exclusive\":true }");
-	mParams->addButton("3", std::bind(&ABPApp::setCount, this, 3, std::placeholders::_1), "{ \"stateless\":false, \"group\":\"count\", \"exclusive\":true }");
-	mParams->addButton("Save", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"stateless\":true }");
+	mParams->addButton("1", std::bind(&ABPApp::setRepetition, this, 1, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"count\", \"exclusive\":true, \"pressed\":true }");
+	mParams->addButton("2", std::bind(&ABPApp::setRepetition, this, 2, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"count\", \"exclusive\":true }");
+	mParams->addButton("3", std::bind(&ABPApp::setRepetition, this, 3, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"count\", \"exclusive\":true }");
+	mParams->addButton("4", std::bind(&ABPApp::setRepetition, this, 4, std::placeholders::_1), "{ \"stateless\":false, \"group\":\"count\", \"exclusive\":true }");
+	mParams->addButton("Record", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"stateless\":false }");
 
+	// Label
+	mParams->addLabel("Shape", "{ \"clear\":false }");
+
+	// Button Group
+	mParams->addButton("1", std::bind(&ABPApp::setShape, this, 1, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"count\", \"exclusive\":true, \"pressed\":true }");
+	mParams->addButton("2", std::bind(&ABPApp::setShape, this, 2, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"count\", \"exclusive\":true }");
+	mParams->addButton("3", std::bind(&ABPApp::setShape, this, 3, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"count\", \"exclusive\":true }");
+	mParams->addButton("4", std::bind(&ABPApp::setShape, this, 4, std::placeholders::_1), "{ \"stateless\":false, \"group\":\"count\", \"exclusive\":true }");
+	mParams->addButton("Record", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"stateless\":false }");
 	// Toggle Slider
 	mParams->addToggleSlider("Z Position", &mZPosition, "A", std::bind(&ABPApp::lockZ, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": -1, \"max\": 1 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("Rotation", &mRotation, "A", std::bind(&ABPApp::lockRotation, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6.28 }", "{ \"stateless\":false }");
+	mParams->addToggleSlider("Size", &mSize, "A", std::bind(&ABPApp::lockSize, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6 }", "{ \"stateless\":false }");
+	mParams->addToggleSlider("MotionVector", &mMotionVector, "A", std::bind(&ABPApp::lockMotionVector, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6 }", "{ \"stateless\":false }");
+	gl::enableAlphaBlending();
 }
 
 void ABPApp::mouseDown(MouseEvent event)
@@ -124,42 +164,58 @@ void ABPApp::update()
 	/*sliderRed->setBackgroundColor(ColorA(mR, 0, 0));
 	sliderGreen->setBackgroundColor(ColorA(0, mG, 0));
 	sliderBlue->setBackgroundColor(ColorA(0, 0, mB));
-	sliderAlpha->setBackgroundColor(ColorA(mR, mG, mB, mA));*/
+	sliderAlpha->setBackgroundColor(ColorA(mR, mG, mB, mA));
 	if (isRecording)
 	{
+		singleton::brick newBrick;
+		newBrick.r = mR;
+		newBrick.g = mG;
+		newBrick.b = mB;
+		newBrick.a = mA;
+		newBrick.rotation = mRotation;
+		newBrick.shape = mShape;
+		newBrick.size = mSize;
+		newBrick.motionVector = mMotionVector;
+		newBrick.repetition = mRepetition;
 
+		singleton::Instance()->bricks.push_back(newBrick);
+		mOSC->sendOSCMessage("brick", singleton::Instance()->bricks.size() - 1, newBrick.r, newBrick.g, newBrick.b, newBrick.a, newBrick.rotation);
+		neRender.update();
+		timer++;
+		if (timer > singleton::Instance()->bricks.size() - 1) timer = 0;
+	}*/
+	neRender.update(timer);
+	timer++;
+	if (timer>599) {
+		timer = 0;
 	}
 	mParams->update();
 }
 void ABPApp::record(const bool &pressed)
 {
-	brick newBrick;
-	newBrick.r = mR;
-	newBrick.g = mG;
-	newBrick.b = mB;
-	newBrick.a = mA;
-	newBrick.rotation = mRotation;
-	bricks.push_back(newBrick);
-	mOSC->sendOSCMessage("brick", bricks.size() - 1, newBrick.r, newBrick.g, newBrick.b, newBrick.a, newBrick.rotation);
 	mRotation++;
 	isRecording = !isRecording;
 }
 
 void ABPApp::draw()
 {
-	gl::clear();
+	//gl::clear();
 
-	gl::setMatrices(mCamera);
+	neRender.draw();
+	
+//	gl::setMatrices(mCamera);
 
-	gl::pushModelView();
-	gl::scale(vec3(1.0) * mZoom);
-	gl::rotate(mRotation);
-	for (int i = 0; i < bricks.size(); i++)
+	//	gl::pushModelView();
+	//	gl::scale(vec3(1.0) * mZoom);
+	//	gl::rotate(mRotation);
+	/*
+
+	for (int i = 0; i < singleton::Instance()->bricks.size(); i++)
 	{
-		gl::color(ColorA(bricks[i].r, bricks[i].g, bricks[i].b, bricks[i].a));
+		gl::color(ColorA(singleton::Instance()->bricks[i].r, singleton::Instance()->bricks[i].g, singleton::Instance()->bricks[i].b, singleton::Instance()->bricks[i].a));
 		gl::pushModelView();
 		gl::translate(i * 1.5f, 0.0f, mZPosition);
-		gl::rotate(bricks[i].rotation);
+		gl::rotate(singleton::Instance()->bricks[i].rotation);
 		gl::drawCube(vec3(0.0), vec3(mXYSize, 1.0f));
 		gl::popModelView();
 	}
@@ -167,7 +223,7 @@ void ABPApp::draw()
 	//! touch events only make sense on the UI
 	for (map<uint32_t, TouchPoint>::const_iterator activeIt = mActivePoints.begin(); activeIt != mActivePoints.end(); ++activeIt) {
 		activeIt->second.draw();
-	}
+	}*/
 
 	for (list<TouchPoint>::iterator dyingIt = mDyingPoints.begin(); dyingIt != mDyingPoints.end();) {
 		dyingIt->draw();
@@ -181,9 +237,8 @@ void ABPApp::draw()
 	gl::color(Color(1, 1, 0));
 	for (vector<TouchEvent::Touch>::const_iterator touchIt = getActiveTouches().begin(); touchIt != getActiveTouches().end(); ++touchIt)
 		gl::drawStrokedCircle(touchIt->getPos(), 20.0f);
-	gl::disableAlphaBlending();
 	mParams->draw();
-
+	
 }
 
 // This line tells Cinder to actually create the application

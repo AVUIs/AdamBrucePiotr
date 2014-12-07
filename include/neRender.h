@@ -16,9 +16,9 @@ class neRenderer
 {
 	
 public:
-	int x, y;
+	float x, y;
 	float r, g, b, a;
-	int scale;
+	float scale;
 	ColorA kolor;
 	int repetitions;
 	int shape;
@@ -26,12 +26,13 @@ public:
 	float motion;
 	float steps;
 	int   timer;
-	int   size;
+	float   size;
+	float distance;
 
 	neRenderer();
 	~neRenderer();
 
 	void newRendering();
-	void update();
+	void update(int timer);
 	void draw();
 };
