@@ -107,6 +107,7 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\ABPApp.h" />
     <ClInclude Include="..\include\OSCWrapper.h" />
     <ClInclude Include="..\include\ParameterBag.h" />
     <ClInclude Include="..\include\Resources.h" />

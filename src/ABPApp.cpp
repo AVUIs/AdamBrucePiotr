@@ -1,77 +1,15 @@
-/*
-The MIT License (MIT)
+#include "ABPApp.h"
 
- Copyright (c) 2014, Nathan Selikoff - Bruce Lane - All rights reserved.
- This code is intended for use with the Cinder C++ library: http://libcinder.org
-
- This file is part of Cinder-MinimalUI.
-
- Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-#include "cinder/app/AppNative.h"
-#include "cinder/app/RendererGl.h"
-#include "cinder/Camera.h"
-// parameters
-#include "ParameterBag.h"
-// OSC
-#include "OSCWrapper.h"
-#include "UIController.h"
-
-using namespace ci;
-using namespace ci::app;
-using namespace std;
-using namespace ABP;
-
-
-class ABPApp : public AppNative {
-public:
-	void setup();
-	void update();
-	void draw();
-    void buttonCallback( const bool &pressed );
-    void setCount( const int &aCount, const bool &pressed ) { mCount = aCount; }
-    void lockZ( const bool &pressed ) { mLockZ = pressed; }
-    MinimalUI::UIControllerRef	mParams;
-	MinimalUI::UIElementRef		sliderXY, sliderRed, sliderGreen, sliderBlue, sliderAlpha;
-	bool mLockFR;
-	void								lockFR(const bool &pressed) { mLockFR = pressed; };
-private:
-	// parameters
-	ParameterBagRef				mParameterBag;
-	// osc
-	OSCRef						mOSC;
-	float mR, mG, mB, mA;
-    float mZoom;
-    vec2 mXYSize;
-    int mCount;
-    float mZPosition;
-    bool mLockZ;
-    
-    CameraPersp mCamera;
-};
 
 void ABPApp::setup()
 {
 	// parameters
 	mParameterBag = ParameterBag::create();
-	
-	
+	// instanciate the OSC class
+	mOSC = OSC::create(mParameterBag);
+
+	mMouseIndex = 0;
+	isMouseDown = false;
 	mZoom = 1.0f;
     mXYSize = vec2(1.0);
     mCount = 1;
@@ -117,6 +55,54 @@ void ABPApp::setup()
     mParams->addToggleSlider( "Z Position", &mZPosition, "A", std::bind(&ABPApp::lockZ, this, std::placeholders::_1 ), "{ \"width\":156, \"clear\":false, \"min\": -1, \"max\": 1 }", "{ \"stateless\":false }" );
 }
 
+void ABPApp::mouseDown(MouseEvent event)
+{
+	isMouseDown = true;
+	mActivePoints.insert(make_pair(0, TouchPoint(event.getPos(), Color(mR, mG, mB))));
+}
+void ABPApp::mouseMove(MouseEvent event)
+{
+	
+}
+
+void ABPApp::mouseDrag(MouseEvent event)
+{
+	isMouseDown = true;
+	mActivePoints[0].addPoint(event.getPos());
+}
+
+void ABPApp::mouseUp(MouseEvent event)
+{
+	isMouseDown = false;
+	mActivePoints[0].startDying();
+	mDyingPoints.push_back(mActivePoints[0]);
+	mActivePoints.erase(0);
+}
+void ABPApp::touchesBegan(TouchEvent event)
+{
+	console() << "Began: " << event << std::endl;
+	for (vector<TouchEvent::Touch>::const_iterator touchIt = event.getTouches().begin(); touchIt != event.getTouches().end(); ++touchIt) {
+		mActivePoints.insert(make_pair(touchIt->getId(), TouchPoint(touchIt->getPos(), Color(mR, mG, mB))));
+	}
+}
+
+void ABPApp::touchesMoved(TouchEvent event)
+{
+	console() << "Moved: " << event << std::endl;
+	for (vector<TouchEvent::Touch>::const_iterator touchIt = event.getTouches().begin(); touchIt != event.getTouches().end(); ++touchIt)
+		mActivePoints[touchIt->getId()].addPoint(touchIt->getPos());
+}
+
+void ABPApp::touchesEnded(TouchEvent event)
+{
+	console() << "Ended: " << event << std::endl;
+	for (vector<TouchEvent::Touch>::const_iterator touchIt = event.getTouches().begin(); touchIt != event.getTouches().end(); ++touchIt) {
+		mActivePoints[touchIt->getId()].startDying();
+		mDyingPoints.push_back(mActivePoints[touchIt->getId()]);
+		mActivePoints.erase(touchIt->getId());
+	}
+}
+
 void ABPApp::update()
 {
     mZPosition = mLockZ ? sin( getElapsedFrames() / 100.0f ) : mZPosition;
@@ -144,7 +130,24 @@ void ABPApp::draw()
         gl::popModelView();
     }
     gl::popModelView();
-    
+	//! touch events only make sense on the UI
+	for (map<uint32_t, TouchPoint>::const_iterator activeIt = mActivePoints.begin(); activeIt != mActivePoints.end(); ++activeIt) {
+		activeIt->second.draw();
+	}
+
+	for (list<TouchPoint>::iterator dyingIt = mDyingPoints.begin(); dyingIt != mDyingPoints.end();) {
+		dyingIt->draw();
+		if (dyingIt->isDead())
+			dyingIt = mDyingPoints.erase(dyingIt);
+		else
+			++dyingIt;
+	}
+
+	//! draw yellow circles at the active touch points
+	gl::color(Color(1, 1, 0));
+	for (vector<TouchEvent::Touch>::const_iterator touchIt = getActiveTouches().begin(); touchIt != getActiveTouches().end(); ++touchIt)
+		gl::drawStrokedCircle(touchIt->getPos(), 20.0f);
+	gl::disableAlphaBlending();
     mParams->draw();
 
 }
