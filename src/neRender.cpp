@@ -6,11 +6,21 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-	neRenderer::neRenderer() {x =512; y=300; };
+	neRenderer::neRenderer() {
+
+	}
+
 	neRenderer::~neRenderer() {};
 
-	void neRenderer::newRendering() {
+	void neRenderer::init() {
+		x =512; 
+		y=300;
+		gl::Fbo::Format format;
+		myFbo = gl::Fbo(1024, 600, format );
+	}
 
+	void neRenderer::newRendering() {
+		gl::clear();
 	}
 
 	void neRenderer::update(int timer) {
@@ -26,26 +36,28 @@ using namespace std;
 		repetitions =  singleton::Instance()->bricks[timer].repetition;
 		shape =  singleton::Instance()->bricks[timer].shape;
 		distance = singleton::Instance()->bricks[timer].motionVector * size; 
-	}
 
-	void neRenderer::draw() {
+
+		myFbo.bindFramebuffer();
 		float new_x;
 		float new_y;
 		gl::pushMatrices();
+		gl::color(0,0,0,0.0039215686274509803921568627451);
+		gl::drawSolidRect(Rectf(0,0,1024,600),true);
 		for(int i=0; i<repetitions; i++) {
 			
-			new_x = sin(rotation) * distance;
-			new_y = cos(rotation) * distance;
+			new_x = sin(rotation*0.01745329251994329576923690768489) * distance;
+			new_y = cos(rotation*0.01745329251994329576923690768489) * distance;
 			gl::color(r,g,b,a);
 			x = new_x + x;
 			y = new_y + y;
 
 
-			if(x>1024) {
+			if(x>=1024) {
 				x-=1024;
 			};
 
-			if(y>600) {
+			if(y>=600) {
 				y-=600;
 			}
 
@@ -58,14 +70,51 @@ using namespace std;
 			}
 
 			gl::translate(x,y);
-
+			gl::rotate(rotation);
 		     if(shape==1) {
-				 gl::drawSolidRect(Rectf(0,0,size*10, size*10));
+				 gl::drawSolidRect(Rectf(0,0,size*10, size*10), false);
 			 }
 			 if(shape==2) {
-				 gl::drawSolidCircle(vec2(0,0), size*10);
+				 gl::drawSolidCircle(Vec2f(0,0), size*10);
+			 }
+			 if(shape==3) {
+				 // gl::drawSolidTriangle(
+				 //gl::drawSolidTriangle(
+				 //gl::drawSolidTriangle(
+				 Vec2f dupa[3] = {Vec2f(0, size*10), Vec2f(-size*10, -size*10), Vec2f(-size*10, -size*10)};
+				 gl::drawSolidTriangle(dupa);
+				 //gl::drawSolidTriangle(
+				//  gl::drawSolidTriangle({Vec2f(0, size*10), Vec2f(-size*10, -size*10), Vec2f(-size*10, +size*10)});
 			 }
 
 		 }
 		gl::popMatrices();
+		myFbo.unbindFramebuffer();
+
+	
+	/*	Surface mySurface(myFbo.getTexture());
+		for(int i=0; i<1024; i++) {
+			for(int j=0; j<1024; j++) {
+				ColorA kolor = mySurface.getPixel(Vec2i(i,j));
+				kolor.r-=0.0039215686274509803921568627451;
+				kolor.g-=0.0039215686274509803921568627451;
+				kolor.b-=0.0039215686274509803921568627451;
+				kolor.a-=0.0039215686274509803921568627451;
+				if(kolor.r<0) {kolor.r=0;};
+				if(kolor.g<0) {kolor.g=0;};
+				if(kolor.b<0) {kolor.b=0;};
+				if(kolor.a<0) {kolor.a=0;};
+				mySurface.setPixel(Vec2i(i,j), kolor);
+			}
+		}
+	
+		myFbo.bindFramebuffer();
+		gl::draw(mySurface);
+		myFbo.unbindFramebuffer();*/
+	}
+
+	void neRenderer::draw() {
+
+		gl::draw( myFbo.getTexture() );
+
 	}

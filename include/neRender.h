@@ -6,7 +6,11 @@
 #include "cinder/Text.h"
 #include "cinder/Utilities.h"
 #include "cinder/ImageIo.h"
+#include "cinder/gl/Fbo.h"
 #include "singleton.h" 
+#include "cinder/gl/GlslProg.h"
+#include "cinder/Surface.h"
+#include "cinder/gl/Texture.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -28,10 +32,16 @@ public:
 	int   timer;
 	float   size;
 	float distance;
+	gl::Fbo myFbo;
+	//gl::GlslProgRef	mShader;
+	Surface mySurface; 
 
+
+	
 	neRenderer();
 	~neRenderer();
 
+	void init();
 	void newRendering();
 	void update(int timer);
 	void draw();
