@@ -6,7 +6,7 @@ OSC::OSC(ParameterBagRef aParameterBag)
 {
 	mParameterBag = aParameterBag;
 	// OSC sender
-	//mOSCSender.setup(mParameterBag->mOSCDestinationHost, mParameterBag->mOSCDestinationPort);
+	mOSCSender.setup(mParameterBag->mOSCDestinationHost, mParameterBag->mOSCDestinationPort);
 	// OSC receiver
 	mOSCReceiver.setup(mParameterBag->mOSCReceiverPort);
 }
@@ -15,7 +15,15 @@ OSCRef OSC::create(ParameterBagRef aParameterBag)
 {
 	return shared_ptr<OSC>(new OSC(aParameterBag));
 }
-
+void OSC::sendOSCMessage(string controlType, int controlName, float controlValue0, float controlValue1)
+{
+	osc::Message m;
+	m.setAddress(controlType);
+	m.addIntArg(controlName);
+	m.addFloatArg(controlValue0);
+	m.addFloatArg(controlValue1);
+	mOSCSender.sendMessage(m);
+}
 void OSC::update()
 {
 	// osc

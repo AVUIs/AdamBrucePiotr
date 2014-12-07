@@ -21,6 +21,7 @@ namespace ABP
 	public:
 		OSC(ParameterBagRef aParameterBag);
 		static	OSCRef create(ParameterBagRef aParameterBag);
+		void sendOSCMessage(string controlType, int controlName, float controlValue0, float controlValue1);
 
 		void	update();
 	private:
