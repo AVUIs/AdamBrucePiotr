@@ -15,13 +15,17 @@ OSCRef OSC::create(ParameterBagRef aParameterBag)
 {
 	return shared_ptr<OSC>(new OSC(aParameterBag));
 }
-void OSC::sendOSCMessage(string controlType, int controlName, float controlValue0, float controlValue1)
+void OSC::sendOSCMessage(string controlType, int controlName, float r, float g, float b, float a, float rotation)
 {
 	osc::Message m;
 	m.setAddress(controlType);
 	m.addIntArg(controlName);
-	m.addFloatArg(controlValue0);
-	m.addFloatArg(controlValue1);
+	m.addFloatArg(r);
+	m.addFloatArg(g);
+	m.addFloatArg(b);
+	m.addFloatArg(a);
+	m.addFloatArg(rotation);
+
 	mOSCSender.sendMessage(m);
 }
 void OSC::update()

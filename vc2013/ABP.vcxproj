@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\ABPApp.h" />
+    <ClInclude Include="..\include\neRender.h" />
     <ClInclude Include="..\include\OSCWrapper.h" />
     <ClInclude Include="..\include\ParameterBag.h" />
     <ClInclude Include="..\include\Resources.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="..\..\..\blocks\OSC\src\osc\OscPrintReceivedElements.h" />
     <ClInclude Include="..\..\..\blocks\OSC\src\osc\OscReceivedElements.h" />
     <ClInclude Include="..\..\..\blocks\OSC\src\osc\OscTypes.h" />
+    <ClInclude Include="..\include\singleton.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ABPApp.cpp" />
@@ -157,6 +159,7 @@
     <ClCompile Include="..\..\..\blocks\OSC\src\osc\OscTypes.cpp" />
     <ClCompile Include="..\..\..\blocks\OSC\src\ip\win32\NetworkingUtils.cpp" />
     <ClCompile Include="..\..\..\blocks\OSC\src\ip\win32\UdpSocket.cpp" />
+    <ClCompile Include="..\src\neRender.cpp" />
     <ClCompile Include="..\src\OSCWrapper.cpp" />
     <ClCompile Include="..\src\ParameterBag.cpp" />
     <ClCompile Include="..\src\singleton.cpp" />

@@ -18,20 +18,20 @@ void ABPApp::setup()
 	mMouseIndex = 0;
 	isMouseDown = false;
 	isRecording = false;
-	mZoom = 1.0f;
+	mZoom = 0.3f;
 	mXYSize = vec2(1.0);
 	mCount = 1;
 	mZPosition = 0.0f;
 	mRotation = 0.0f;
 	mLockZ = false;
 	mLockRotation = false;
-	mR = mG = mB = mA = 1.0f;
+	mR = mG = mB = mA = 0.2f;
 	// init one brick
 	brick newBrick;
-	newBrick.r = 0.0f;
+	newBrick.r = 0.7f;
 	newBrick.g = 0.0f;
 	newBrick.b = 0.0f;
-	newBrick.a = 0.0f;
+	newBrick.a = 0.7f;
 	bricks.push_back(newBrick);
 
 	gl::enableDepthRead();
@@ -62,7 +62,7 @@ void ABPApp::setup()
 	mParams->addButton("1", std::bind(&ABPApp::setCount, this, 1, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"count\", \"exclusive\":true, \"pressed\":true }");
 	mParams->addButton("2", std::bind(&ABPApp::setCount, this, 2, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"count\", \"exclusive\":true }");
 	mParams->addButton("3", std::bind(&ABPApp::setCount, this, 3, std::placeholders::_1), "{ \"stateless\":false, \"group\":\"count\", \"exclusive\":true }");
-	mParams->addButton("record", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"stateless\":true }");
+	mParams->addButton("Save", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"stateless\":true }");
 
 	// Toggle Slider
 	mParams->addToggleSlider("Z Position", &mZPosition, "A", std::bind(&ABPApp::lockZ, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": -1, \"max\": 1 }", "{ \"stateless\":false }");
@@ -120,7 +120,7 @@ void ABPApp::touchesEnded(TouchEvent event)
 void ABPApp::update()
 {
 	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
-	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f) : mRotation;
+	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
 	/*sliderRed->setBackgroundColor(ColorA(mR, 0, 0));
 	sliderGreen->setBackgroundColor(ColorA(0, mG, 0));
 	sliderBlue->setBackgroundColor(ColorA(0, 0, mB));
@@ -140,7 +140,8 @@ void ABPApp::record(const bool &pressed)
 	newBrick.a = mA;
 	newBrick.rotation = mRotation;
 	bricks.push_back(newBrick);
-
+	mOSC->sendOSCMessage("brick", bricks.size() - 1, newBrick.r, newBrick.g, newBrick.b, newBrick.a, newBrick.rotation);
+	mRotation++;
 	isRecording = !isRecording;
 }
 
@@ -152,6 +153,7 @@ void ABPApp::draw()
 
 	gl::pushModelView();
 	gl::scale(vec3(1.0) * mZoom);
+	gl::rotate(mRotation);
 	for (int i = 0; i < bricks.size(); i++)
 	{
 		gl::color(ColorA(bricks[i].r, bricks[i].g, bricks[i].b, bricks[i].a));

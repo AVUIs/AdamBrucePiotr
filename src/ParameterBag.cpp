@@ -22,6 +22,6 @@ void ParameterBag::reset()
 	mOSCDestinationHost = "127.0.0.1";
 	mOSCDestinationPort = 7000;
 	mOSCReceiverPort = 9000;
-	OSCMsg = "OSC listening on port 9000";
+	OSCMsg = "OSC listening on port 9000, sending on port 7000";
 
 }
