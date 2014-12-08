@@ -107,11 +107,13 @@ public:
 	MinimalUI::UIElementRef		sliderXY, sliderRed, sliderGreen, sliderBlue, sliderAlpha;
 	bool						mLockFR;
 	void						lockFR(const bool &pressed) { mLockFR = pressed; };
+	void						sendOSC(const bool &pressed) { mSendOSC = pressed; };
 private:
 	// parameters
 	ParameterBagRef				mParameterBag;
 	// osc
 	OSCRef						mOSC;
+	bool						mSendOSC;
 	float						mR, mG, mB, mA;
 	float						mZoom;
 	vec2						mXYSize;

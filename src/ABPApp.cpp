@@ -14,6 +14,7 @@ void ABPApp::setup()
 	mParameterBag = ParameterBag::create();
 	// instanciate the OSC class
 	mOSC = OSC::create(mParameterBag);
+	mSendOSC = false;
 	// neRenderer
 	x = 512;
 	y = 300;
@@ -102,7 +103,8 @@ void ABPApp::setup()
 	mParams->addButton("1", std::bind(&ABPApp::setShape, this, 1, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"shape\", \"exclusive\":true, \"pressed\":true }");
 	mParams->addButton("2", std::bind(&ABPApp::setShape, this, 2, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"shape\", \"exclusive\":true }");
 	mParams->addButton("3", std::bind(&ABPApp::setShape, this, 3, std::placeholders::_1), "{  \"stateless\":false, \"group\":\"shape\", \"exclusive\":true }");
-	mParams->addButton("Record", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"stateless\":false }");
+	mParams->addButton("Record", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false }");
+	mParams->addButton("Send OSC", std::bind(&ABPApp::sendOSC, this, std::placeholders::_1), "{ \"stateless\":false, \"pressed\":false }");
 	// Toggle Slider
 	mParams->addToggleSlider("Z Position", &mZPosition, "A", std::bind(&ABPApp::lockZ, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": -1, \"max\": 1 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("Rotation", &mRotation, "A", std::bind(&ABPApp::lockRotation, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6.28 }", "{ \"stateless\":false }");
@@ -238,29 +240,11 @@ void ABPApp::update()
 {
 	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
 	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
-	/*sliderRed->setBackgroundColor(ColorA(mR, 0, 0));
+	/*sliderRed->setBackgroundColor(ColorA(mR, 0, 0, 1.0));
 	sliderGreen->setBackgroundColor(ColorA(0, mG, 0));
 	sliderBlue->setBackgroundColor(ColorA(0, 0, mB));
 	sliderAlpha->setBackgroundColor(ColorA(mR, mG, mB, mA));
-	if (isRecording)
-	{
-		singleton::brick newBrick;
-		newBrick.r = mR;
-		newBrick.g = mG;
-		newBrick.b = mB;
-		newBrick.a = mA;
-		newBrick.rotation = mRotation;
-		newBrick.shape = mShape;
-		newBrick.size = mSize;
-		newBrick.motionVector = mMotionVector;
-		newBrick.repetition = mRepetition;
-
-		singleton::Instance()->bricks.push_back(newBrick);
-		mOSC->sendOSCMessage("brick", singleton::Instance()->bricks.size() - 1, newBrick.r, newBrick.g, newBrick.b, newBrick.a, newBrick.rotation);
-		neRender.update();
-		timer++;
-		if (timer > singleton::Instance()->bricks.size() - 1) timer = 0;
-	}*/
+	*/
 	updateBricks(timer);
 	timer++;
 	if (timer>99) {
@@ -285,19 +269,20 @@ void ABPApp::draw()
 
 	gl::setMatrices(mCamera);
 
-		//gl::scale(vec3(1.0) * mZoom);
+		gl::scale(vec3(1.0) * mZoom);
 		//gl::rotate(mRotation);
-	/*
+	
 
-	for (int i = 0; i < singleton::Instance()->bricks.size(); i++)
+	for (int i = 0; i < bricks.size(); i++)
 	{
-		gl::color(ColorA(singleton::Instance()->bricks[i].r, singleton::Instance()->bricks[i].g, singleton::Instance()->bricks[i].b, singleton::Instance()->bricks[i].a));
+		gl::color(ColorA(bricks[i].r, bricks[i].g, bricks[i].b, bricks[i].a));
 		gl::pushModelView();
 		gl::translate(i * 1.5f, 0.0f, mZPosition);
-		gl::rotate(singleton::Instance()->bricks[i].rotation);
+		gl::rotate(bricks[i].rotation);
 		gl::drawCube(vec3(0.0), vec3(mXYSize, 1.0f));
 		gl::popModelView();
 	}
+	/*
 	//! touch events on the UI
 	for (map<uint32_t, TouchPoint>::const_iterator activeIt = mActivePoints.begin(); activeIt != mActivePoints.end(); ++activeIt) {
 		activeIt->second.draw();
