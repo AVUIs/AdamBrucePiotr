@@ -47,7 +47,7 @@ void ABPApp::setup()
 	newBrick.repetition = 2.0f;
 
 	singleton::Instance()->bricks.push_back(newBrick); */
-	for (int i = 0; i<600; i++) {
+	for (int i = 0; i<100; i++) {
 		singleton::brick newBrick;
 		newBrick.r = 1;
 		newBrick.g = 1;
@@ -186,7 +186,7 @@ void ABPApp::update()
 	}*/
 	neRender.update(timer);
 	timer++;
-	if (timer>599) {
+	if (timer>99) {
 		timer = 0;
 	}
 	mParams->update();

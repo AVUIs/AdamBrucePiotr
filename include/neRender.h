@@ -32,16 +32,13 @@ public:
 	int   timer;
 	float   size;
 	float distance;
-	gl::Fbo myFbo;
+	gl::FboRef myFbo;
 	//gl::GlslProgRef	mShader;
 	Surface mySurface; 
 
-
-	
 	neRenderer();
 	~neRenderer();
 
-	void init();
 	void newRendering();
 	void update(int timer);
 	void draw();

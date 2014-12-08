@@ -7,17 +7,14 @@ using namespace ci::app;
 using namespace std;
 
 	neRenderer::neRenderer() {
+		x =512; 
+		y=300;
+		gl::Fbo::Format format;
+		myFbo = gl::Fbo::create(1024, 600, format.depthTexture());
 
 	}
 
 	neRenderer::~neRenderer() {};
-
-	void neRenderer::init() {
-		x =512; 
-		y=300;
-		gl::Fbo::Format format;
-		myFbo = gl::Fbo(1024, 600, format );
-	}
 
 	void neRenderer::newRendering() {
 		gl::clear();
@@ -38,12 +35,12 @@ using namespace std;
 		distance = singleton::Instance()->bricks[timer].motionVector * size; 
 
 
-		myFbo.bindFramebuffer();
+		myFbo->bindFramebuffer();
 		float new_x;
 		float new_y;
 		gl::pushMatrices();
 		gl::color(0,0,0,0.0039215686274509803921568627451);
-		gl::drawSolidRect(Rectf(0,0,1024,600),true);
+		gl::drawSolidRect(Rectf(0,0,1024,600));
 		for(int i=0; i<repetitions; i++) {
 			
 			new_x = sin(rotation*0.01745329251994329576923690768489) * distance;
@@ -72,24 +69,24 @@ using namespace std;
 			gl::translate(x,y);
 			gl::rotate(rotation);
 		     if(shape==1) {
-				 gl::drawSolidRect(Rectf(0,0,size*10, size*10), false);
+				 gl::drawSolidRect(Rectf(0,0,size*10, size*10));
 			 }
 			 if(shape==2) {
-				 gl::drawSolidCircle(Vec2f(0,0), size*10);
+				 gl::drawSolidCircle(vec2(0,0), size*10);
 			 }
 			 if(shape==3) {
 				 // gl::drawSolidTriangle(
 				 //gl::drawSolidTriangle(
 				 //gl::drawSolidTriangle(
-				 Vec2f dupa[3] = {Vec2f(0, size*10), Vec2f(-size*10, -size*10), Vec2f(-size*10, -size*10)};
+				 vec2 dupa[3] = {vec2(0, size*10), vec2(-size*10, -size*10), vec2(-size*10, -size*10)};
 				 gl::drawSolidTriangle(dupa);
 				 //gl::drawSolidTriangle(
-				//  gl::drawSolidTriangle({Vec2f(0, size*10), Vec2f(-size*10, -size*10), Vec2f(-size*10, +size*10)});
+				//  gl::drawSolidTriangle({vec2(0, size*10), vec2(-size*10, -size*10), vec2(-size*10, +size*10)});
 			 }
 
 		 }
 		gl::popMatrices();
-		myFbo.unbindFramebuffer();
+		
 
 	
 	/*	Surface mySurface(myFbo.getTexture());
@@ -115,6 +112,6 @@ using namespace std;
 
 	void neRenderer::draw() {
 
-		gl::draw( myFbo.getTexture() );
+		gl::draw( myFbo->getColorTexture() );
 
 	}
