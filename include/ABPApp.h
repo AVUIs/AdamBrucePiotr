@@ -32,8 +32,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // OSC
 #include "OSCWrapper.h"
 #include "UIController.h"
-#include "singleton.h"
-#include "neRender.h"
+/*#include "singleton.h"
+#include "neRender.h"*/
 
 using namespace ci;
 using namespace ci::app;
@@ -67,6 +67,19 @@ struct TouchPoint {
 	Color			mColor;
 	float			mTimeOfDeath;
 };
+// from singleton
+struct brick {
+	int shape;
+	float size;
+	float r;
+	float g;
+	float b;
+	float a;
+	float motionVector;
+	float rotation;
+	float repetition;
+};
+
 
 class ABPApp : public AppNative {
 public:
@@ -124,5 +137,22 @@ private:
 	int							timer;
 	int							presentIndex;
 	void						record(const bool &pressed);
-	neRenderer					neRender;
+	// neRenderer					neRender;
+	float x, y;
+	float r, g, b, a;
+	float scale;
+	ColorA kolor;
+	int repetitions;
+	int shape;
+	float rotation;
+	float motion;
+	float steps;
+	float   size;
+	float distance;
+	gl::FboRef myFbo;
+	void newRendering();
+	void updateBricks(int timer);
+	vector <brick> bricks;
+
+	bool newRecording;
 };
