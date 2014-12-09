@@ -97,7 +97,6 @@ public:
 	void						touchesBegan(TouchEvent event);
 	void						touchesMoved(TouchEvent event);
 	void						touchesEnded(TouchEvent event);
-	void						setRepetition(const int &aRepeat, const bool &pressed) { mRepetition = aRepeat; }
 	void						setShape(const int &aShape, const bool &pressed) { mShape = aShape; }
 	void						lockZ(const bool &pressed) { mLockZ = pressed; }
 	void						lockRotation(const bool &pressed) { mLockRotation = pressed; }
@@ -108,6 +107,7 @@ public:
 	bool						mLockFR;
 	void						lockFR(const bool &pressed) { mLockFR = pressed; };
 	void						sendOSC(const bool &pressed) { mSendOSC = pressed; };
+	void						addBrick(const bool &pressed);
 private:
 	// parameters
 	ParameterBagRef				mParameterBag;
@@ -117,7 +117,7 @@ private:
 	float						mR, mG, mB, mA;
 	float						mZoom;
 	vec2						mXYSize;
-	int							mRepetition;
+	float						mRepetition;
 	int							mShape;
 	float						mZPosition;
 	float						mRotation;
@@ -139,22 +139,21 @@ private:
 	int							timer;
 	int							presentIndex;
 	void						record(const bool &pressed);
-	// neRenderer					neRender;
-	float x, y;
-	float r, g, b, a;
-	float scale;
-	ColorA kolor;
-	int repetitions;
-	int shape;
-	float rotation;
-	float motion;
-	float steps;
-	float   size;
-	float distance;
-	gl::FboRef myFbo;
-	void newRendering();
-	void updateBricks(int timer);
-	vector <brick> bricks;
-
-	bool newRecording;
+	// neRenderer
+	float						x, y;
+	float						r, g, b, a;
+	float						scale;
+	ColorA						kolor;
+	int							repetitions;
+	int							shape;
+	float						rotation;
+	float						motion;
+	float						steps;
+	float						size;
+	float						distance;
+	gl::FboRef					myFbo;
+	void						newRendering();
+	void						updateBricks(int timer);
+	vector <brick>				bricks;
+	bool						newRecording;
 };
