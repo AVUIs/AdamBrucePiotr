@@ -33,7 +33,7 @@ void ABPApp::setup()
 	mZPosition = 0.0f;
 	mRotation = 0.0f;
 	mSize = 1.0f;
-	mMotionVector = 0.02f;
+	mMotionVector = 0.2f;
 	mLockZ = false;
 	mLockRotation = false;
 	mLockSize = false;
@@ -263,7 +263,15 @@ void ABPApp::draw()
 	{
 		gl::color(ColorA(bricks[i].r, bricks[i].g, bricks[i].b, bricks[i].a));
 		gl::pushModelView();
-		gl::translate(i * 1.5f, 0.0f, mZPosition);
+		if (i < 10)
+		{
+			gl::translate(i * 1.5f, 0.0f, mZPosition);
+
+		}
+		else
+		{
+			gl::translate((i-10) * 1.5f, 2.2f, mZPosition);
+		}
 		gl::rotate(bricks[i].rotation);
 		gl::drawCube(vec3(0.0), vec3(mXYSize, 1.0f));
 		gl::popModelView();
