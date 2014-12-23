@@ -87,16 +87,13 @@ public:
 	void						setup();
 	void						update();
 	void						draw();
+	void						updateWindowTitle();
 	// mouse events
 	void						mouseMove(MouseEvent event);
 	void						mouseDown(MouseEvent event);
 	void						mouseDrag(MouseEvent event);
 	void						mouseUp(MouseEvent event);
 
-	// touch events
-	void						touchesBegan(TouchEvent event);
-	void						touchesMoved(TouchEvent event);
-	void						touchesEnded(TouchEvent event);
 	void						setShape(const int &aShape, const bool &pressed) { mShape = aShape; }
 	void						lockZ(const bool &pressed) { mLockZ = pressed; }
 	void						lockRotation(const bool &pressed) { mLockRotation = pressed; }

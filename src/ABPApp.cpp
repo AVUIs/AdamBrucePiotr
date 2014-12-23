@@ -113,7 +113,7 @@ void ABPApp::updateBricks(int timer) {
 	g = bricks[timer].g;
 	b = bricks[timer].b;
 	a = bricks[timer].a;
-	rotation = bricks[timer].rotation;
+	rotation = bricks[timer].rotation++;
 	size = bricks[timer].size;
 	repetitions = bricks[timer].repetition;
 	shape = bricks[timer].shape;
@@ -200,30 +200,6 @@ void ABPApp::mouseUp(MouseEvent event)
 	mDyingPoints.push_back(mActivePoints[mMouseIndex]);
 	mActivePoints.erase(mMouseIndex);
 }
-void ABPApp::touchesBegan(TouchEvent event)
-{
-	console() << "Began: " << event << std::endl;
-	for (vector<TouchEvent::Touch>::const_iterator touchIt = event.getTouches().begin(); touchIt != event.getTouches().end(); ++touchIt) {
-		mActivePoints.insert(make_pair(touchIt->getId(), TouchPoint(touchIt->getPos(), Color(mR, mG, mB))));
-	}
-}
-
-void ABPApp::touchesMoved(TouchEvent event)
-{
-	console() << "Moved: " << event << std::endl;
-	for (vector<TouchEvent::Touch>::const_iterator touchIt = event.getTouches().begin(); touchIt != event.getTouches().end(); ++touchIt)
-		mActivePoints[touchIt->getId()].addPoint(touchIt->getPos());
-}
-
-void ABPApp::touchesEnded(TouchEvent event)
-{
-	console() << "Ended: " << event << std::endl;
-	for (vector<TouchEvent::Touch>::const_iterator touchIt = event.getTouches().begin(); touchIt != event.getTouches().end(); ++touchIt) {
-		mActivePoints[touchIt->getId()].startDying();
-		mDyingPoints.push_back(mActivePoints[touchIt->getId()]);
-		mActivePoints.erase(touchIt->getId());
-	}
-}
 
 void ABPApp::update()
 {
@@ -240,6 +216,12 @@ void ABPApp::update()
 		timer = 0;
 	}
 	mParams->update();
+	updateWindowTitle();
+
+}
+void ABPApp::updateWindowTitle()
+{
+	getWindow()->setTitle("(" + toString(floor(getAverageFps())) + " fps) ABP");
 }
 void ABPApp::record(const bool &pressed)
 {
@@ -258,41 +240,21 @@ void ABPApp::draw()
 
 	gl::scale(vec3(1.0) * mZoom);
 	gl::rotate(mRotation);
-	
+	int j = 0;
+	int k = 0;
 	for (int i = 0; i < bricks.size(); i++)
 	{
+		j = i % 10;
 		gl::color(ColorA(bricks[i].r, bricks[i].g, bricks[i].b, bricks[i].a));
 		gl::pushModelView();
-		if (i < 10)
-		{
-			gl::translate(i * 1.5f, 0.0f, mZPosition);
+		
+		gl::translate(j * 1.5f, j, mZPosition);
 
-		}
-		else
-		{
-			gl::translate((i-10) * 1.5f, 2.2f, mZPosition);
-		}
 		gl::rotate(bricks[i].rotation);
 		gl::drawCube(vec3(0.0), vec3(mXYSize, 1.0f));
 		gl::popModelView();
 	}
-	/*
-	//! touch events on the UI
-	for (map<uint32_t, TouchPoint>::const_iterator activeIt = mActivePoints.begin(); activeIt != mActivePoints.end(); ++activeIt) {
-		activeIt->second.draw();
-	}
-	for (list<TouchPoint>::iterator dyingIt = mDyingPoints.begin(); dyingIt != mDyingPoints.end();) {
-		dyingIt->draw();
-		if (dyingIt->isDead())
-			dyingIt = mDyingPoints.erase(dyingIt);
-		else
-			++dyingIt;
-	}
 
-	//! draw yellow circles at the active touch points
-	gl::color(Color(1, 1, 0));
-	for (vector<TouchEvent::Touch>::const_iterator touchIt = getActiveTouches().begin(); touchIt != getActiveTouches().end(); ++touchIt)
-		gl::drawStrokedCircle(touchIt->getPos(), 20.0f);*/
 	mParams->draw();
 }
 
