@@ -28,7 +28,7 @@ void ABPApp::setup()
 	isRecording = false;
 	mZoom = 0.3f;
 	mXYSize = vec2(1.0);
-	mRepetition = 10;
+	mRepetition = repetitions = 10;
 	mShape = 0;
 	mZPosition = 0.0f;
 	mRotation = 0.0f;
@@ -48,9 +48,21 @@ void ABPApp::setup()
 	gl::enableDepthWrite();
 	gl::enableAlphaBlending();
 
-	mCamera = CameraPersp(getWindowWidth(), getWindowHeight(), 60.0f, 1.0f, 1000.0f);
-	mCamera.lookAt(vec3(-2, 2, 2), vec3(0.0));
+	mCam.lookAt(vec3(0, CAMERA_Y_RANGE.first, 0), vec3(0));
 
+	mTexture = gl::Texture::create(loadImage(loadAsset("texture.jpg")), gl::Texture::Format().mipmap());
+#if ! defined( CINDER_GL_ES )
+	mGlsl = gl::GlslProg::create(loadAsset("shader.vert"), loadAsset("shader.frag"));
+#else
+	mGlsl = gl::GlslProg::create(loadAsset("shader_es2.vert"), loadAsset("shader_es2.frag"));
+#endif
+	createPositions();
+
+
+	gl::enableDepthWrite();
+	gl::enableDepthRead();
+
+	mTexture->bind();
 	mParams = MinimalUI::UIController::create("{ \"x\":0, \"y\":0, \"depth\":100, \"width\":260, \"height\":600, \"fboNumSamples\":0, \"panelColor\":\"0x44402828\" }");
 
 	// 2D Sliders
@@ -75,7 +87,13 @@ void ABPApp::setup()
 	mParams->addButton("2", std::bind(&ABPApp::setShape, this, 2, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"shape\", \"exclusive\":true }");
 	mParams->addButton("3", std::bind(&ABPApp::setShape, this, 3, std::placeholders::_1), "{  \"stateless\":false, \"group\":\"shape\", \"exclusive\":true }");
 	// Repetitions
-	mParams->addSlider("Repetitions", &mRepetition, "{ \"min\": 1, \"max\": 600 }");
+	mParams->addButton("+1", std::bind(&ABPApp::setRepetitions, this, 1, std::placeholders::_1), "{ \"clear\":false,  \"stateless\":false, \"group\":\"repeat\", \"exclusive\":true }");
+	mParams->addButton("+10", std::bind(&ABPApp::setRepetitions, this, 10, std::placeholders::_1), "{ \"clear\":false,  \"stateless\":false, \"group\":\"repeat\", \"exclusive\":true }");
+	mParams->addButton("+100", std::bind(&ABPApp::setRepetitions, this, 100, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"repeat\", \"exclusive\":true }");
+	mParams->addButton("-1", std::bind(&ABPApp::setRepetitions, this, -1, std::placeholders::_1), "{ \"clear\":false,  \"stateless\":false, \"group\":\"repeat\", \"exclusive\":true }");
+	mParams->addButton("-10", std::bind(&ABPApp::setRepetitions, this, -10, std::placeholders::_1), "{ \"clear\":false,  \"stateless\":false, \"group\":\"repeat\", \"exclusive\":true }");
+	mParams->addButton("-100", std::bind(&ABPApp::setRepetitions, this, -100, std::placeholders::_1), "{ \"stateless\":false, \"group\":\"repeat\", \"exclusive\":true }");
+
 	mParams->addButton("Record", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false }");
 	mParams->addButton("Send OSC", std::bind(&ABPApp::sendOSC, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"pressed\":false }");
 	mParams->addButton("Add brick", std::bind(&ABPApp::addBrick, this, std::placeholders::_1), "{ \"stateless\":false, \"pressed\":false }");
@@ -85,6 +103,15 @@ void ABPApp::setup()
 	mParams->addToggleSlider("Size", &mSize, "A", std::bind(&ABPApp::lockSize, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("MotionVector", &mMotionVector, "A", std::bind(&ABPApp::lockMotionVector, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6 }", "{ \"stateless\":false }");
 }
+void ABPApp::resize()
+{
+	// now tell our Camera that the window aspect ratio has changed
+	mCam.setPerspective(60, getWindowAspectRatio(), 1, 1000);
+
+	// and in turn, let OpenGL know we have a new camera
+	gl::setMatrices(mCam);
+}
+
 void ABPApp::addBrick(const bool &pressed)
 {
 	for (int i = 0; i < mRepetition; i++) {
@@ -131,7 +158,7 @@ void ABPApp::updateBricks(int timer) {
 
 	gl::color(0, 0, 0, 0.0039215686274509803921568627451);
 	gl::drawSolidRect(Rectf(0, 0, 1024, 600));
-	for (int i = 0; i<repetitions; i++) {
+	for (int i = 0; i < repetitions; i++) {
 
 		new_x = sin(rotation*0.01745329251994329576923690768489) * distance;
 		new_y = cos(rotation*0.01745329251994329576923690768489) * distance;
@@ -148,11 +175,11 @@ void ABPApp::updateBricks(int timer) {
 			y -= 600;
 		}
 
-		if (x<0) {
+		if (x < 0) {
 			x += 1024;
 		}
 
-		if (y<0) {
+		if (y < 0) {
 			y += 600;
 		}
 
@@ -180,7 +207,6 @@ void ABPApp::updateBricks(int timer) {
 void ABPApp::mouseDown(MouseEvent event)
 {
 	isMouseDown = true;
-	mActivePoints.insert(make_pair(mMouseIndex, TouchPoint(event.getPos(), Color(mR, mG, mB))));
 }
 void ABPApp::mouseMove(MouseEvent event)
 {
@@ -190,15 +216,11 @@ void ABPApp::mouseMove(MouseEvent event)
 void ABPApp::mouseDrag(MouseEvent event)
 {
 	isMouseDown = true;
-	mActivePoints[mMouseIndex].addPoint(event.getPos());
 }
 
 void ABPApp::mouseUp(MouseEvent event)
 {
 	isMouseDown = false;
-	mActivePoints[mMouseIndex].startDying();
-	mDyingPoints.push_back(mActivePoints[mMouseIndex]);
-	mActivePoints.erase(mMouseIndex);
 }
 
 void ABPApp::update()
@@ -212,11 +234,61 @@ void ABPApp::update()
 	*/
 	updateBricks(timer);
 	timer++;
-	if (timer>bricks.size()-1) {
+	if (timer > bricks.size() - 1) {
 		timer = 0;
 	}
 	mParams->update();
 	updateWindowTitle();
+	// move the camera up and down on Y
+	mCam.lookAt(vec3(0, CAMERA_Y_RANGE.first + abs(sin(getElapsedSeconds() / 4)) * (CAMERA_Y_RANGE.second - CAMERA_Y_RANGE.first), 0), vec3(0));
+
+	// update our instance positions; map our instance data VBO, write new positions, unmap
+	vec3 *positions = (vec3*)mInstanceDataVbo->mapWriteOnly(true);
+	for (size_t potX = 0; potX < mRepetition; ++potX) {
+		for (size_t potY = 0; potY < mRepetition; ++potY) {
+			float instanceX = potX / (float)mRepetition - 0.5f;
+			float instanceY = potY / (float)mRepetition - 0.5f;
+			// just some nonsense math to move the teapots in a wave
+			vec3 newPos(instanceX * vec3(DRAW_SCALE, 0, 0) +
+				instanceY * vec3(0, 0, DRAW_SCALE) +
+				vec3(0, 30, 0) * sinf(getElapsedSeconds() * 3 + instanceX * 3 + instanceY * 3));
+			*positions++ = newPos;
+		}
+	}
+	mInstanceDataVbo->unmap();
+}
+void ABPApp::setRepetitions(const int &aRepetition, const bool &pressed) 
+{ 
+	mRepetition += aRepetition; 
+	if (mRepetition < 1) mRepetition = 1;
+	createPositions(); 
+}
+
+void ABPApp::createPositions()
+{
+	gl::VboMeshRef mesh = gl::VboMesh::create(geom::Sphere().subdivisions(4));
+
+	// create an array of initial per-instance positions laid out in a 2D grid
+	std::vector<vec3> positions;
+	for (size_t potX = 0; potX < mRepetition; ++potX) {
+		for (size_t potY = 0; potY < mRepetition; ++potY) {
+			float instanceX = potX / (float)mRepetition - 0.5f;
+			float instanceY = potY / (float)mRepetition - 0.5f;
+			positions.push_back(vec3(instanceX * vec3(DRAW_SCALE, 0, 0) + instanceY * vec3(0, 0, DRAW_SCALE)));
+		}
+	}
+
+	// create the VBO which will contain per-instance (rather than per-vertex) data
+	mInstanceDataVbo = gl::Vbo::create(GL_ARRAY_BUFFER, positions.size() * sizeof(vec3), positions.data(), GL_DYNAMIC_DRAW);
+	// we need a geom::BufferLayout to describe this data as mapping to the CUSTOM_0 semantic, and the 1 (rather than 0) as the last param indicates per-instance (rather than per-vertex)
+	geom::BufferLayout instanceDataLayout;
+	instanceDataLayout.append(geom::Attrib::CUSTOM_0, 3, 0, 0, 1 /* per instance */);
+
+	// now add it to the VboMesh we already made of the Teapot
+	mesh->appendVbo(instanceDataLayout, mInstanceDataVbo);
+
+	// and finally, build our batch, mapping our CUSTOM_0 attribute to the "vInstancePosition" GLSL vertex attribute
+	mBatch = gl::Batch::create(mesh, mGlsl, { { geom::Attrib::CUSTOM_0, "vInstancePosition" } });
 
 }
 void ABPApp::updateWindowTitle()
@@ -236,7 +308,8 @@ void ABPApp::draw()
 
 	gl::draw(myFbo->getColorTexture());
 
-	gl::setMatrices(mCamera);
+	gl::setMatrices(mCam);
+	mBatch->drawInstanced(mRepetition * mRepetition);
 
 	gl::scale(vec3(1.0) * mZoom);
 	gl::rotate(mRotation);
@@ -247,7 +320,7 @@ void ABPApp::draw()
 		j = i % 10;
 		gl::color(ColorA(bricks[i].r, bricks[i].g, bricks[i].b, bricks[i].a));
 		gl::pushModelView();
-		
+
 		gl::translate(j * 1.5f, j, mZPosition);
 
 		gl::rotate(bricks[i].rotation);
@@ -258,5 +331,9 @@ void ABPApp::draw()
 	mParams->draw();
 }
 
-// This line tells Cinder to actually create the application
-CINDER_APP_NATIVE(ABPApp, RendererGl)
+#if defined( CINDER_MSW ) && ! defined( CINDER_GL_ANGLE )
+auto options = RendererGl::Options().version(3, 3); // instancing functions are technically only in GL 3.3
+#else
+auto options = RendererGl::Options(); // implemented as extensions in Mac OS 10.7+
+#endif
+CINDER_APP_NATIVE(ABPApp, RendererGl(options))

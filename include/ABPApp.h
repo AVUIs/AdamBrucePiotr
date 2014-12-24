@@ -27,47 +27,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "cinder/app/AppNative.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/Camera.h"
+#include "cinder/gl/Shader.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/gl/Batch.h"
+#include "cinder/gl/VboMesh.h"
+#include "cinder/ObjLoader.h"
+#include "cinder/ImageIo.h"
+#include "cinder/Utilities.h"
 // parameters
 #include "ParameterBag.h"
 // OSC
 #include "OSCWrapper.h"
 #include "UIController.h"
-/*#include "singleton.h"
-#include "neRender.h"*/
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 using namespace ABP;
 
-struct TouchPoint {
-	TouchPoint() {}
-	TouchPoint(const vec2 &initialPt, const Color &color) : mColor(color), mTimeOfDeath(-1.0)
-	{
-		mLine.push_back(initialPt);
-	}
-
-	void addPoint(const vec2 &pt) { mLine.push_back(pt); }
-
-	void draw() const
-	{
-		if (mTimeOfDeath > 0) // are we dying? then fade out
-			gl::color(ColorA(mColor, (mTimeOfDeath - getElapsedSeconds()) / 2.0f));
-		else
-			gl::color(mColor);
-
-		gl::draw(mLine);
-	}
-
-	void startDying() { mTimeOfDeath = getElapsedSeconds() + 2.0f; } // two seconds til dead
-
-	bool isDead() const { return getElapsedSeconds() > mTimeOfDeath; }
-
-	PolyLine<vec2>	mLine;
-	Color			mColor;
-	float			mTimeOfDeath;
-};
-// from singleton
+// brick
 struct brick {
 	int shape;
 	float size;
@@ -79,12 +57,15 @@ struct brick {
 	float rotation;
 	float repetition;
 };
+const float DRAW_SCALE = 200;
+const pair<float, float> CAMERA_Y_RANGE(32, 80);
 
 
 class ABPApp : public AppNative {
 public:
 	void						prepareSettings(Settings *settings);
 	void						setup();
+	void						resize();
 	void						update();
 	void						draw();
 	void						updateWindowTitle();
@@ -95,6 +76,7 @@ public:
 	void						mouseUp(MouseEvent event);
 
 	void						setShape(const int &aShape, const bool &pressed) { mShape = aShape; }
+	void						setRepetitions(const int &aRepetition, const bool &pressed);
 	void						lockZ(const bool &pressed) { mLockZ = pressed; }
 	void						lockRotation(const bool &pressed) { mLockRotation = pressed; }
 	void						lockSize(const bool &pressed) { mLockSize = pressed; }
@@ -105,6 +87,12 @@ public:
 	void						lockFR(const bool &pressed) { mLockFR = pressed; };
 	void						sendOSC(const bool &pressed) { mSendOSC = pressed; };
 	void						addBrick(const bool &pressed);
+	CameraPersp					mCam;
+	gl::BatchRef				mBatch;
+	gl::TextureRef				mTexture;
+	gl::GlslProgRef				mGlsl;
+	gl::VboRef					mInstanceDataVbo;
+	void						createPositions();
 private:
 	// parameters
 	ParameterBagRef				mParameterBag;
@@ -114,7 +102,7 @@ private:
 	float						mR, mG, mB, mA;
 	float						mZoom;
 	vec2						mXYSize;
-	float						mRepetition;
+	int							mRepetition;
 	int							mShape;
 	float						mZPosition;
 	float						mRotation;
@@ -125,10 +113,6 @@ private:
 	float						mSize;
 	float						mMotionVector;
 
-	CameraPersp					mCamera;
-	// touch events
-	map<uint32_t, TouchPoint>	mActivePoints;
-	list<TouchPoint>			mDyingPoints;
 	int							mMouseIndex;
 	bool						isMouseDown;
 	// recording
@@ -153,4 +137,5 @@ private:
 	void						updateBricks(int timer);
 	vector <brick>				bricks;
 	bool						newRecording;
+
 };
