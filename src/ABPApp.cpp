@@ -82,17 +82,17 @@ void ABPApp::setup()
 	mParams->addLabel("Shape", "{ \"clear\":false }");
 
 	// Button Group
-	mParams->addButton("0", std::bind(&ABPApp::setShape, this, 0, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"shape\", \"exclusive\":true, \"pressed\":true }");
-	mParams->addButton("1", std::bind(&ABPApp::setShape, this, 1, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"shape\", \"exclusive\":true }");
-	mParams->addButton("2", std::bind(&ABPApp::setShape, this, 2, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"shape\", \"exclusive\":true }");
-	mParams->addButton("3", std::bind(&ABPApp::setShape, this, 3, std::placeholders::_1), "{  \"stateless\":false, \"group\":\"shape\", \"exclusive\":true }");
+	mParams->addButton("0", std::bind(&ABPApp::setShape, this, 0, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
+	mParams->addButton("1", std::bind(&ABPApp::setShape, this, 1, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
+	mParams->addButton("2", std::bind(&ABPApp::setShape, this, 2, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
+	mParams->addButton("3", std::bind(&ABPApp::setShape, this, 3, std::placeholders::_1), "{ \"group\":\"shape\", \"exclusive\":true }");
 	// Repetitions
-	mParams->addButton("+1", std::bind(&ABPApp::setRepetitions, this, 1, std::placeholders::_1), "{ \"clear\":false,  \"stateless\":false, \"group\":\"repeat\", \"exclusive\":true }");
-	mParams->addButton("+10", std::bind(&ABPApp::setRepetitions, this, 10, std::placeholders::_1), "{ \"clear\":false,  \"stateless\":false, \"group\":\"repeat\", \"exclusive\":true }");
-	mParams->addButton("+100", std::bind(&ABPApp::setRepetitions, this, 100, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"group\":\"repeat\", \"exclusive\":true }");
-	mParams->addButton("-1", std::bind(&ABPApp::setRepetitions, this, -1, std::placeholders::_1), "{ \"clear\":false,  \"stateless\":false, \"group\":\"repeat\", \"exclusive\":true }");
-	mParams->addButton("-10", std::bind(&ABPApp::setRepetitions, this, -10, std::placeholders::_1), "{ \"clear\":false,  \"stateless\":false, \"group\":\"repeat\", \"exclusive\":true }");
-	mParams->addButton("-100", std::bind(&ABPApp::setRepetitions, this, -100, std::placeholders::_1), "{ \"stateless\":false, \"group\":\"repeat\", \"exclusive\":true }");
+	mParams->addButton("+1", std::bind(&ABPApp::setRepetitions, this, 1, std::placeholders::_1), "{ \"clear\":false, \"group\":\"repeat\", \"exclusive\":true }");
+	mParams->addButton("+10", std::bind(&ABPApp::setRepetitions, this, 10, std::placeholders::_1), "{ \"clear\":false, \"group\":\"repeat\", \"exclusive\":true }");
+	mParams->addButton("+100", std::bind(&ABPApp::setRepetitions, this, 100, std::placeholders::_1), "{ \"clear\":false, \"group\":\"repeat\", \"exclusive\":true }");
+	mParams->addButton("-1", std::bind(&ABPApp::setRepetitions, this, -1, std::placeholders::_1), "{ \"clear\":false, \"group\":\"repeat\", \"exclusive\":true }");
+	mParams->addButton("-10", std::bind(&ABPApp::setRepetitions, this, -10, std::placeholders::_1), "{ \"clear\":false, \"group\":\"repeat\", \"exclusive\":true }");
+	mParams->addButton("-100", std::bind(&ABPApp::setRepetitions, this, -100, std::placeholders::_1), "{ \"group\":\"repeat\", \"exclusive\":true }");
 
 	mParams->addButton("Record", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false }");
 	mParams->addButton("Send OSC", std::bind(&ABPApp::sendOSC, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"pressed\":false }");
@@ -259,9 +259,11 @@ void ABPApp::update()
 }
 void ABPApp::setRepetitions(const int &aRepetition, const bool &pressed) 
 { 
-	mRepetition += aRepetition; 
-	if (mRepetition < 1) mRepetition = 1;
-	createPositions(); 
+
+		mRepetition += aRepetition; 
+		if (mRepetition < 1) mRepetition = 1;
+		createPositions(); 
+
 }
 
 void ABPApp::createPositions()
