@@ -2,20 +2,40 @@
 
 void ABPApp::prepareSettings(Settings *settings)
 {
-	g_Width = 1024;
-	g_Height = 600;
-	settings->setWindowSize(g_Width, g_Height);
-	settings->setWindowPos(30, 50);
+	// parameters
+	mParameterBag = ParameterBag::create();
+	// utils
+	mBatchass = Batchass::create(mParameterBag);
+	// if AutoLayout, try to position the window on the 2nd screen
+	if (mParameterBag->mAutoLayout)
+	{
+		mBatchass->getWindowsResolution();
+	}
+#ifdef _DEBUG
+	// debug mode
+	settings->setWindowSize(mParameterBag->mRenderWidth, mParameterBag->mRenderHeight);
+	settings->setWindowPos(ivec2(mParameterBag->mRenderX, mParameterBag->mRenderY));
+#else
+	settings->setWindowSize(mParameterBag->mRenderWidth, mParameterBag->mRenderHeight);
+	settings->setWindowPos(ivec2(mParameterBag->mRenderX, mParameterBag->mRenderY));
+#endif  // _DEBUG
+	settings->setBorderless();
+	settings->setResizable(false); // resize allowed for a receiver, but runtime error on the resize in the shaders drawing
+	// set a high frame rate 1000 to disable limitation
+	settings->setFrameRate(60.0f);
 
-	// set a high frame rate to disable limitation
-	settings->setFrameRate(1000.0f);
 }
 void ABPApp::setup()
 {
-	// parameters
-	mParameterBag = ParameterBag::create();
+	mBatchass->setup();
+
+	// instanciate the spout class
+	mSpout = SpoutWrapper::create(mParameterBag, mBatchass->mTextures);
 	// instanciate the OSC class
-	mOSC = OSC::create(mParameterBag);
+	mOSC = OSC::create(mParameterBag, mBatchass->mShaders, mBatchass->mTextures);
+
+	updateWindowTitle();
+
 	mSendOSC = false;
 	// neRenderer
 	x = 512;
@@ -236,6 +256,27 @@ void ABPApp::mouseUp(MouseEvent event)
 
 void ABPApp::update()
 {
+	mParameterBag->iChannelTime[0] = getElapsedSeconds();
+	mParameterBag->iChannelTime[1] = getElapsedSeconds() - 1;
+	mParameterBag->iChannelTime[3] = getElapsedSeconds() - 2;
+	mParameterBag->iChannelTime[4] = getElapsedSeconds() - 3;
+	//
+	if (mParameterBag->mUseTimeWithTempo)
+	{
+		mParameterBag->iGlobalTime = mParameterBag->iTempoTime*mParameterBag->iTimeFactor;
+	}
+	else
+	{
+		mParameterBag->iGlobalTime = getElapsedSeconds();
+	}
+	mOSC->update();
+	//! update textures
+	mBatchass->mTextures->update();
+	//! update shaders (must be after the textures update)
+	mBatchass->mShaders->update();
+
+	mSpout->update();
+	updateWindowTitle();
 	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
 	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
 	/*sliderRed->setBackgroundColor(ColorA(mR, 0, 0, 1.0));
@@ -319,6 +360,10 @@ void ABPApp::draw()
 	gl::clear();
 	gl::color(Color(1, 1, 1));
 
+	// draw textures
+	mSpout->draw();
+	mBatchass->mTextures->draw();
+
 	gl::draw(myFbo->getColorTexture());
 
 	gl::setMatrices(mCam);
@@ -359,7 +404,10 @@ void ABPApp::draw()
 }
 void ABPApp::shutdown()
 {
-	spoutsender.ReleaseSender();
+	// save params
+	mParameterBag->save();
+	// close ui and save settings
+	mSpout->shutdown();
 }
 #if defined( CINDER_MSW ) && ! defined( CINDER_GL_ANGLE )
 auto options = RendererGl::Options().version(3, 3); // instancing functions are technically only in GL 3.3

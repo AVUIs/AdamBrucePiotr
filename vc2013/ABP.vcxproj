@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -10,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{87653F02-B085-4929-AD4C-85093CBC5998}</ProjectGuid>
+    <ProjectGuid>{E00B2B6F-DD7C-4E9E-A499-A050388E993E}</ProjectGuid>
     <RootNamespace>ABP</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
@@ -49,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\\include";"..\..\..\\boost";..\..\..\blocks\Cinder-ImGui\lib\imgui;..\..\..\blocks\Cinder-MIDI2\include;..\..\..\blocks\Cinder-MIDI2\lib;..\..\..\blocks\Cinder-MIDI2\src;..\..\..\blocks\Cinder-MinimalUI\include;..\..\..\blocks\Cinder-Reymenta\include;..\..\..\blocks\Cinder-Reymenta\src;..\..\..\blocks\Cinder-Spout\include;..\..\..\blocks\OSC\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;"..\..\..\\include";"..\..\..\\boost";..\..\..\blocks\Cinder-Hap2\src;..\..\..\blocks\Cinder-Hap2\include\msw;..\..\..\blocks\Cinder-ImGui\lib\imgui;..\..\..\blocks\Cinder-MIDI2\include;..\..\..\blocks\Cinder-MIDI2\lib;..\..\..\blocks\Cinder-MIDI2\src;..\..\..\blocks\Cinder-MinimalUI\include;..\..\..\blocks\Cinder-Reymenta\include;..\..\..\blocks\Cinder-Reymenta\src;..\..\..\blocks\Cinder-Spout\include;..\..\..\blocks\OSC\src;..\..\..\blocks\QuickTime\include\msw;..\..\..\blocks\QuickTime\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -63,7 +64,7 @@
       <AdditionalIncludeDirectories>"..\..\..\\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;%(AdditionalDependencies);..\..\..\blocks\Cinder-Spout\lib\Spout.lib</AdditionalDependencies>
+      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;%(AdditionalDependencies);..\..\..\blocks\Cinder-Spout\lib\Spout.lib;..\..\..\blocks\QuickTime\lib\msw\x86\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\x86\QTMLClient.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>"..\..\..\\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -79,7 +80,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\\include";"..\..\..\\boost";..\..\..\blocks\Cinder-ImGui\lib\imgui;..\..\..\blocks\Cinder-MIDI2\include;..\..\..\blocks\Cinder-MIDI2\lib;..\..\..\blocks\Cinder-MIDI2\src;..\..\..\blocks\Cinder-MinimalUI\include;..\..\..\blocks\Cinder-Reymenta\include;..\..\..\blocks\Cinder-Reymenta\src;..\..\..\blocks\Cinder-Spout\include;..\..\..\blocks\OSC\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;"..\..\..\\include";"..\..\..\\boost";..\..\..\blocks\Cinder-Hap2\src;..\..\..\blocks\Cinder-Hap2\include\msw;..\..\..\blocks\Cinder-ImGui\lib\imgui;..\..\..\blocks\Cinder-MIDI2\include;..\..\..\blocks\Cinder-MIDI2\lib;..\..\..\blocks\Cinder-MIDI2\src;..\..\..\blocks\Cinder-MinimalUI\include;..\..\..\blocks\Cinder-Reymenta\include;..\..\..\blocks\Cinder-Reymenta\src;..\..\..\blocks\Cinder-Spout\include;..\..\..\blocks\OSC\src;..\..\..\blocks\QuickTime\include\msw;..\..\..\blocks\QuickTime\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -94,7 +95,7 @@
       <AdditionalIncludeDirectories>"..\..\..\\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset).lib;%(AdditionalDependencies);..\..\..\blocks\Cinder-Spout\lib\Spout.lib</AdditionalDependencies>
+      <AdditionalDependencies>cinder-$(PlatformToolset).lib;%(AdditionalDependencies);..\..\..\blocks\Cinder-Spout\lib\Spout.lib;..\..\..\blocks\QuickTime\lib\msw\x86\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\x86\QTMLClient.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>"..\..\..\\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
@@ -114,7 +115,10 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\ABPApp.h" />
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\..\..\blocks\Cinder-Hap2\src\HapSupport.h" />
+    <ClInclude Include="..\..\..\blocks\Cinder-Hap2\src\MovieHap.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imgui.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-ImGui\src\ImGuiCinder.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiConstants.h" />
@@ -159,9 +163,12 @@
     <ClInclude Include="..\..\..\blocks\OSC\src\osc\OscPrintReceivedElements.h" />
     <ClInclude Include="..\..\..\blocks\OSC\src\osc\OscReceivedElements.h" />
     <ClInclude Include="..\..\..\blocks\OSC\src\osc\OscTypes.h" />
+    <ClInclude Include="..\include\SpoutWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ABPApp.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-Hap2\src\MovieHap.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-Hap2\src\HapSupport.c" />
     <ClCompile Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imgui.cpp" />
     <ClCompile Include="..\..\..\blocks\Cinder-ImGui\src\ImGuiCinder.cpp" />
     <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\MidiHub.cpp" />
@@ -194,6 +201,7 @@
     <ClCompile Include="..\..\..\blocks\OSC\src\osc\OscTypes.cpp" />
     <ClCompile Include="..\..\..\blocks\OSC\src\ip\win32\NetworkingUtils.cpp" />
     <ClCompile Include="..\..\..\blocks\OSC\src\ip\win32\UdpSocket.cpp" />
+    <ClCompile Include="..\src\SpoutWrapper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -13,64 +14,70 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
     <Filter Include="Blocks">
-      <UniqueIdentifier>{743F7250-A6C2-4671-9DE2-74505F1C5D41}</UniqueIdentifier>
+      <UniqueIdentifier>{5F58323D-11AD-4C79-A4B1-003BFF475170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Cinder-Hap2">
+      <UniqueIdentifier>{2CEF3C5B-281B-463F-859B-BE4B59227DCC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Cinder-Hap2\src">
+      <UniqueIdentifier>{09DACB1A-F0F8-43BB-9519-F60EBB76EF83}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\imGui">
-      <UniqueIdentifier>{B75CB079-0666-44B3-BD7D-AE31A128F1ED}</UniqueIdentifier>
+      <UniqueIdentifier>{66E44B2A-B4DB-4C1A-9246-A15F52AB98D2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\imGui\lib">
-      <UniqueIdentifier>{629C226D-C4EC-46CF-A3DA-59AE053F8780}</UniqueIdentifier>
+      <UniqueIdentifier>{96D582A3-3AE6-4803-807E-360D9E7DFCE1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\imGui\lib\imgui">
-      <UniqueIdentifier>{F316513F-1E84-42EC-A0CC-F30C02407ED0}</UniqueIdentifier>
+      <UniqueIdentifier>{A5694E9A-25C6-498A-92E2-C4ED7C2603C8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\imGui\src">
-      <UniqueIdentifier>{9BA7F5C5-4EFA-41F9-99F1-2E3B27BBCEF8}</UniqueIdentifier>
+      <UniqueIdentifier>{6C24E1C2-1A3D-4B89-99A6-4168C6C537DF}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Midi2">
-      <UniqueIdentifier>{7B979DC4-1723-48B6-9E32-621E1BBF9380}</UniqueIdentifier>
+      <UniqueIdentifier>{23F8F209-DBFA-4C61-BDC5-29852430D350}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Midi2\include">
-      <UniqueIdentifier>{CEDE0A58-EF5D-4360-81A5-8DE3246C175A}</UniqueIdentifier>
+      <UniqueIdentifier>{23AC1383-89E6-4347-A7AC-0BABAB042403}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Midi2\lib">
-      <UniqueIdentifier>{8AC48EDA-623B-47E7-B364-C8FB2834FA45}</UniqueIdentifier>
+      <UniqueIdentifier>{93C09575-3737-40EF-967B-6FA1C6159C44}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Midi2\src">
-      <UniqueIdentifier>{E102F45D-1225-4884-A662-F329E3F37AE8}</UniqueIdentifier>
+      <UniqueIdentifier>{E7080753-D1F8-4CC5-80FD-8FD35DA8C2BF}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\MinimalUI">
-      <UniqueIdentifier>{FF6F3BB3-BB30-460B-B093-D5AE82A32721}</UniqueIdentifier>
+      <UniqueIdentifier>{56DCAC9C-2787-46F2-8356-73E091F54F66}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\MinimalUI\src">
-      <UniqueIdentifier>{A030A27B-F50F-4F53-A4A4-CD826B8486A4}</UniqueIdentifier>
+      <UniqueIdentifier>{B3E0A943-E59E-4282-8C33-5A3093E5EE77}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\MinimalUI\include">
-      <UniqueIdentifier>{2F6C553A-720B-481E-920B-02D1FAEBA076}</UniqueIdentifier>
+      <UniqueIdentifier>{F3EA6BD3-EFDB-434B-A643-69692FDC9186}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Reymenta">
-      <UniqueIdentifier>{E06317D5-8B76-4FC7-BE8C-DD76FAD7D01B}</UniqueIdentifier>
+      <UniqueIdentifier>{BC7417A4-FBA1-40D3-ADC2-B52ABA444AC8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Reymenta\include">
-      <UniqueIdentifier>{1D7C2043-6560-4166-BC17-440EDA5B0089}</UniqueIdentifier>
+      <UniqueIdentifier>{5869EFAD-F565-47F0-B184-EEFB4B816769}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Reymenta\src">
-      <UniqueIdentifier>{D870A4F6-503D-4CE6-A930-D067309EDF7B}</UniqueIdentifier>
+      <UniqueIdentifier>{EDAADEF7-E530-4835-86F1-6671E2B1A9A2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\OSC">
-      <UniqueIdentifier>{1D3B90B4-0CB2-4685-B15A-4B4BF060DDC2}</UniqueIdentifier>
+      <UniqueIdentifier>{34FBBF4A-44DC-4B24-B6B9-A3DBA8C09E8E}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\OSC\src">
-      <UniqueIdentifier>{5EDD0C32-DB35-48A6-84FC-C6577ECB18AF}</UniqueIdentifier>
+      <UniqueIdentifier>{CC102E8D-B95A-41C6-A829-E429315390C8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\OSC\src\ip">
-      <UniqueIdentifier>{DE78354C-564F-4660-B45F-E8B69C354F2B}</UniqueIdentifier>
+      <UniqueIdentifier>{F5168AF2-FEA3-45A8-A897-844AB543572B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\OSC\src\osc">
-      <UniqueIdentifier>{A9913C15-C8E4-432C-8644-0F93E1036DFF}</UniqueIdentifier>
+      <UniqueIdentifier>{14022232-6F00-4EAB-9603-48D68E709F47}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\OSC\src\ip\win32">
-      <UniqueIdentifier>{D4D93812-D36B-4782-BA2F-81310B994C0F}</UniqueIdentifier>
+      <UniqueIdentifier>{BEB5C1FE-C137-4F9E-821B-BDE8B679B08A}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +90,18 @@
     <ClCompile Include="..\src\ABPApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Hap2\src\MovieHap.cpp">
+      <Filter>Blocks\Cinder-Hap2\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Hap2\src\HapSupport.c">
+      <Filter>Blocks\Cinder-Hap2\src</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\blocks\Cinder-Hap2\src\HapSupport.h">
+      <Filter>Blocks\Cinder-Hap2\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-Hap2\src\MovieHap.h">
+      <Filter>Blocks\Cinder-Hap2\src</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imgui.h">
       <Filter>Blocks\imGui\lib\imgui</Filter>
     </ClInclude>
@@ -311,9 +330,18 @@
     <ClCompile Include="..\..\..\blocks\OSC\src\ip\win32\UdpSocket.cpp">
       <Filter>Blocks\OSC\src\ip\win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SpoutWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ABPApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SpoutWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

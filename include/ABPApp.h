@@ -34,18 +34,26 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "cinder/ObjLoader.h"
 #include "cinder/ImageIo.h"
 #include "cinder/Utilities.h"
+
 // parameters
 #include "ParameterBag.h"
+// textures
+#include "Textures.h"
+// logger
+#include "Logger.h"
+// spout
+#include "SpoutWrapper.h"
 // OSC
 #include "OSCWrapper.h"
+// Utils
+#include "Batchass.h"
+// UserInterface
 #include "UIController.h"
-// spout
-#include "spout.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
-using namespace ABP;
+using namespace Reymenta;
 
 // brick
 struct brick {
@@ -99,8 +107,19 @@ public:
 private:
 	// parameters
 	ParameterBagRef				mParameterBag;
+	// Logger
+	LoggerRef					log;
+	// spout
+	SpoutWrapperRef				mSpout;
 	// osc
 	OSCRef						mOSC;
+	// utils
+	BatchassRef					mBatchass;
+	// log
+	string						mLogMsg;
+	bool						newLogMsg;
+	static const int			MAX = 16;
+
 	bool						mSendOSC;
 	float						mR, mG, mB, mA;
 	float						mZoom;
