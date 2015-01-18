@@ -39,6 +39,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // OSC
 #include "OSCWrapper.h"
 #include "UIController.h"
+// spout
+#include "spout.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -68,6 +70,7 @@ public:
 	void						resize();
 	void						update();
 	void						draw();
+	void						shutdown();
 	void						updateWindowTitle();
 	// mouse events
 	void						mouseMove(MouseEvent event);
@@ -137,5 +140,12 @@ private:
 	void						updateBricks(int timer);
 	vector <brick>				bricks;
 	bool						newRecording;
+	// -------- SPOUT -------------
+	SpoutSender					spoutsender;                    // Create a Spout sender object
+	bool						bSenderInitialized;             // true if a sender initializes OK
+	bool						bMemoryMode;                    // tells us if texture share compatible
+	unsigned int				g_Width, g_Height;              // size of the texture being sent out
+	char						SenderName[256];                // sender name 
+	gl::TextureRef				spoutSenderTexture;             // Local Cinder texture used for sharing
 
 };

@@ -2,7 +2,9 @@
 
 void ABPApp::prepareSettings(Settings *settings)
 {
-	settings->setWindowSize(1024, 600);
+	g_Width = 1024;
+	g_Height = 600;
+	settings->setWindowSize(g_Width, g_Height);
 	settings->setWindowPos(30, 50);
 
 	// set a high frame rate to disable limitation
@@ -102,6 +104,15 @@ void ABPApp::setup()
 	mParams->addToggleSlider("Rotation", &mRotation, "A", std::bind(&ABPApp::lockRotation, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6.28 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("Size", &mSize, "A", std::bind(&ABPApp::lockSize, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("MotionVector", &mMotionVector, "A", std::bind(&ABPApp::lockMotionVector, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6 }", "{ \"stateless\":false }");
+	// -------- SPOUT -------------
+	// Set up the texture we will use to send out
+	// We grab the screen so it has to be the same size
+	bSenderInitialized = false;
+	spoutSenderTexture = gl::Texture::create(g_Width, g_Height);
+	strcpy_s(SenderName, "ABP Spout Sender"); // we have to set a sender name first
+	// Initialize a sender
+	bSenderInitialized = spoutsender.CreateSender(SenderName, g_Width, g_Height);
+
 }
 void ABPApp::resize()
 {
@@ -311,7 +322,20 @@ void ABPApp::draw()
 	gl::draw(myFbo->getColorTexture());
 
 	gl::setMatrices(mCam);
+	// -------- SPOUT SENDER-------------
+	/*if (bSenderInitialized) {
+
+		// Grab the screen (current read buffer) into the local spout texture
+		spoutSenderTexture->bind();
+		mBatch->drawInstanced(mRepetition * mRepetition);
+		glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, g_Width, g_Height);
+		spoutSenderTexture->unbind();
+		spoutsender.SendTexture(spoutSenderTexture->getId(), spoutSenderTexture->getTarget(), g_Width, g_Height);
+	}
+	gl::draw(spoutSenderTexture);*/
 	mBatch->drawInstanced(mRepetition * mRepetition);
+	
+	
 
 	gl::scale(vec3(1.0) * mZoom);
 	gl::rotate(mRotation);
@@ -331,8 +355,12 @@ void ABPApp::draw()
 	}
 
 	mParams->draw();
+	//gl::disableAlphaBlending();
 }
-
+void ABPApp::shutdown()
+{
+	spoutsender.ReleaseSender();
+}
 #if defined( CINDER_MSW ) && ! defined( CINDER_GL_ANGLE )
 auto options = RendererGl::Options().version(3, 3); // instancing functions are technically only in GL 3.3
 #else
