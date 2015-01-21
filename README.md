@@ -2,10 +2,17 @@ AdamBrucePiotr
 ==============
 
 Cinder project with Pure Data
+<p align="center">
+  <img src="http://www.batchass.fr/reymenta/abp.jpg" alt="Screenshot"/>
+</p>
 
 About
 =====
-a PureData patch creates music and sends data to the Cinder visuals software via OSC
+A PureData patch creates music and sends data to the Cinder visuals software via OSC.
+Several visual parameters like color, alpha, zoom, repetition of objects, tempo are given by the PureData patch
+Live interaction on the visuals are added with a midi controller.
+Music and PureData : Adam
+Visuals developed by Bruce and Piotr
 
 Run from the source
 ===================
