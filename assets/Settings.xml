@@ -11,7 +11,7 @@
 	<OSCDestinationPort value="7001"/>
 	<OSCDestinationHost value="127.0.0.1"/>
 	<MIDIOpenAllInputPorts value="1"/>
-	<ShowUI value="0"/>
+	<ShowUI value="1"/>
 	<CursorVisible value="1"/>
 	<IsOSCSender value="0"/>
 </settings>

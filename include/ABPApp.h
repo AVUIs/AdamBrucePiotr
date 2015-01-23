@@ -63,8 +63,8 @@ struct brick {
 	float g;
 	float b;
 	float a;
-	int x;
-	int y;
+	float vx;
+	float vy;
 	float motionVector;
 	float rotation;
 	float repetition;
@@ -102,10 +102,7 @@ public:
 	void						sendOSC(const bool &pressed) { mSendOSC = pressed; };
 	void						addBrick(const bool &pressed);
 	CameraPersp					mCam;
-	gl::BatchRef				mBatch;
-	gl::GlslProgRef				mGlsl;
-	gl::VboRef					mInstanceDataVbo;
-	void						createPositions();
+
 private:
 	// parameters
 	ParameterBagRef				mParameterBag;
@@ -125,7 +122,7 @@ private:
 	bool						mSendOSC;
 	float						mR, mG, mB, mA;
 	float						mZoom;
-	vec2						mXYSize;
+	vec2						mXYVector;
 	int							mRepetition;
 	int							mShape;
 	float						mZPosition;
@@ -141,7 +138,6 @@ private:
 	bool						isMouseDown;
 	// recording
 	bool						isRecording;
-	int							timer;
 	int							presentIndex;
 	void						record(const bool &pressed);
 	// neRenderer
@@ -160,7 +156,7 @@ private:
 	float						mColorFactor;
 
 	void						newRendering();
-	void						updateBricks(int timer);
+	void						updateBricks();
 	vector <brick>				bricks;
 	bool						newRecording;
 	// -------- SPOUT -------------

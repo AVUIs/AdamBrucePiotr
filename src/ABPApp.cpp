@@ -44,12 +44,11 @@ void ABPApp::setup()
 	mFbo = gl::Fbo::create(mParameterBag->mFboWidth, mParameterBag->mFboHeight, format.depthTexture());
 	mUseCam = false;
 	mMouseIndex = 0;
-	timer = 0;
 	isMouseDown = false;
 	isRecording = false;
 	mZoom = 0.3f;
-	mXYSize = vec2(1.0);
-	mRepetition = repetitions = 10;
+	mXYVector = vec2(1.0);
+	mRepetition = repetitions = 1;
 	mShape = 0;
 	mZPosition = 0.0f;
 	mRotation = 0.0f;
@@ -67,7 +66,6 @@ void ABPApp::setup()
 	presentIndex = 0;
 	// init one brick
 	addBrick(true);
-	timer = 0;
 	// gl setup
 	gl::enableDepthRead();
 	gl::enableDepthWrite();
@@ -75,17 +73,13 @@ void ABPApp::setup()
 
 	mCam.lookAt(vec3(0, CAMERA_Y_RANGE.first, 0), vec3(0));
 
-	mGlsl = gl::GlslProg::create(loadAsset("shader.vert"), loadAsset("shader.frag"));
-
-	createPositions();
-
 	gl::enableDepthWrite();
 	gl::enableDepthRead();
 
 	mParams = MinimalUI::UIController::create("{ \"x\":0, \"y\":0, \"depth\":100, \"width\":260, \"height\":600, \"fboNumSamples\":0, \"panelColor\":\"0x44402828\" }");
 
 	// 2D Sliders
-	sliderXY = mParams->addSlider2D("XY", &mXYSize, "{ \"minX\":-2.0, \"maxX\":2.0, \"minY\":-2.0, \"maxY\":2.0 }");
+	sliderXY = mParams->addSlider2D("XY", &mXYVector, "{ \"minX\":-2.0, \"maxX\":2.0, \"minY\":-2.0, \"maxY\":2.0 }");
 	// Slider
 	mParams->addSlider("Zoom", &mZoom);
 
@@ -103,7 +97,7 @@ void ABPApp::setup()
 
 	// Button Group
 	mParams->addButton("Cube", std::bind(&ABPApp::setShape, this, 0, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
-	mParams->addButton("Rect", std::bind(&ABPApp::setShape, this, 1, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
+	mParams->addButton("Sphere", std::bind(&ABPApp::setShape, this, 1, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
 	mParams->addButton("Circle", std::bind(&ABPApp::setShape, this, 2, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
 	mParams->addButton("Triangle", std::bind(&ABPApp::setShape, this, 3, std::placeholders::_1), "{ \"group\":\"shape\", \"exclusive\":true }");
 	// Repetitions
@@ -167,35 +161,8 @@ void ABPApp::setRepetitions(const int &aRepetition, const bool &pressed)
 {
 	mRepetition += aRepetition;
 	if (mRepetition < 1) mRepetition = 1;
-	createPositions();
 }
 
-void ABPApp::createPositions()
-{
-	gl::VboMeshRef mesh = gl::VboMesh::create(geom::Sphere().subdivisions(4));
-
-	// create an array of initial per-instance positions laid out in a 2D grid
-	std::vector<vec3> positions;
-	for (size_t potX = 0; potX < mRepetition; ++potX) {
-		for (size_t potY = 0; potY < mRepetition; ++potY) {
-			float instanceX = potX / (float)mRepetition - 0.5f;
-			float instanceY = potY / (float)mRepetition - 0.5f;
-			positions.push_back(vec3(instanceX * vec3(DRAW_SCALE, 0, 0) + instanceY * vec3(0, 0, DRAW_SCALE)));
-		}
-	}
-
-	// create the VBO which will contain per-instance (rather than per-vertex) data
-	mInstanceDataVbo = gl::Vbo::create(GL_ARRAY_BUFFER, positions.size() * sizeof(vec3), positions.data(), GL_DYNAMIC_DRAW);
-	// we need a geom::BufferLayout to describe this data as mapping to the CUSTOM_0 semantic, and the 1 (rather than 0) as the last param indicates per-instance (rather than per-vertex)
-	geom::BufferLayout instanceDataLayout;
-	instanceDataLayout.append(geom::Attrib::CUSTOM_0, 3, 0, 0, 1 /* per instance */);
-
-	// now add it to the VboMesh we already made of the Teapot
-	mesh->appendVbo(instanceDataLayout, mInstanceDataVbo);
-
-	// and finally, build our batch, mapping our CUSTOM_0 attribute to the "vInstancePosition" GLSL vertex attribute
-	mBatch = gl::Batch::create(mesh, mGlsl, { { geom::Attrib::CUSTOM_0, "vInstancePosition" } });
-}
 void ABPApp::updateWindowTitle()
 {
 	getWindow()->setTitle("(" + toString(floor(getAverageFps())) + " fps) ABP");
@@ -257,30 +224,12 @@ void ABPApp::update()
 	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
 	mRotationMatrix *= rotate(0.06f, normalize(vec3(0.16666f, 0.333333f, 0.666666f)));
 
-	updateBricks(timer);
-	timer++;
-	if (timer > bricks.size() - 1) {
-		timer = 0;
-	}
+	updateBricks();
+
 	mParams->update();
 	updateWindowTitle();
 	// move the camera up and down on Y
 	mCam.lookAt(vec3(0, CAMERA_Y_RANGE.first + abs(sin(getElapsedSeconds() / 4)) * (CAMERA_Y_RANGE.second - CAMERA_Y_RANGE.first), 0), vec3(0));
-
-	// update our instance positions; map our instance data VBO, write new positions, unmap
-	vec3 *positions = (vec3*)mInstanceDataVbo->mapWriteOnly(true);
-	for (size_t potX = 0; potX < mRepetition; ++potX) {
-		for (size_t potY = 0; potY < mRepetition; ++potY) {
-			float instanceX = potX / (float)mRepetition - 0.5f;
-			float instanceY = potY / (float)mRepetition - 0.5f;
-			// just some nonsense math to move the teapots in a wave
-			vec3 newPos(instanceX * vec3(DRAW_SCALE, 0, 0) +
-				instanceY * vec3(0, 0, DRAW_SCALE) +
-				vec3(0, 30, 0) * sinf(getElapsedSeconds() * 3 + instanceX * 3 + instanceY * 3));
-			*positions++ = newPos;
-		}
-	}
-	mInstanceDataVbo->unmap();
 }
 void ABPApp::addBrick(const bool &pressed)
 {
@@ -290,8 +239,8 @@ void ABPApp::addBrick(const bool &pressed)
 		newBrick.g = mG + (i*mMotionVector);
 		newBrick.b = mB + (i*mMotionVector);
 		newBrick.a = mA;
-		newBrick.x = 0;
-		newBrick.y = 0;
+		newBrick.vx = mXYVector.x;
+		newBrick.vy = mXYVector.y;
 		newBrick.shape = mShape;
 		newBrick.size = mSize;
 		newBrick.rotation = mRotation + (i*mMotionVector);
@@ -300,12 +249,23 @@ void ABPApp::addBrick(const bool &pressed)
 		bricks.push_back(newBrick);
 	}
 }
-void ABPApp::updateBricks(int timerfggt)
+void ABPApp::updateBricks()
 {
 	if (newRecording == true) {
 		newRendering();
 	}
-	for (int i = 0; i < bricks[i].size; i++)
+	gl::ScopedFramebuffer fbScp(mFbo);
+
+	// clear out the FBO with red
+	gl::clear(Color::black());
+	// setup the viewport to match the dimensions of the FBO
+	gl::ScopedViewport scpVp(ivec2(0), mFbo->getSize());
+
+	CameraPersp cam(mFbo->getWidth(), mFbo->getHeight(), 60.0f);
+	cam.setPerspective(60, mFbo->getAspectRatio(), 1, 1000);
+	cam.lookAt(vec3(2.8f, 1.8f, -2.8f), vec3(0));
+	gl::setMatrices(cam);
+	for (int i = 0; i < bricks.size(); i++)
 	{
 		r = bricks[i].r;
 		g = bricks[i].g;
@@ -315,29 +275,14 @@ void ABPApp::updateBricks(int timerfggt)
 		repetitions = bricks[i].repetition;
 		distance = bricks[i].motionVector * mSize;
 		shape = bricks[i].shape;
-		gl::ScopedFramebuffer fbScp(mFbo);
 
-		// clear out the FBO with red
-		gl::clear(Color(0.1f, 0.1f, 0.0f));
-		// setup the viewport to match the dimensions of the FBO
-		gl::ScopedViewport scpVp(ivec2(0), mFbo->getSize());
-
-		CameraPersp cam(mFbo->getWidth(), mFbo->getHeight(), 60.0f);
-		cam.setPerspective(60, mFbo->getAspectRatio(), 1, 1000);
-		cam.lookAt(vec3(2.8f, 1.8f, -2.8f), vec3(0));
-		gl::setMatrices(cam);
-
-		gl::ScopedGlslProg shaderScp(gl::getStockShader(gl::ShaderDef().color()));
-		//gl::drawColorCube(vec3(0), vec3(2.2f));
+		//gl::ScopedGlslProg shaderScp(gl::getStockShader(gl::ShaderDef().color()));
 		gl::color(Color::white());
 		float new_x;
 		float new_y;
 
 		gl::scale(vec3(1.0) * mZoom);
-		//gl::rotate(mRotation);
-		// set the modelview matrix to reflect our current rotation
-		//gl::setModelMatrix(mRotationMatrix);
-
+		gl::rotate(mRotation);
 
 		for (int j = 0; j < repetitions; j++)
 		{
@@ -345,49 +290,42 @@ void ABPApp::updateBricks(int timerfggt)
 			g -= mColorFactor;
 			b -= mColorFactor;
 			a -= mColorFactor;
-			//gl::color(ColorA(bricks[timer].r, bricks[timer].g, bricks[timer].b, bricks[timer].a));
 			gl::color(r, g, b, a);
 			new_x = sin(rotation*0.01745329251994329576923690768489) * distance;
 			new_y = cos(rotation*0.01745329251994329576923690768489) * distance;
 
-			x = new_x + bricks[i].x;
-			y = new_y + bricks[i].y;
+			x = new_x + bricks[i].vx;
+			y = new_y + bricks[i].vy;
 
 			gl::translate(x, y);
-			//gl::translate(i * 1.5f, 0.0f, mZPosition);
-			//gl::rotate(rotation);
-			//gl::pushModelView();
+			//gl::translate(bricks[i].x + mXYVector.x, bricks[i].y + mXYVector.y, mZPosition);
 
-			//gl::translate(bricks[i].x + mXYSize.x, bricks[i].y + mXYSize.y, mZPosition);
-			//gl::rotate(bricks[i].rotation);
-			if (shape == 0) {
+			if (shape == 0)
+			{
 				gl::drawCube(vec3(0.0), vec3(bricks[i].size * mSize));
-				//gl::ScopedGlslProg shaderScp(gl::getStockShader(gl::ShaderDef().color()));
-
-				//gl::drawColorCube(vec3(0), vec3(2.2f));
-
 			}
-			if (shape == 1) {
-				gl::drawSolidRect(Rectf(0, 0, bricks[i].size * mSize, bricks[i].size * mSize));
+			if (shape == 1)
+			{
+				gl::drawSphere(vec3(0.0), bricks[i].size * mSize, 16);
+				//gl::drawSolidRect(Rectf(0, 0, bricks[i].size * mSize, bricks[i].size * mSize));
 			}
-			if (shape == 2) {
+			if (shape == 2)
+			{
 				gl::drawSolidCircle(vec2(0, 0), bricks[i].size * mSize);
 			}
-			if (shape == 3) {
-				vec2 dupa[3] = { vec2(0, bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[timer].size * mSize) };
+			if (shape == 3)
+			{
+				vec2 dupa[3] = { vec2(0, bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize) };
 				gl::drawSolidTriangle(dupa);
 			}
-			//gl::popModelView();
 		}
 	}
 	gl::color(Color::white());
-
 }
 void ABPApp::draw()
 {
 	gl::clear();
 	gl::color(Color::white());
-
 	// draw textures
 	//mSpout->draw();
 	//mBatchass->mTextures->draw();
@@ -410,25 +348,10 @@ void ABPApp::draw()
 	{
 		gl::setMatricesWindow(toPixels(getWindowSize()));
 	}
-	//gl::drawCube(vec3(0.0), vec3(bricks[0].size * mSize, bricks[0].size * mSize, 1.0f));
-	//mBatch->drawInstanced(mRepetition * mRepetition);
 
 	gl::draw(mFbo->getColorTexture(), Rectf(0, 0, mParameterBag->mRenderWidth, mParameterBag->mRenderHeight));
-	//mFbo->bindTexture();
 
-	// draw a cube textured with the FBO
-	//{
-	//	gl::ScopedGlslProg shaderScp(gl::getStockShader(gl::ShaderDef().texture()));
-	//	//gl::drawSolidRect(Rectf(0, 0, mParameterBag->mRenderWidth, mParameterBag->mRenderHeight));
-	//	gl::drawCube(vec3(0), vec3(22.2f));
-	//}
 	if (mParameterBag->mShowUI) mParams->draw();
-	// show the FBO color texture in the upper left corner
-	//gl::setMatricesWindow(toPixels(getWindowSize()));
-	//gl::draw(mFbo->getColorTexture(), Rectf(0, 0, 128, 128));
-	// and draw the depth texture adjacent
-	//gl::draw(mFbo->getDepthTexture(), Rectf(128, 0, 256, 128));
-
 }
 void ABPApp::shutdown()
 {
@@ -437,9 +360,6 @@ void ABPApp::shutdown()
 	// close ui and save settings
 	mSpout->shutdown();
 }
-#if defined( CINDER_MSW ) && ! defined( CINDER_GL_ANGLE )
 auto options = RendererGl::Options().version(3, 3); // instancing functions are technically only in GL 3.3
-#else
-auto options = RendererGl::Options(); // implemented as extensions in Mac OS 10.7+
-#endif
+
 CINDER_APP_NATIVE(ABPApp, RendererGl(options))
