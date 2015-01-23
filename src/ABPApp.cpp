@@ -42,7 +42,7 @@ void ABPApp::setup()
 	y = mParameterBag->mRenderHeight / 2;
 	gl::Fbo::Format format;
 	mFbo = gl::Fbo::create(mParameterBag->mFboWidth, mParameterBag->mFboHeight, format.depthTexture());
-	mUseCam = true;
+	mUseCam = false;
 	mMouseIndex = 0;
 	timer = 0;
 	isMouseDown = false;
@@ -59,6 +59,7 @@ void ABPApp::setup()
 	mLockRotation = false;
 	mLockSize = false;
 	mLockMotionVector = false;
+	mColorFactor = 0.1;
 	mR = 0.8f;
 	mG = 0.2f;
 	mB = 0.0f;
@@ -92,6 +93,7 @@ void ABPApp::setup()
 	sliderGreen = mParams->addSlider("G", &mG, "{ \"nameColor\":\"0xEE00FF00\" }");
 	sliderBlue = mParams->addSlider("B", &mB, "{  \"nameColor\":\"0xEE0000FF\" }");
 	sliderAlpha = mParams->addSlider("A", &mA, "{ \"nameColor\":\"0xFFFFFFFF\" }");
+	mParams->addSlider("Color\nFactor", &mColorFactor, "{ \"min\": -0.1, \"max\": 0.5 }");
 
 	// Separator
 	mParams->addSeparator();
@@ -288,8 +290,8 @@ void ABPApp::addBrick(const bool &pressed)
 		newBrick.g = mG + (i*mMotionVector);
 		newBrick.b = mB + (i*mMotionVector);
 		newBrick.a = mA;
-		newBrick.x = mParameterBag->mRenderWidth / 2;
-		newBrick.y = mParameterBag->mRenderHeight / 2;
+		newBrick.x = 0;
+		newBrick.y = 0;
 		newBrick.shape = mShape;
 		newBrick.size = mSize;
 		newBrick.rotation = mRotation + (i*mMotionVector);
@@ -298,80 +300,86 @@ void ABPApp::addBrick(const bool &pressed)
 		bricks.push_back(newBrick);
 	}
 }
-void ABPApp::updateBricks(int timer)
+void ABPApp::updateBricks(int timerfggt)
 {
 	if (newRecording == true) {
 		newRendering();
 	}
-	r = bricks[timer].r;
-	g = bricks[timer].g;
-	b = bricks[timer].b;
-	a = bricks[timer].a;
-	rotation = bricks[timer].rotation++;
-	repetitions = bricks[timer].repetition;
-	distance = bricks[timer].motionVector * mSize;
-	shape = bricks[timer].shape;
-	gl::ScopedFramebuffer fbScp(mFbo);
-
-	// clear out the FBO with red
-	gl::clear(Color(0.3f, 0.0f, 0.0f));
-	// setup the viewport to match the dimensions of the FBO
-	gl::ScopedViewport scpVp(ivec2(0), mFbo->getSize());
-
-	CameraPersp cam(mFbo->getWidth(), mFbo->getHeight(), 60.0f);
-	cam.setPerspective(60, mFbo->getAspectRatio(), 1, 1000);
-	cam.lookAt(vec3(2.8f, 1.8f, -2.8f), vec3(0));
-	gl::setMatrices(cam);
-
-	gl::ScopedGlslProg shaderScp(gl::getStockShader(gl::ShaderDef().color()));
-	//gl::drawColorCube(vec3(0), vec3(2.2f));
-	gl::color(Color::white());
-	float new_x;
-	float new_y;
-
-	gl::scale(vec3(1.0) * mZoom);
-	//gl::rotate(mRotation);
-	// set the modelview matrix to reflect our current rotation
-	//gl::setModelMatrix(mRotationMatrix);
-
-
-	for (int j = 0; j < repetitions; j++)
+	for (int i = 0; i < bricks[i].size; i++)
 	{
-		//gl::color(ColorA(bricks[timer].r, bricks[timer].g, bricks[timer].b, bricks[timer].a));
-		//gl::color(r, g, b, a);
-		new_x = sin(rotation*0.01745329251994329576923690768489) * distance;
-		new_y = cos(rotation*0.01745329251994329576923690768489) * distance;
+		r = bricks[i].r;
+		g = bricks[i].g;
+		b = bricks[i].b;
+		a = bricks[i].a;
+		rotation = bricks[i].rotation++;
+		repetitions = bricks[i].repetition;
+		distance = bricks[i].motionVector * mSize;
+		shape = bricks[i].shape;
+		gl::ScopedFramebuffer fbScp(mFbo);
 
-		x = new_x + bricks[timer].x;
-		y = new_y + bricks[timer].y;
+		// clear out the FBO with red
+		gl::clear(Color(0.1f, 0.1f, 0.0f));
+		// setup the viewport to match the dimensions of the FBO
+		gl::ScopedViewport scpVp(ivec2(0), mFbo->getSize());
 
-		gl::translate(x, y);
-		//gl::translate(i * 1.5f, 0.0f, mZPosition);
-		//gl::rotate(rotation);
-		//gl::pushModelView();
+		CameraPersp cam(mFbo->getWidth(), mFbo->getHeight(), 60.0f);
+		cam.setPerspective(60, mFbo->getAspectRatio(), 1, 1000);
+		cam.lookAt(vec3(2.8f, 1.8f, -2.8f), vec3(0));
+		gl::setMatrices(cam);
 
-		//gl::translate(bricks[i].x + mXYSize.x, bricks[i].y + mXYSize.y, mZPosition);
-		//gl::rotate(bricks[i].rotation);
-		if (shape == 0) {
-			//gl::drawCube(vec3(0.0), vec3(bricks[timer].size * mSize));
-			gl::ScopedGlslProg shaderScp(gl::getStockShader(gl::ShaderDef().color()));
+		gl::ScopedGlslProg shaderScp(gl::getStockShader(gl::ShaderDef().color()));
+		//gl::drawColorCube(vec3(0), vec3(2.2f));
+		gl::color(Color::white());
+		float new_x;
+		float new_y;
 
-			gl::drawColorCube(vec3(0), vec3(2.2f));
+		gl::scale(vec3(1.0) * mZoom);
+		//gl::rotate(mRotation);
+		// set the modelview matrix to reflect our current rotation
+		//gl::setModelMatrix(mRotationMatrix);
 
+
+		for (int j = 0; j < repetitions; j++)
+		{
+			r -= mColorFactor;
+			g -= mColorFactor;
+			b -= mColorFactor;
+			a -= mColorFactor;
+			//gl::color(ColorA(bricks[timer].r, bricks[timer].g, bricks[timer].b, bricks[timer].a));
+			gl::color(r, g, b, a);
+			new_x = sin(rotation*0.01745329251994329576923690768489) * distance;
+			new_y = cos(rotation*0.01745329251994329576923690768489) * distance;
+
+			x = new_x + bricks[i].x;
+			y = new_y + bricks[i].y;
+
+			gl::translate(x, y);
+			//gl::translate(i * 1.5f, 0.0f, mZPosition);
+			//gl::rotate(rotation);
+			//gl::pushModelView();
+
+			//gl::translate(bricks[i].x + mXYSize.x, bricks[i].y + mXYSize.y, mZPosition);
+			//gl::rotate(bricks[i].rotation);
+			if (shape == 0) {
+				gl::drawCube(vec3(0.0), vec3(bricks[i].size * mSize));
+				//gl::ScopedGlslProg shaderScp(gl::getStockShader(gl::ShaderDef().color()));
+
+				//gl::drawColorCube(vec3(0), vec3(2.2f));
+
+			}
+			if (shape == 1) {
+				gl::drawSolidRect(Rectf(0, 0, bricks[i].size * mSize, bricks[i].size * mSize));
+			}
+			if (shape == 2) {
+				gl::drawSolidCircle(vec2(0, 0), bricks[i].size * mSize);
+			}
+			if (shape == 3) {
+				vec2 dupa[3] = { vec2(0, bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[timer].size * mSize) };
+				gl::drawSolidTriangle(dupa);
+			}
+			//gl::popModelView();
 		}
-		if (shape == 1) {
-			gl::drawSolidRect(Rectf(0, 0, bricks[timer].size * mSize, bricks[timer].size * mSize));
-		}
-		if (shape == 2) {
-			gl::drawSolidCircle(vec2(0, 0), bricks[timer].size * mSize);
-		}
-		if (shape == 3) {
-			vec2 dupa[3] = { vec2(0, bricks[timer].size * mSize), vec2(-bricks[timer].size * mSize, -bricks[timer].size * mSize), vec2(-bricks[timer].size * mSize, -bricks[timer].size * mSize) };
-			gl::drawSolidTriangle(dupa);
-		}
-		//gl::popModelView();
 	}
-
 	gl::color(Color::white());
 
 }
@@ -400,7 +408,7 @@ void ABPApp::draw()
 	}
 	else
 	{
-		gl::setMatricesWindow(toPixels(getWindowSize()) * 2);
+		gl::setMatricesWindow(toPixels(getWindowSize()));
 	}
 	//gl::drawCube(vec3(0.0), vec3(bricks[0].size * mSize, bricks[0].size * mSize, 1.0f));
 	//mBatch->drawInstanced(mRepetition * mRepetition);
@@ -416,10 +424,10 @@ void ABPApp::draw()
 	//}
 	if (mParameterBag->mShowUI) mParams->draw();
 	// show the FBO color texture in the upper left corner
-	gl::setMatricesWindow(toPixels(getWindowSize()));
-	gl::draw(mFbo->getColorTexture(), Rectf(0, 0, 128, 128));
+	//gl::setMatricesWindow(toPixels(getWindowSize()));
+	//gl::draw(mFbo->getColorTexture(), Rectf(0, 0, 128, 128));
 	// and draw the depth texture adjacent
-	gl::draw(mFbo->getDepthTexture(), Rectf(128, 0, 256, 128));
+	//gl::draw(mFbo->getDepthTexture(), Rectf(128, 0, 256, 128));
 
 }
 void ABPApp::shutdown()

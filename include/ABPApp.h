@@ -157,6 +157,7 @@ private:
 	float						distance;
 	gl::FboRef					mFbo;
 	mat4						mRotationMatrix;
+	float						mColorFactor;
 
 	void						newRendering();
 	void						updateBricks(int timer);
