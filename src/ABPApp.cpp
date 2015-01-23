@@ -233,24 +233,24 @@ void ABPApp::update()
 }
 void ABPApp::addBrick(const bool &pressed)
 {
-	for (int i = 0; i < mRepetition; i++) {
-		brick newBrick;
-		newBrick.r = mR + (i*mMotionVector);
-		newBrick.g = mG + (i*mMotionVector);
-		newBrick.b = mB + (i*mMotionVector);
-		newBrick.a = mA;
-		newBrick.vx = mXYVector.x;
-		newBrick.vy = mXYVector.y;
-		newBrick.shape = mShape;
-		newBrick.size = mSize;
-		newBrick.rotation = mRotation + (i*mMotionVector);
-		newBrick.motionVector = mMotionVector;
-		newBrick.repetition = mRepetition;
-		bricks.push_back(newBrick);
-	}
+	brick newBrick;
+	newBrick.r = mR;
+	newBrick.g = mG;
+	newBrick.b = mB;
+	newBrick.a = mA;
+	newBrick.vx = mXYVector.x;
+	newBrick.vy = mXYVector.y;
+	newBrick.shape = mShape;
+	newBrick.size = mSize;
+	newBrick.rotation = mRotation;
+	newBrick.motionVector = mMotionVector;
+	newBrick.repetition = mRepetition;
+	bricks.push_back(newBrick);
 }
 void ABPApp::updateBricks()
 {
+	float new_x;
+	float new_y;
 	if (newRecording == true) {
 		newRendering();
 	}
@@ -278,12 +278,10 @@ void ABPApp::updateBricks()
 
 		//gl::ScopedGlslProg shaderScp(gl::getStockShader(gl::ShaderDef().color()));
 		gl::color(Color::white());
-		float new_x;
-		float new_y;
 
 		gl::scale(vec3(1.0) * mZoom);
 		gl::rotate(mRotation);
-
+		gl::pushMatrices();
 		for (int j = 0; j < repetitions; j++)
 		{
 			r -= mColorFactor;
@@ -319,6 +317,8 @@ void ABPApp::updateBricks()
 				gl::drawSolidTriangle(dupa);
 			}
 		}
+		gl::popMatrices();
+
 	}
 	gl::color(Color::white());
 }
