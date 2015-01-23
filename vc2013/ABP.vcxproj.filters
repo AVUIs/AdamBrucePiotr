@@ -22,18 +22,6 @@
     <Filter Include="Blocks\Cinder-Hap2\src">
       <UniqueIdentifier>{09DACB1A-F0F8-43BB-9519-F60EBB76EF83}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Blocks\imGui">
-      <UniqueIdentifier>{66E44B2A-B4DB-4C1A-9246-A15F52AB98D2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\imGui\lib">
-      <UniqueIdentifier>{96D582A3-3AE6-4803-807E-360D9E7DFCE1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\imGui\lib\imgui">
-      <UniqueIdentifier>{A5694E9A-25C6-498A-92E2-C4ED7C2603C8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\imGui\src">
-      <UniqueIdentifier>{6C24E1C2-1A3D-4B89-99A6-4168C6C537DF}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Blocks\Midi2">
       <UniqueIdentifier>{23F8F209-DBFA-4C61-BDC5-29852430D350}</UniqueIdentifier>
     </Filter>
@@ -102,18 +90,6 @@
     <ClInclude Include="..\..\..\blocks\Cinder-Hap2\src\MovieHap.h">
       <Filter>Blocks\Cinder-Hap2\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imgui.h">
-      <Filter>Blocks\imGui\lib\imgui</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imgui.cpp">
-      <Filter>Blocks\imGui\lib\imgui</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\..\blocks\Cinder-ImGui\src\ImGuiCinder.h">
-      <Filter>Blocks\imGui\src</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\blocks\Cinder-ImGui\src\ImGuiCinder.cpp">
-      <Filter>Blocks\imGui\src</Filter>
-    </ClCompile>
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiConstants.h">
       <Filter>Blocks\Midi2\include</Filter>
     </ClInclude>

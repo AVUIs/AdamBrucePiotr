@@ -119,8 +119,6 @@
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-Hap2\src\HapSupport.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-Hap2\src\MovieHap.h" />
-    <ClInclude Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imgui.h" />
-    <ClInclude Include="..\..\..\blocks\Cinder-ImGui\src\ImGuiCinder.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiConstants.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiExceptions.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiHeaders.h" />
@@ -169,8 +167,6 @@
     <ClCompile Include="..\src\ABPApp.cpp" />
     <ClCompile Include="..\..\..\blocks\Cinder-Hap2\src\MovieHap.cpp" />
     <ClCompile Include="..\..\..\blocks\Cinder-Hap2\src\HapSupport.c" />
-    <ClCompile Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imgui.cpp" />
-    <ClCompile Include="..\..\..\blocks\Cinder-ImGui\src\ImGuiCinder.cpp" />
     <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\MidiHub.cpp" />
     <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\MidiIn.cpp" />
     <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\MidiMessage.cpp" />

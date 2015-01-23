@@ -63,12 +63,14 @@ struct brick {
 	float g;
 	float b;
 	float a;
+	int x;
+	int y;
 	float motionVector;
 	float rotation;
 	float repetition;
 };
 const float DRAW_SCALE = 200;
-const pair<float, float> CAMERA_Y_RANGE(32, 80);
+const pair<float, float> CAMERA_Y_RANGE(32.0f, 80.0f);
 
 
 class ABPApp : public AppNative {
@@ -85,6 +87,7 @@ public:
 	void						mouseDown(MouseEvent event);
 	void						mouseDrag(MouseEvent event);
 	void						mouseUp(MouseEvent event);
+	void						keyDown(KeyEvent event);
 
 	void						setShape(const int &aShape, const bool &pressed) { mShape = aShape; }
 	void						setRepetitions(const int &aRepetition, const bool &pressed);
@@ -100,7 +103,6 @@ public:
 	void						addBrick(const bool &pressed);
 	CameraPersp					mCam;
 	gl::BatchRef				mBatch;
-	gl::TextureRef				mTexture;
 	gl::GlslProgRef				mGlsl;
 	gl::VboRef					mInstanceDataVbo;
 	void						createPositions();
@@ -119,7 +121,7 @@ private:
 	string						mLogMsg;
 	bool						newLogMsg;
 	static const int			MAX = 16;
-
+	bool						mUseCam;
 	bool						mSendOSC;
 	float						mR, mG, mB, mA;
 	float						mZoom;
@@ -152,9 +154,10 @@ private:
 	float						rotation;
 	float						motion;
 	float						steps;
-	float						size;
 	float						distance;
-	gl::FboRef					myFbo;
+	gl::FboRef					mFbo;
+	mat4						mRotationMatrix;
+
 	void						newRendering();
 	void						updateBricks(int timer);
 	vector <brick>				bricks;
