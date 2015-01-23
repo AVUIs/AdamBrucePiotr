@@ -48,7 +48,7 @@ void ABPApp::setup()
 	isRecording = false;
 	mZoom = 0.3f;
 	mXYVector = vec2(1.0);
-	mRepetition = repetitions = 1;
+	mRepetition = 1;
 	mShape = 0;
 	mZPosition = 0.0f;
 	mRotation = 0.0f;
@@ -96,8 +96,8 @@ void ABPApp::setup()
 	mParams->addLabel("Shape", "{ \"clear\":false }");
 
 	// Button Group
-	mParams->addButton("Cube", std::bind(&ABPApp::setShape, this, 0, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
-	mParams->addButton("Sphere", std::bind(&ABPApp::setShape, this, 1, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
+	mParams->addButton("Sphere", std::bind(&ABPApp::setShape, this, 0, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
+	mParams->addButton("Cube", std::bind(&ABPApp::setShape, this, 1, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
 	mParams->addButton("Circle", std::bind(&ABPApp::setShape, this, 2, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
 	mParams->addButton("Triangle", std::bind(&ABPApp::setShape, this, 3, std::placeholders::_1), "{ \"group\":\"shape\", \"exclusive\":true }");
 	// Repetitions
@@ -265,6 +265,9 @@ void ABPApp::updateBricks()
 	cam.setPerspective(60, mFbo->getAspectRatio(), 1, 1000);
 	cam.lookAt(vec3(2.8f, 1.8f, -2.8f), vec3(0));
 	gl::setMatrices(cam);
+	gl::color(Color::white());
+	gl::scale(vec3(1.0) * mZoom);
+	gl::rotate(mRotation);
 	for (int i = 0; i < bricks.size(); i++)
 	{
 		r = bricks[i].r;
@@ -272,22 +275,17 @@ void ABPApp::updateBricks()
 		b = bricks[i].b;
 		a = bricks[i].a;
 		rotation = bricks[i].rotation++;
-		repetitions = bricks[i].repetition;
 		distance = bricks[i].motionVector * mSize;
 		shape = bricks[i].shape;
 
-		//gl::ScopedGlslProg shaderScp(gl::getStockShader(gl::ShaderDef().color()));
-		gl::color(Color::white());
-
-		gl::scale(vec3(1.0) * mZoom);
-		gl::rotate(mRotation);
+		//save state to restart translation from center point
 		gl::pushMatrices();
-		for (int j = 0; j < repetitions; j++)
+		for (int j = 0; j < bricks[i].repetition; j++)
 		{
-			r -= mColorFactor;
-			g -= mColorFactor;
-			b -= mColorFactor;
-			a -= mColorFactor;
+			r -= mColorFactor / (mParameterBag->maxVolume+0.01);
+			g -= mColorFactor / (mParameterBag->maxVolume + 0.01);
+			b -= mColorFactor / (mParameterBag->maxVolume + 0.01);
+			a -= mColorFactor / (mParameterBag->maxVolume + 0.01);
 			gl::color(r, g, b, a);
 			new_x = sin(rotation*0.01745329251994329576923690768489) * distance;
 			new_y = cos(rotation*0.01745329251994329576923690768489) * distance;
@@ -295,17 +293,15 @@ void ABPApp::updateBricks()
 			x = new_x + bricks[i].vx;
 			y = new_y + bricks[i].vy;
 
-			gl::translate(x, y);
-			//gl::translate(bricks[i].x + mXYVector.x, bricks[i].y + mXYVector.y, mZPosition);
+			gl::translate(x, y, mZPosition);
 
 			if (shape == 0)
 			{
-				gl::drawCube(vec3(0.0), vec3(bricks[i].size * mSize));
+				gl::drawSphere(vec3(0.0), bricks[i].size * mSize, 16);
 			}
 			if (shape == 1)
 			{
-				gl::drawSphere(vec3(0.0), bricks[i].size * mSize, 16);
-				//gl::drawSolidRect(Rectf(0, 0, bricks[i].size * mSize, bricks[i].size * mSize));
+				gl::drawCube(vec3(0.0), vec3(bricks[i].size * mSize));
 			}
 			if (shape == 2)
 			{

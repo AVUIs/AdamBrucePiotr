@@ -145,7 +145,6 @@ private:
 	float						r, g, b, a;
 	float						scale;
 	ColorA						kolor;
-	int							repetitions;
 	int							shape;
 	float						rotation;
 	float						motion;
