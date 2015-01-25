@@ -59,9 +59,9 @@ void ABPApp::setup()
 	mLockSize = false;
 	mLockMotionVector = false;
 	mColorFactor = 0.1;
-	mR = 0.8f;
-	mG = 0.2f;
-	mB = 0.0f;
+	mR = 0.5f;
+	mG = 0.0f;
+	mB = 0.8f;
 	mA = 1.0f;
 	presentIndex = 0;
 	// init one brick
@@ -76,7 +76,7 @@ void ABPApp::setup()
 	gl::enableDepthWrite();
 	gl::enableDepthRead();
 
-	mParams = MinimalUI::UIController::create("{ \"x\":0, \"y\":0, \"depth\":100, \"width\":260, \"height\":600, \"fboNumSamples\":0, \"panelColor\":\"0x44402828\" }");
+	mParams = MinimalUI::UIController::create("{ \"x\":0, \"y\":0, \"depth\":100, \"width\":260, \"height\":800, \"fboNumSamples\":0, \"panelColor\":\"0x44402828\" }");
 
 	// 2D Sliders
 	sliderXY = mParams->addSlider2D("XY", &mXYVector, "{ \"minX\":-2.0, \"maxX\":2.0, \"minY\":-2.0, \"maxY\":2.0 }");
@@ -244,7 +244,6 @@ void ABPApp::addBrick(const bool &pressed)
 	newBrick.size = mSize;
 	newBrick.rotation = mRotation;
 	newBrick.motionVector = mMotionVector;
-	newBrick.repetition = mRepetition;
 	bricks.push_back(newBrick);
 }
 void ABPApp::updateBricks()
@@ -280,12 +279,12 @@ void ABPApp::updateBricks()
 
 		//save state to restart translation from center point
 		gl::pushMatrices();
-		for (int j = 0; j < bricks[i].repetition; j++)
+		for (int j = 0; j < mRepetition; j++)
 		{
-			r -= mColorFactor / (mParameterBag->maxVolume+0.01);
-			g -= mColorFactor / (mParameterBag->maxVolume + 0.01);
-			b -= mColorFactor / (mParameterBag->maxVolume + 0.01);
-			a -= mColorFactor / (mParameterBag->maxVolume + 0.01);
+			r -= mColorFactor / (mParameterBag->maxVolume + 0.1);
+			g -= mColorFactor / (mParameterBag->maxVolume + 0.1);
+			b -= mColorFactor / (mParameterBag->maxVolume + 0.1);
+			a -= mColorFactor / (mParameterBag->maxVolume + 0.1);
 			gl::color(r, g, b, a);
 			new_x = sin(rotation*0.01745329251994329576923690768489) * distance;
 			new_y = cos(rotation*0.01745329251994329576923690768489) * distance;

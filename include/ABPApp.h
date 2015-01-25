@@ -67,7 +67,6 @@ struct brick {
 	float vy;
 	float motionVector;
 	float rotation;
-	float repetition;
 };
 const float DRAW_SCALE = 200;
 const pair<float, float> CAMERA_Y_RANGE(32.0f, 80.0f);

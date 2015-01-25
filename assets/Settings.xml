@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <settings>
 	<AutoLayout value="0"/>
-	<RenderWidth value="800"/>
-	<RenderHeight value="600"/>
+	<RenderWidth value="1024"/>
+	<RenderHeight value="768"/>
 	<RenderX value="0"/>
 	<RenderY value="0"/>
-	<FboWidth value="800"/>
-	<FboHeight value="600"/>
+	<FboWidth value="1024"/>
+	<FboHeight value="768"/>
 	<OSCReceiverPort value="9001"/>
 	<OSCDestinationPort value="7001"/>
 	<OSCDestinationHost value="127.0.0.1"/>
