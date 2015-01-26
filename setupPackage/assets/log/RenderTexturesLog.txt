@@ -1,0 +1,5 @@
+[6:33:48] Textures constructor
+[6:33:48] reymenta.jpg image found, loading
+[6:33:49] reymenta.jpg image loaded
+[6:33:49] Textures constructor end
+[6:36:32] quit

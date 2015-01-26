@@ -1,0 +1,3 @@
+[6:33:49] SpoutWrapper constructor
+[6:33:49] SpoutWrapper constructor end
+[6:36:32] quit

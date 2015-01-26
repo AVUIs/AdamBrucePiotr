@@ -9,10 +9,16 @@ Cinder project with Pure Data
 About
 =====
 A PureData patch creates music and sends data to the Cinder visuals software via OSC.
-Several visual parameters like color, alpha, zoom, repetition of objects, tempo are given by the PureData patch
-Live interaction on the visuals are added with a midi controller.
+Several visual parameters like color, alpha, zoom, repetition of objects, tempo are given by the PureData patch for live interaction.
 Music and PureData : Adam
 Visuals developed by Bruce and Piotr
+
+Setup
+=====
+- Install 32 bit visual studio 2013 redistribuable from http://www.microsoft.com/fr-fr/download/details.aspx?id=40784
+- Copy the files from the assets and setupPackage folders to the destination computer.
+- Edit assets/Settings.xml to specify a OSC receiver port.
+- Launch ABP.exe
 
 Run from the source
 ===================
@@ -29,3 +35,7 @@ Get [PureData](http://puredata.info/)
   <img src="http://puredata.info/downloads/pd-extended/screenshot" alt="PureData screenshot"/>
 </p>
 
+Keyboard shortcuts
+==================
+- u: show/hide UI
+- c: show/hide mouse cursor

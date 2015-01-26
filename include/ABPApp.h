@@ -89,8 +89,8 @@ public:
 	void						keyDown(KeyEvent event);
 
 	void						setShape(const int &aShape, const bool &pressed) { mShape = aShape; }
-	void						setRepetitions(const int &aRepetition, const bool &pressed);
 	void						lockZ(const bool &pressed) { mLockZ = pressed; }
+	void						lockRepetitions(const bool &pressed) { mLockRepetitions = pressed; }
 	void						lockRotation(const bool &pressed) { mLockRotation = pressed; }
 	void						lockSize(const bool &pressed) { mLockSize = pressed; }
 	void						lockMotionVector(const bool &pressed) { mLockMotionVector = pressed; }
@@ -122,11 +122,12 @@ private:
 	float						mR, mG, mB, mA;
 	float						mZoom;
 	vec2						mXYVector;
-	int							mRepetition;
+	float						mRepetitions;
 	int							mShape;
 	float						mZPosition;
 	float						mRotation;
 	bool						mLockZ;
+	bool						mLockRepetitions;
 	bool						mLockRotation;
 	bool						mLockSize;
 	bool						mLockMotionVector;

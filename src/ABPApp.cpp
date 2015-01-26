@@ -48,17 +48,18 @@ void ABPApp::setup()
 	isRecording = false;
 	mZoom = 0.3f;
 	mXYVector = vec2(1.0);
-	mRepetition = 1;
+	mRepetitions = 1;
 	mShape = 0;
 	mZPosition = 0.0f;
 	mRotation = 0.0f;
 	mSize = 1.0f;
 	mMotionVector = 0.2f;
 	mLockZ = false;
+	mLockRepetitions = false;
 	mLockRotation = false;
 	mLockSize = false;
 	mLockMotionVector = false;
-	mColorFactor = 0.1;
+	mColorFactor = 0.01;
 	mR = 0.5f;
 	mG = 0.0f;
 	mB = 0.8f;
@@ -76,7 +77,7 @@ void ABPApp::setup()
 	gl::enableDepthWrite();
 	gl::enableDepthRead();
 
-	mParams = MinimalUI::UIController::create("{ \"x\":0, \"y\":0, \"depth\":100, \"width\":260, \"height\":800, \"fboNumSamples\":0, \"panelColor\":\"0x44402828\" }");
+	mParams = MinimalUI::UIController::create("{ \"x\":0, \"y\":0, \"depth\":100, \"width\":220, \"height\":800, \"fboNumSamples\":0, \"panelColor\":\"0x44282828\" }");
 
 	// 2D Sliders
 	sliderXY = mParams->addSlider2D("XY", &mXYVector, "{ \"minX\":-2.0, \"maxX\":2.0, \"minY\":-2.0, \"maxY\":2.0 }");
@@ -98,18 +99,13 @@ void ABPApp::setup()
 	// Button Group
 	mParams->addButton("Sphere", std::bind(&ABPApp::setShape, this, 0, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
 	mParams->addButton("Cube", std::bind(&ABPApp::setShape, this, 1, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
-	mParams->addButton("Circle", std::bind(&ABPApp::setShape, this, 2, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
-	mParams->addButton("Triangle", std::bind(&ABPApp::setShape, this, 3, std::placeholders::_1), "{ \"group\":\"shape\", \"exclusive\":true }");
+	mParams->addButton("Circle", std::bind(&ABPApp::setShape, this, 2, std::placeholders::_1), "{ \"group\":\"shape\", \"exclusive\":true }");
+	//mParams->addButton("Triangle", std::bind(&ABPApp::setShape, this, 3, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
 	// Repetitions
-	mParams->addButton("+1", std::bind(&ABPApp::setRepetitions, this, 1, std::placeholders::_1), "{ \"clear\":false, \"group\":\"repeat\", \"exclusive\":true }");
-	mParams->addButton("+10", std::bind(&ABPApp::setRepetitions, this, 10, std::placeholders::_1), "{ \"clear\":false, \"group\":\"repeat\", \"exclusive\":true }");
-	mParams->addButton("+100", std::bind(&ABPApp::setRepetitions, this, 100, std::placeholders::_1), "{ \"clear\":false, \"group\":\"repeat\", \"exclusive\":true }");
-	mParams->addButton("-1", std::bind(&ABPApp::setRepetitions, this, -1, std::placeholders::_1), "{ \"clear\":false, \"group\":\"repeat\", \"exclusive\":true }");
-	mParams->addButton("-10", std::bind(&ABPApp::setRepetitions, this, -10, std::placeholders::_1), "{ \"clear\":false, \"group\":\"repeat\", \"exclusive\":true }");
-	mParams->addButton("-100", std::bind(&ABPApp::setRepetitions, this, -100, std::placeholders::_1), "{ \"group\":\"repeat\", \"exclusive\":true }");
+	mParams->addToggleSlider("Repetitions", &mRepetitions, "A", std::bind(&ABPApp::lockRepetitions, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 1, \"max\": 20 }", "{ \"stateless\":false }");
 
-	mParams->addButton("Record", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false }");
-	mParams->addButton("Send OSC", std::bind(&ABPApp::sendOSC, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"pressed\":false }");
+	//mParams->addButton("Record", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false }");
+	//mParams->addButton("Send OSC", std::bind(&ABPApp::sendOSC, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"pressed\":false }");
 	mParams->addButton("Add brick", std::bind(&ABPApp::addBrick, this, std::placeholders::_1), "{ \"stateless\":false, \"pressed\":false }");
 	// Toggle Slider
 	mParams->addToggleSlider("Z Position", &mZPosition, "A", std::bind(&ABPApp::lockZ, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": -1, \"max\": 1 }", "{ \"stateless\":false }");
@@ -155,12 +151,6 @@ void ABPApp::mouseDrag(MouseEvent event)
 void ABPApp::mouseUp(MouseEvent event)
 {
 	isMouseDown = false;
-}
-
-void ABPApp::setRepetitions(const int &aRepetition, const bool &pressed)
-{
-	mRepetition += aRepetition;
-	if (mRepetition < 1) mRepetition = 1;
 }
 
 void ABPApp::updateWindowTitle()
@@ -223,6 +213,7 @@ void ABPApp::update()
 	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
 	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
 	mRotationMatrix *= rotate(0.06f, normalize(vec3(0.16666f, 0.333333f, 0.666666f)));
+	mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f)+1) * 20 : mRepetitions;
 
 	updateBricks();
 
@@ -279,7 +270,7 @@ void ABPApp::updateBricks()
 
 		//save state to restart translation from center point
 		gl::pushMatrices();
-		for (int j = 0; j < mRepetition; j++)
+		for (int j = 0; j < mRepetitions; j++)
 		{
 			r -= mColorFactor / (mParameterBag->maxVolume + 0.1);
 			g -= mColorFactor / (mParameterBag->maxVolume + 0.1);
@@ -329,7 +320,7 @@ void ABPApp::draw()
 
 		// Grab the screen (current read buffer) into the local spout texture
 		spoutSenderTexture->bind();
-		mBatch->drawInstanced(mRepetition * mRepetition);
+		mBatch->drawInstanced(mRepetitions * mRepetitions);
 		glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, g_Width, g_Height);
 		spoutSenderTexture->unbind();
 		spoutsender.SendTexture(spoutSenderTexture->getId(), spoutSenderTexture->getTarget(), g_Width, g_Height);
