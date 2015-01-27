@@ -39,3 +39,8 @@ Keyboard shortcuts
 ==================
 - u: show/hide UI
 - c: show/hide mouse cursor
+
+OSC messages
+============
+Receiving on port 9001
+Address: /live/track/meter Type: float Interval: from 0.0 to 1.0

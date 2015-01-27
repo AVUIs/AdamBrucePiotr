@@ -312,20 +312,6 @@ void ABPApp::draw()
 {
 	gl::clear();
 	gl::color(Color::white());
-	// draw textures
-	//mSpout->draw();
-	//mBatchass->mTextures->draw();
-	// -------- SPOUT SENDER-------------
-	/*if (bSenderInitialized) {
-
-		// Grab the screen (current read buffer) into the local spout texture
-		spoutSenderTexture->bind();
-		mBatch->drawInstanced(mRepetitions * mRepetitions);
-		glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, g_Width, g_Height);
-		spoutSenderTexture->unbind();
-		spoutsender.SendTexture(spoutSenderTexture->getId(), spoutSenderTexture->getTarget(), g_Width, g_Height);
-		}
-		gl::draw(spoutSenderTexture);*/
 	if (mUseCam)
 	{
 		gl::setMatrices(mCam);
@@ -336,6 +322,20 @@ void ABPApp::draw()
 	}
 
 	gl::draw(mFbo->getColorTexture(), Rectf(0, 0, mParameterBag->mRenderWidth, mParameterBag->mRenderHeight));
+	// draw textures
+	//mSpout->draw();
+	//mBatchass->mTextures->draw();
+	//mBatch->drawInstanced(mRepetitions * mRepetitions);
+	// -------- SPOUT SENDER-------------
+	if (bSenderInitialized) {
+
+	// Grab the screen (current read buffer) into the local spout texture
+	spoutSenderTexture->bind();
+	glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, g_Width, g_Height);
+	spoutSenderTexture->unbind();
+	spoutsender.SendTexture(spoutSenderTexture->getId(), spoutSenderTexture->getTarget(), g_Width, g_Height);
+	}
+	gl::draw(spoutSenderTexture);
 
 	if (mParameterBag->mShowUI) mParams->draw();
 }
