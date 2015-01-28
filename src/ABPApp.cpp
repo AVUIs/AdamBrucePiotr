@@ -191,8 +191,8 @@ void ABPApp::update()
 {
 	mParameterBag->iChannelTime[0] = getElapsedSeconds();
 	mParameterBag->iChannelTime[1] = getElapsedSeconds() - 1;
-	mParameterBag->iChannelTime[3] = getElapsedSeconds() - 2;
-	mParameterBag->iChannelTime[4] = getElapsedSeconds() - 3;
+	mParameterBag->iChannelTime[2] = getElapsedSeconds() - 2;
+	mParameterBag->iChannelTime[3] = getElapsedSeconds() - 3;
 	//
 	if (mParameterBag->mUseTimeWithTempo)
 	{
