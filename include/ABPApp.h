@@ -41,8 +41,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "Textures.h"
 // logger
 #include "Logger.h"
-// spout
-#include "SpoutWrapper.h"
 // OSC
 #include "OSCWrapper.h"
 // Utils
@@ -107,8 +105,6 @@ private:
 	ParameterBagRef				mParameterBag;
 	// Logger
 	LoggerRef					log;
-	// spout
-	SpoutWrapperRef				mSpout;
 	// osc
 	OSCRef						mOSC;
 	// utils
@@ -158,12 +154,4 @@ private:
 	void						updateBricks();
 	vector <brick>				bricks;
 	bool						newRecording;
-	// -------- SPOUT -------------
-	SpoutSender					spoutsender;                    // Create a Spout sender object
-	bool						bSenderInitialized;             // true if a sender initializes OK
-	bool						bMemoryMode;                    // tells us if texture share compatible
-	unsigned int				g_Width, g_Height;              // size of the texture being sent out
-	char						SenderName[256];                // sender name 
-	gl::TextureRef				spoutSenderTexture;             // Local Cinder texture used for sharing
-
 };
