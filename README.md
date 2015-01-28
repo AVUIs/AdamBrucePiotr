@@ -38,7 +38,7 @@ Get [MinimalUI Cinder block, glNext branch](https://github.com/nselikoff/Cinder-
 <br />
 Get [PureData](http://puredata.info/)
 <p align="center">
-  <img src="http://puredata.info/downloads/pd-extended/screenshot" alt="PureData screenshot"/>
+  <img src="http://www.batchass.fr/reymenta/puredata.jpg" alt="PureData patch"/>
 </p>
 
 Keyboard shortcuts

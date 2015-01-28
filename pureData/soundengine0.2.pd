@@ -1,4 +1,4 @@
-#N canvas 547 54 1046 932 10;
+#N canvas 547 0 1046 815 10;
 #X floatatom 36 52 5 0 0 0 - - -;
 #X floatatom 103 52 5 0 0 0 - - -;
 #X floatatom 199 52 5 0 0 0 - - -;
@@ -238,7 +238,7 @@
 #X connect 12 0 13 0;
 #X connect 13 0 9 0;
 #X restore 564 278 pd randommot;
-#N canvas 84 193 469 590 randomrot 1;
+#N canvas 55 76 469 590 randomrot 1;
 #X obj 32 12 inlet;
 #X obj 32 470 outlet;
 #X obj 32 127 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
@@ -304,7 +304,7 @@
 #X obj 206 166 dbtorms;
 #X floatatom 205 105 10 0 0 0 - - -;
 #X obj 208 124 hsl 70 13 0 100 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 2500 1;
 #X floatatom 206 143 5 0 0 0 - - -;
 #X obj 124 211 throw~ sum;
 #X obj 126 103 r~ sync;
@@ -326,7 +326,7 @@
 #X obj 741 487 *~;
 #X obj 741 552 *~;
 #X obj 794 500 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 10200 1;
+-1 -1 9000 1;
 #X obj 792 521 dbtorms;
 #X obj 653 505 vline~;
 #N canvas 0 22 474 352 slave 0;
@@ -336,7 +336,7 @@
 #X obj 206 166 dbtorms;
 #X floatatom 205 105 10 0 0 0 - - -;
 #X obj 208 124 hsl 70 13 0 100 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 5700 1;
 #X floatatom 206 143 5 0 0 0 - - -;
 #X obj 124 211 throw~ sum;
 #X obj 126 103 r~ sync;
@@ -357,7 +357,7 @@
 #X obj 206 166 dbtorms;
 #X floatatom 205 105 10 0 0 0 - - -;
 #X obj 208 124 hsl 70 13 0 100 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 400 1;
 #X floatatom 206 143 5 0 0 0 - - -;
 #X obj 124 211 throw~ sum;
 #X obj 126 103 r~ sync;
@@ -378,7 +378,7 @@
 #X obj 206 166 dbtorms;
 #X floatatom 205 105 10 0 0 0 - - -;
 #X obj 208 124 hsl 70 13 0 100 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 3300 1;
 #X floatatom 206 143 5 0 0 0 - - -;
 #X obj 124 211 throw~ sum;
 #X obj 126 103 r~ sync;
@@ -399,7 +399,7 @@
 #X obj 206 166 dbtorms;
 #X floatatom 205 105 10 0 0 0 - - -;
 #X obj 208 124 hsl 70 13 0 100 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 2000 1;
 #X floatatom 206 143 5 0 0 0 - - -;
 #X obj 124 211 throw~ sum;
 #X obj 126 103 r~ sync;
@@ -420,7 +420,7 @@
 #X obj 206 166 dbtorms;
 #X floatatom 205 105 10 0 0 0 - - -;
 #X obj 208 124 hsl 70 13 0 100 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 4500 1;
 #X floatatom 206 143 5 0 0 0 - - -;
 #X obj 124 211 throw~ sum;
 #X obj 126 103 r~ sync;
@@ -457,7 +457,7 @@
 #X obj 422 106 vsl 15 100 0 100 0 0 empty empty empty 0 -9 0 10 -262144
 -1 -1 0 1;
 #X obj 403 106 vsl 15 100 0 100 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 9400 1;
+-1 -1 0 1;
 #X obj 480 223 dbtorms;
 #X obj 136 338 *~;
 #X text 406 113 f;
@@ -470,7 +470,7 @@
 #X text 427 164 o;
 #X text 427 176 2;
 #X obj 440 106 vsl 15 100 0 100 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 8700 1;
+-1 -1 0 1;
 #X text 444 118 o;
 #X text 444 130 u;
 #X text 444 144 t;
@@ -564,7 +564,7 @@
 #X obj 357 387 * 48;
 #X obj 357 414 - 20;
 #X obj 42 118 print osc;
-#X obj 42 85 dumpOSC 5005;
+#X obj 42 85 dumpOSC 9001;
 #X connect 16 0 45 1;
 #X connect 16 0 46 1;
 #X connect 16 0 47 1;
