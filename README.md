@@ -15,10 +15,14 @@ Visuals developed by Bruce and Piotr
 
 Setup
 =====
+Windows
 - Install 32 bit visual studio 2013 redistribuable from http://www.microsoft.com/fr-fr/download/details.aspx?id=40784
-- Copy the files from the assets and setupPackage folders to the destination computer.
+- Copy the files from the setupPackage folders to the destination computer.
 - Edit assets/Settings.xml to specify a OSC receiver port.
 - Launch ABP.exe
+Mac
+- Copy the files from the assets and ABP.app the setupPackage folder to the destination computer.
+- Launch ABP.app
 
 Run from the source
 ===================
