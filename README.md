@@ -19,7 +19,7 @@ Windows
 - Install 32 bit visual studio 2013 redistribuable from http://www.microsoft.com/fr-fr/download/details.aspx?id=40784
 - Copy the files from the setupPackage folders to the destination computer.
 - Edit assets/Settings.xml to specify a OSC receiver port.
-- Launch ABP.exe
+- Launch ABP.exe<br />
 Mac
 - Copy the files from the assets and ABP.app the setupPackage folder to the destination computer.
 - Launch ABP.app
@@ -30,10 +30,12 @@ Get [Cinder, glNext branch](https://github.com/cinder/Cinder/tree/glNext), git c
 <p align="center">
   <img src="http://libcinder.org/images/logo.png" alt="Cinder Logo"/>
 </p>
-Get [Reymenta Cinder block, glNext branch](https://github.com/Reymenta-Visuals/Cinder-Reymenta/tree/glNext), git clone with arguments: -b glNext
+Get [Reymenta Cinder block, glNext branch](https://github.com/Reymenta-Visuals/Cinder-Reymenta/tree/glNext), git clone with arguments: -b glNext (Windows only)
 <p align="center">
   <img src="http://www.batchass.fr/reymenta/reymenta-logo150.jpg" alt="Reymenta Logo"/>
 </p>
+Get [MinimalUI Cinder block, glNext branch](https://github.com/nselikoff/Cinder-MinimalUI/tree/glNext), git clone with arguments: -b glNext
+<br />
 Get [PureData](http://puredata.info/)
 <p align="center">
   <img src="http://puredata.info/downloads/pd-extended/screenshot" alt="PureData screenshot"/>
