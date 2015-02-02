@@ -54,11 +54,13 @@ void ABPApp::setup()
 	mRotation = 0.0f;
 	mSize = 1.0f;
 	mMotionVector = 0.2f;
+	mBend = 0.1f;
 	mLockZ = false;
 	mLockRepetitions = false;
 	mLockRotation = false;
 	mLockSize = false;
 	mLockMotionVector = false;
+	mLockBend = false;
 	mColorFactor = 0.01;
 	mR = 0.5f;
 	mG = 0.0f;
@@ -112,6 +114,7 @@ void ABPApp::setup()
 	mParams->addToggleSlider("Rotation", &mRotation, "A", std::bind(&ABPApp::lockRotation, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6.28 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("Size", &mSize, "A", std::bind(&ABPApp::lockSize, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0.7, \"max\": 6.0 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("MotionVector", &mMotionVector, "A", std::bind(&ABPApp::lockMotionVector, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0.0, \"max\": 1.0 }", "{ \"stateless\":false }");
+	mParams->addToggleSlider("Bend", &mBend, "A", std::bind(&ABPApp::lockBend, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": -20.0, \"max\": 20.0 }", "{ \"stateless\":false }");
 #if defined( CINDER_MSW )
 	// -------- SPOUT -------------
 	// Set up the texture we will use to send out
@@ -172,7 +175,7 @@ void ABPApp::keyDown(KeyEvent event)
 		mParameterBag->mShowUI = !mParameterBag->mShowUI;
 		break;
 	case ci::app::KeyEvent::KEY_a:
-		mUseCam = !mUseCam;
+		//mUseCam = !mUseCam;
 		break;
 	case ci::app::KeyEvent::KEY_c:
 		if (mParameterBag->mCursorVisible)
@@ -214,9 +217,10 @@ void ABPApp::update()
 	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
 	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
 	mSize = mLockSize ? sin(getElapsedFrames() / 100.0f)+0.7f : mSize;
-	mMotionVector = mLockMotionVector ? sin(getElapsedFrames() / 10.0f) : mMotionVector;
+	mMotionVector = mLockMotionVector ? sin(getElapsedFrames() / 50.0f) : mMotionVector;
 	mRotationMatrix *= rotate(0.06f, normalize(vec3(0.16666f, 0.333333f, 0.666666f)));
 	mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f)+1) * 20 : mRepetitions;
+	mBend = mLockBend ? sin(getElapsedFrames() / 100.0f) * 10.0f : mBend;
 
 	updateBricks();
 
@@ -246,6 +250,7 @@ void ABPApp::updateBricks()
 {
 	float new_x;
 	float new_y;
+	float bendFactor;
 	if (newRecording == true) {
 		newRendering();
 	}
@@ -272,7 +277,7 @@ void ABPApp::updateBricks()
 		rotation = bricks[i].rotation++;
 		distance = mMotionVector * mSize;
 		shape = bricks[i].shape;
-
+		bendFactor = 0.0f;
 		//save state to restart translation from center point
 		gl::pushMatrices();
 		for (int j = 0; j < mRepetitions; j++)
@@ -287,8 +292,8 @@ void ABPApp::updateBricks()
 
 			x = new_x + bricks[i].vx;
 			y = new_y + bricks[i].vy;
-
-			gl::translate(x, y, mZPosition);
+			bendFactor += mBend/10.0f;
+			gl::translate(x, y, mZPosition + bendFactor);
 
 			if (shape == 0)
 			{

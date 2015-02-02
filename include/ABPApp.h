@@ -95,8 +95,9 @@ public:
 	void						lockZ(const bool &pressed) { mLockZ = pressed; }
 	void						lockRepetitions(const bool &pressed) { mLockRepetitions = pressed; }
 	void						lockRotation(const bool &pressed) { mLockRotation = pressed; }
-	void						lockSize(const bool &pressed) { mLockSize = pressed; }
 	void						lockMotionVector(const bool &pressed) { mLockMotionVector = pressed; }
+	void						lockSize(const bool &pressed) { mLockSize = pressed; }
+	void						lockBend(const bool &pressed) { mLockBend = pressed; }
 	MinimalUI::UIControllerRef	mParams;
 	MinimalUI::UIElementRef		sliderXY, sliderRed, sliderGreen, sliderBlue, sliderAlpha;
 	bool						mLockFR;
@@ -124,6 +125,7 @@ private:
 	bool						mSendOSC;
 	float						mR, mG, mB, mA;
 	float						mZoom;
+	float						mBend;
 	vec2						mXYVector;
 	float						mRepetitions;
 	int							mShape;
@@ -134,6 +136,7 @@ private:
 	bool						mLockRotation;
 	bool						mLockSize;
 	bool						mLockMotionVector;
+	bool						mLockBend;
 	float						mSize;
 	float						mMotionVector;
 
