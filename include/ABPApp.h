@@ -104,6 +104,7 @@ public:
 	void						lockFR(const bool &pressed) { mLockFR = pressed; };
 	void						sendOSC(const bool &pressed) { mSendOSC = pressed; };
 	void						addBrick(const bool &pressed);
+	void						setGlobalMode(const bool &pressed);
 	CameraPersp					mCam;
 
 private:
@@ -137,6 +138,8 @@ private:
 	bool						mLockSize;
 	bool						mLockMotionVector;
 	bool						mLockBend;
+	bool						mGlobalMode;
+
 	float						mSize;
 	float						mMotionVector;
 

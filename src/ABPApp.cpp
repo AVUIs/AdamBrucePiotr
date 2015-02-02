@@ -61,6 +61,7 @@ void ABPApp::setup()
 	mLockSize = false;
 	mLockMotionVector = false;
 	mLockBend = false;
+	mGlobalMode = false;
 	mColorFactor = 0.01;
 	mR = 0.5f;
 	mG = 0.0f;
@@ -108,13 +109,16 @@ void ABPApp::setup()
 
 	//mParams->addButton("Record", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false }");
 	//mParams->addButton("Send OSC", std::bind(&ABPApp::sendOSC, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"pressed\":false }");
-	mParams->addButton("Add brick", std::bind(&ABPApp::addBrick, this, std::placeholders::_1), "{ \"stateless\":false, \"pressed\":false }");
 	// Toggle Slider
 	mParams->addToggleSlider("Z Position", &mZPosition, "A", std::bind(&ABPApp::lockZ, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": -1, \"max\": 1 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("Rotation", &mRotation, "A", std::bind(&ABPApp::lockRotation, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6.28 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("Size", &mSize, "A", std::bind(&ABPApp::lockSize, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0.7, \"max\": 6.0 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("MotionVector", &mMotionVector, "A", std::bind(&ABPApp::lockMotionVector, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0.0, \"max\": 1.0 }", "{ \"stateless\":false }");
-	mParams->addToggleSlider("Bend", &mBend, "A", std::bind(&ABPApp::lockBend, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": -20.0, \"max\": 20.0 }", "{ \"stateless\":false }");
+	mParams->addToggleSlider("Bend", &mBend, "A", std::bind(&ABPApp::lockBend, this, std::placeholders::_1), "{ \"width\":156, \"min\": -20.0, \"max\": 20.0 }", "{ \"stateless\":false }");
+	mParams->addButton("Add brick", std::bind(&ABPApp::addBrick, this, std::placeholders::_1), "{ \"width\":78, \"clear\":false, \"stateless\":false, \"pressed\":false }");
+	mParams->addButton("Global\nmode", std::bind(&ABPApp::setGlobalMode, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"pressed\":false }");
+
+
 #if defined( CINDER_MSW )
 	// -------- SPOUT -------------
 	// Set up the texture we will use to send out
@@ -229,6 +233,10 @@ void ABPApp::update()
 	// move the camera up and down on Y
 	mCam.lookAt(vec3(0, CAMERA_Y_RANGE.first + abs(sin(getElapsedSeconds() / 4)) * (CAMERA_Y_RANGE.second - CAMERA_Y_RANGE.first), 0), vec3(0));
 }
+void ABPApp::setGlobalMode(const bool &pressed)
+{
+	mGlobalMode = !mGlobalMode;
+}
 void ABPApp::addBrick(const bool &pressed)
 {
 	brick newBrick;
@@ -270,13 +278,24 @@ void ABPApp::updateBricks()
 	gl::rotate(mRotation);
 	for (int i = 0; i < bricks.size(); i++)
 	{
-		r = bricks[i].r;
-		g = bricks[i].g;
-		b = bricks[i].b;
-		a = bricks[i].a;
+		if (mGlobalMode)
+		{
+			r = mR;
+			g = mG;
+			b = mB;
+			a = mA;
+			shape = mShape;
+		}
+		else
+		{
+			r = bricks[i].r;
+			g = bricks[i].g;
+			b = bricks[i].b;
+			a = bricks[i].a;
+			shape = bricks[i].shape;
+		}
 		rotation = bricks[i].rotation++;
 		distance = mMotionVector * mSize;
-		shape = bricks[i].shape;
 		bendFactor = 0.0f;
 		//save state to restart translation from center point
 		gl::pushMatrices();
