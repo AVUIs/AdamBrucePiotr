@@ -161,7 +161,6 @@
     <ClInclude Include="..\..\..\blocks\OSC\src\osc\OscPrintReceivedElements.h" />
     <ClInclude Include="..\..\..\blocks\OSC\src\osc\OscReceivedElements.h" />
     <ClInclude Include="..\..\..\blocks\OSC\src\osc\OscTypes.h" />
-    <ClInclude Include="..\include\SpoutWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ABPApp.cpp" />
@@ -197,7 +196,6 @@
     <ClCompile Include="..\..\..\blocks\OSC\src\osc\OscTypes.cpp" />
     <ClCompile Include="..\..\..\blocks\OSC\src\ip\win32\NetworkingUtils.cpp" />
     <ClCompile Include="..\..\..\blocks\OSC\src\ip\win32\UdpSocket.cpp" />
-    <ClCompile Include="..\src\SpoutWrapper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

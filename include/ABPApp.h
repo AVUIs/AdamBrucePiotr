@@ -41,14 +41,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "Textures.h"
 // logger
 #include "Logger.h"
-// spout
-#include "SpoutWrapper.h"
 // OSC
 #include "OSCWrapper.h"
 // Utils
 #include "Batchass.h"
 // UserInterface
 #include "UIController.h"
+
+#if defined( CINDER_MSW )
+// spout
+#include "Spout.h"
+#endif
 
 using namespace ci;
 using namespace ci::app;
@@ -108,7 +111,7 @@ private:
 	// Logger
 	LoggerRef					log;
 	// spout
-	SpoutWrapperRef				mSpout;
+	//SpoutWrapperRef				mSpout;
 	// osc
 	OSCRef						mOSC;
 	// utils
@@ -159,11 +162,14 @@ private:
 	vector <brick>				bricks;
 	bool						newRecording;
 	// -------- SPOUT -------------
+#if defined( CINDER_MSW )
 	SpoutSender					spoutsender;                    // Create a Spout sender object
 	bool						bSenderInitialized;             // true if a sender initializes OK
 	bool						bMemoryMode;                    // tells us if texture share compatible
 	unsigned int				g_Width, g_Height;              // size of the texture being sent out
 	char						SenderName[256];                // sender name 
 	gl::TextureRef				spoutSenderTexture;             // Local Cinder texture used for sharing
+#endif	
+	
 
 };

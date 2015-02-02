@@ -23,14 +23,14 @@ void ABPApp::prepareSettings(Settings *settings)
 	settings->setResizable(false); // resize allowed for a receiver, but runtime error on the resize in the shaders drawing
 	// set a high frame rate 1000 to disable limitation
 	settings->setFrameRate(60.0f);
+	g_Width = mParameterBag->mRenderWidth;
+	g_Height = mParameterBag->mRenderHeight;
 
 }
 void ABPApp::setup()
 {
 	mBatchass->setup();
 
-	// instanciate the spout class
-	mSpout = SpoutWrapper::create(mParameterBag, mBatchass->mTextures);
 	// instanciate the OSC class
 	mOSC = OSC::create(mParameterBag, mBatchass->mShaders, mBatchass->mTextures);
 
@@ -77,7 +77,7 @@ void ABPApp::setup()
 	gl::enableDepthWrite();
 	gl::enableDepthRead();
 
-	mParams = MinimalUI::UIController::create("{ \"x\":0, \"y\":0, \"depth\":100, \"width\":220, \"height\":800, \"fboNumSamples\":0, \"panelColor\":\"0x44282828\" }");
+	mParams = MinimalUI::UIController::create("{ \"x\":0, \"y\":0, \"depth\":100, \"width\":220, \"height\":700, \"fboNumSamples\":0, \"defaultBackgroundColor\":\"0x9912110c\", \"defaultStrokeColor\":\"0xFF44422f\",\"defaultNameColor\":\"0xFF44422f\", \"activeStrokeColor\":\"0xFF737446\", \"panelColor\":\"0x441e1e1e\" }");
 
 	// 2D Sliders
 	sliderXY = mParams->addSlider2D("XY", &mXYVector, "{ \"minX\":-2.0, \"maxX\":2.0, \"minY\":-2.0, \"maxY\":2.0 }");
@@ -88,7 +88,7 @@ void ABPApp::setup()
 	sliderGreen = mParams->addSlider("G", &mG, "{ \"nameColor\":\"0xEE00FF00\" }");
 	sliderBlue = mParams->addSlider("B", &mB, "{  \"nameColor\":\"0xEE0000FF\" }");
 	sliderAlpha = mParams->addSlider("A", &mA, "{ \"nameColor\":\"0xFFFFFFFF\" }");
-	mParams->addSlider("Color\nFactor", &mColorFactor, "{ \"min\": -0.1, \"max\": 0.5 }");
+	mParams->addSlider("Color\nFactor", &mColorFactor, "{ \"min\": -0.1, \"max\": 0.1 }");
 
 	// Separator
 	mParams->addSeparator();
@@ -110,8 +110,9 @@ void ABPApp::setup()
 	// Toggle Slider
 	mParams->addToggleSlider("Z Position", &mZPosition, "A", std::bind(&ABPApp::lockZ, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": -1, \"max\": 1 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("Rotation", &mRotation, "A", std::bind(&ABPApp::lockRotation, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6.28 }", "{ \"stateless\":false }");
-	mParams->addToggleSlider("Size", &mSize, "A", std::bind(&ABPApp::lockSize, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6 }", "{ \"stateless\":false }");
-	mParams->addToggleSlider("MotionVector", &mMotionVector, "A", std::bind(&ABPApp::lockMotionVector, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6 }", "{ \"stateless\":false }");
+	mParams->addToggleSlider("Size", &mSize, "A", std::bind(&ABPApp::lockSize, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0.7, \"max\": 6.0 }", "{ \"stateless\":false }");
+	mParams->addToggleSlider("MotionVector", &mMotionVector, "A", std::bind(&ABPApp::lockMotionVector, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0.0, \"max\": 1.0 }", "{ \"stateless\":false }");
+#if defined( CINDER_MSW )
 	// -------- SPOUT -------------
 	// Set up the texture we will use to send out
 	// We grab the screen so it has to be the same size
@@ -120,6 +121,7 @@ void ABPApp::setup()
 	strcpy_s(SenderName, "ABP Spout Sender"); // we have to set a sender name first
 	// Initialize a sender
 	bSenderInitialized = spoutsender.CreateSender(SenderName, g_Width, g_Height);
+#endif
 
 }
 void ABPApp::resize()
@@ -208,10 +210,11 @@ void ABPApp::update()
 	//! update shaders (must be after the textures update)
 	mBatchass->mShaders->update();
 
-	mSpout->update();
 	updateWindowTitle();
 	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
 	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
+	mSize = mLockSize ? sin(getElapsedFrames() / 100.0f)+0.7f : mSize;
+	mMotionVector = mLockMotionVector ? sin(getElapsedFrames() / 10.0f) : mMotionVector;
 	mRotationMatrix *= rotate(0.06f, normalize(vec3(0.16666f, 0.333333f, 0.666666f)));
 	mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f)+1) * 20 : mRepetitions;
 
@@ -236,6 +239,8 @@ void ABPApp::addBrick(const bool &pressed)
 	newBrick.rotation = mRotation;
 	newBrick.motionVector = mMotionVector;
 	bricks.push_back(newBrick);
+	mXYVector.x = Rand::randFloat(-2.0, 2.0);
+	mXYVector.y = Rand::randFloat(-2.0, 2.0);
 }
 void ABPApp::updateBricks()
 {
@@ -265,7 +270,7 @@ void ABPApp::updateBricks()
 		b = bricks[i].b;
 		a = bricks[i].a;
 		rotation = bricks[i].rotation++;
-		distance = bricks[i].motionVector * mSize;
+		distance = mMotionVector * mSize;
 		shape = bricks[i].shape;
 
 		//save state to restart translation from center point
@@ -323,9 +328,9 @@ void ABPApp::draw()
 
 	gl::draw(mFbo->getColorTexture(), Rectf(0, 0, mParameterBag->mRenderWidth, mParameterBag->mRenderHeight));
 	// draw textures
-	//mSpout->draw();
 	//mBatchass->mTextures->draw();
 	//mBatch->drawInstanced(mRepetitions * mRepetitions);
+#if defined( CINDER_MSW )
 	// -------- SPOUT SENDER-------------
 	if (bSenderInitialized) {
 
@@ -336,15 +341,15 @@ void ABPApp::draw()
 	spoutsender.SendTexture(spoutSenderTexture->getId(), spoutSenderTexture->getTarget(), g_Width, g_Height);
 	}
 	gl::draw(spoutSenderTexture);
-
+#endif
 	if (mParameterBag->mShowUI) mParams->draw();
 }
 void ABPApp::shutdown()
 {
 	// save params
 	mParameterBag->save();
-	// close ui and save settings
-	mSpout->shutdown();
+	// close spout
+
 }
 auto options = RendererGl::Options().version(3, 3); // instancing functions are technically only in GL 3.3
 
