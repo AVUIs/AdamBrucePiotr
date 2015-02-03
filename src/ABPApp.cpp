@@ -80,7 +80,7 @@ void ABPApp::setup()
 	gl::enableDepthWrite();
 	gl::enableDepthRead();
 
-	mParams = MinimalUI::UIController::create("{ \"x\":0, \"y\":0, \"depth\":100, \"width\":220, \"height\":700, \"fboNumSamples\":0, \"defaultBackgroundColor\":\"0x9912110c\", \"defaultStrokeColor\":\"0xFF44422f\",\"defaultNameColor\":\"0xFF44422f\", \"activeStrokeColor\":\"0xFF737446\", \"panelColor\":\"0x441e1e1e\" }");
+	mParams = MinimalUI::UIController::create("{ \"x\":0, \"y\":0, \"depth\":100, \"width\":220, \"height\":820, \"fboNumSamples\":0, \"defaultBackgroundColor\":\"0x9912110c\", \"defaultStrokeColor\":\"0xFF44422f\",\"defaultNameColor\":\"0xFF44422f\", \"activeStrokeColor\":\"0xFF737446\", \"panelColor\":\"0x441e1e1e\" }");
 
 	// 2D Sliders
 	sliderXY = mParams->addSlider2D("XY", &mXYVector, "{ \"minX\":-2.0, \"maxX\":2.0, \"minY\":-2.0, \"maxY\":2.0 }");
@@ -100,7 +100,7 @@ void ABPApp::setup()
 	mParams->addLabel("Shape", "{ \"clear\":false }");
 
 	// Button Group
-	mParams->addButton("Sphere", std::bind(&ABPApp::setShape, this, 0, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
+	mParams->addButton("Sphere", std::bind(&ABPApp::setShape, this, 0, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true, \"pressed\":true }");
 	mParams->addButton("Cube", std::bind(&ABPApp::setShape, this, 1, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
 	mParams->addButton("Circle", std::bind(&ABPApp::setShape, this, 2, std::placeholders::_1), "{ \"group\":\"shape\", \"exclusive\":true }");
 	//mParams->addButton("Triangle", std::bind(&ABPApp::setShape, this, 3, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
@@ -114,9 +114,10 @@ void ABPApp::setup()
 	mParams->addToggleSlider("Rotation", &mRotation, "A", std::bind(&ABPApp::lockRotation, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6.28 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("Size", &mSize, "A", std::bind(&ABPApp::lockSize, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0.7, \"max\": 6.0 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("MotionVector", &mMotionVector, "A", std::bind(&ABPApp::lockMotionVector, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0.0, \"max\": 1.0 }", "{ \"stateless\":false }");
-	mParams->addToggleSlider("Bend", &mBend, "A", std::bind(&ABPApp::lockBend, this, std::placeholders::_1), "{ \"width\":156, \"min\": -20.0, \"max\": 20.0 }", "{ \"stateless\":false }");
+	mParams->addToggleSlider("Bend", &mBend, "A", std::bind(&ABPApp::lockBend, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": -20.0, \"max\": 20.0 }", "{ \"stateless\":false }");
 	mParams->addButton("Add brick", std::bind(&ABPApp::addBrick, this, std::placeholders::_1), "{ \"width\":78, \"clear\":false, \"stateless\":false, \"pressed\":false }");
-	mParams->addButton("Global\nmode", std::bind(&ABPApp::setGlobalMode, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"pressed\":false }");
+	mParams->addButton("Global\nmode", std::bind(&ABPApp::setGlobalMode, this, std::placeholders::_1), "{ \"width\":78, \"clear\":false, \"stateless\":false, \"pressed\":false }");
+	mParams->addButton("Reset", std::bind(&ABPApp::reset, this, std::placeholders::_1), "{ \"width\":48, \"clear\":false }");
 
 
 #if defined( CINDER_MSW )
@@ -236,6 +237,10 @@ void ABPApp::update()
 void ABPApp::setGlobalMode(const bool &pressed)
 {
 	mGlobalMode = !mGlobalMode;
+}
+void ABPApp::reset(const bool &pressed)
+{
+	bricks.clear();
 }
 void ABPApp::addBrick(const bool &pressed)
 {

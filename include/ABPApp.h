@@ -105,6 +105,7 @@ public:
 	void						sendOSC(const bool &pressed) { mSendOSC = pressed; };
 	void						addBrick(const bool &pressed);
 	void						setGlobalMode(const bool &pressed);
+	void						reset(const bool &pressed);
 	CameraPersp					mCam;
 
 private:
