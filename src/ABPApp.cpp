@@ -51,7 +51,7 @@ void ABPApp::setup()
 	mRepetitions = 1;
 	mShape = 0;
 	mZPosition = 0.0f;
-	mRotation = 0.0f;
+	mRotation = 2.5f;
 	mSize = 1.0f;
 	mMotionVector = 0.2f;
 	mBend = 0.1f;
@@ -62,7 +62,7 @@ void ABPApp::setup()
 	mLockMotionVector = false;
 	mLockBend = false;
 	mGlobalMode = false;
-	mColorFactor = 0.01;
+	mColorFactor = 0.06;
 	mR = 0.5f;
 	mG = 0.0f;
 	mB = 0.8f;
@@ -96,19 +96,11 @@ void ABPApp::setup()
 	// Separator
 	mParams->addSeparator();
 
-	// Label
-	mParams->addLabel("Shape", "{ \"clear\":false }");
-
 	// Button Group
 	mParams->addButton("Sphere", std::bind(&ABPApp::setShape, this, 0, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true, \"pressed\":true }");
-	mParams->addButton("Cube", std::bind(&ABPApp::setShape, this, 1, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
-	mParams->addButton("Circle", std::bind(&ABPApp::setShape, this, 2, std::placeholders::_1), "{ \"group\":\"shape\", \"exclusive\":true }");
-	//mParams->addButton("Triangle", std::bind(&ABPApp::setShape, this, 3, std::placeholders::_1), "{ \"clear\":false, \"group\":\"shape\", \"exclusive\":true }");
+	mParams->addButton("Cube", std::bind(&ABPApp::setShape, this, 1, std::placeholders::_1), "{ \"group\":\"shape\", \"exclusive\":true }");
 	// Repetitions
 	mParams->addToggleSlider("Repetitions", &mRepetitions, "A", std::bind(&ABPApp::lockRepetitions, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 1, \"max\": 20 }", "{ \"stateless\":false }");
-
-	//mParams->addButton("Record", std::bind(&ABPApp::record, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false }");
-	//mParams->addButton("Send OSC", std::bind(&ABPApp::sendOSC, this, std::placeholders::_1), "{ \"clear\":false, \"stateless\":false, \"pressed\":false }");
 	// Toggle Slider
 	mParams->addToggleSlider("Z Position", &mZPosition, "A", std::bind(&ABPApp::lockZ, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": -1, \"max\": 1 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("Rotation", &mRotation, "A", std::bind(&ABPApp::lockRotation, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0, \"max\": 6.28 }", "{ \"stateless\":false }");
@@ -116,8 +108,8 @@ void ABPApp::setup()
 	mParams->addToggleSlider("MotionVector", &mMotionVector, "A", std::bind(&ABPApp::lockMotionVector, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": 0.0, \"max\": 1.0 }", "{ \"stateless\":false }");
 	mParams->addToggleSlider("Bend", &mBend, "A", std::bind(&ABPApp::lockBend, this, std::placeholders::_1), "{ \"width\":156, \"clear\":false, \"min\": -20.0, \"max\": 20.0 }", "{ \"stateless\":false }");
 	mParams->addButton("Add brick", std::bind(&ABPApp::addBrick, this, std::placeholders::_1), "{ \"width\":78, \"clear\":false, \"stateless\":false, \"pressed\":false }");
-	mParams->addButton("Global\nmode", std::bind(&ABPApp::setGlobalMode, this, std::placeholders::_1), "{ \"width\":78, \"clear\":false, \"stateless\":false, \"pressed\":false }");
-	mParams->addButton("Reset", std::bind(&ABPApp::reset, this, std::placeholders::_1), "{ \"width\":48, \"clear\":false }");
+	mParams->addButton("Global\nmode", std::bind(&ABPApp::setGlobalMode, this, std::placeholders::_1), "{ \"width\":58, \"clear\":false }");
+	mParams->addButton("Reset", std::bind(&ABPApp::reset, this, std::placeholders::_1), "{ \"width\":46, \"clear\":false }");
 
 
 #if defined( CINDER_MSW )
@@ -179,8 +171,8 @@ void ABPApp::keyDown(KeyEvent event)
 	case ci::app::KeyEvent::KEY_u:
 		mParameterBag->mShowUI = !mParameterBag->mShowUI;
 		break;
-	case ci::app::KeyEvent::KEY_a:
-		//mUseCam = !mUseCam;
+	case ci::app::KeyEvent::KEY_b:
+		mLockBend = !mLockBend;
 		break;
 	case ci::app::KeyEvent::KEY_c:
 		if (mParameterBag->mCursorVisible)
@@ -197,43 +189,7 @@ void ABPApp::keyDown(KeyEvent event)
 		break;
 	}
 }
-void ABPApp::update()
-{
-	mParameterBag->iChannelTime[0] = getElapsedSeconds();
-	mParameterBag->iChannelTime[1] = getElapsedSeconds() - 1;
-	mParameterBag->iChannelTime[2] = getElapsedSeconds() - 2;
-	mParameterBag->iChannelTime[3] = getElapsedSeconds() - 3;
-	//
-	if (mParameterBag->mUseTimeWithTempo)
-	{
-		mParameterBag->iGlobalTime = mParameterBag->iTempoTime*mParameterBag->iTimeFactor;
-	}
-	else
-	{
-		mParameterBag->iGlobalTime = getElapsedSeconds();
-	}
-	mOSC->update();
-	//! update textures
-	mBatchass->mTextures->update();
-	//! update shaders (must be after the textures update)
-	mBatchass->mShaders->update();
 
-	updateWindowTitle();
-	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
-	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
-	mSize = mLockSize ? sin(getElapsedFrames() / 100.0f)+0.7f : mSize;
-	mMotionVector = mLockMotionVector ? sin(getElapsedFrames() / 50.0f) : mMotionVector;
-	mRotationMatrix *= rotate(0.06f, normalize(vec3(0.16666f, 0.333333f, 0.666666f)));
-	mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f)+1) * 20 : mRepetitions;
-	mBend = mLockBend ? sin(getElapsedFrames() / 100.0f) * 10.0f : mBend;
-
-	updateBricks();
-
-	mParams->update();
-	updateWindowTitle();
-	// move the camera up and down on Y
-	mCam.lookAt(vec3(0, CAMERA_Y_RANGE.first + abs(sin(getElapsedSeconds() / 4)) * (CAMERA_Y_RANGE.second - CAMERA_Y_RANGE.first), 0), vec3(0));
-}
 void ABPApp::setGlobalMode(const bool &pressed)
 {
 	mGlobalMode = !mGlobalMode;
@@ -264,6 +220,16 @@ void ABPApp::updateBricks()
 	float new_x;
 	float new_y;
 	float bendFactor;
+	float volumeFactor;
+	if (mParameterBag->maxVolume > 0.7)
+	{
+		float between08and1 = mParameterBag->maxVolume - 0.7;
+		volumeFactor = lmap<float>(between08and1, 0.0, 0.3, 0.1, 0.8);
+	}
+	else
+	{
+		volumeFactor = 0.01;
+	}
 	if (newRecording == true) {
 		newRendering();
 	}
@@ -306,10 +272,10 @@ void ABPApp::updateBricks()
 		gl::pushMatrices();
 		for (int j = 0; j < mRepetitions; j++)
 		{
-			r -= mColorFactor / (mParameterBag->maxVolume + 0.1);
-			g -= mColorFactor / (mParameterBag->maxVolume + 0.1);
-			b -= mColorFactor / (mParameterBag->maxVolume + 0.1);
-			a -= mColorFactor / (mParameterBag->maxVolume + 0.1);
+			r -= mColorFactor / volumeFactor;
+			g -= mColorFactor / volumeFactor;
+			b -= mColorFactor / volumeFactor;
+			a -= mColorFactor / volumeFactor;
 			gl::color(r, g, b, a);
 			new_x = sin(rotation*0.01745329251994329576923690768489) * distance;
 			new_y = cos(rotation*0.01745329251994329576923690768489) * distance;
@@ -341,6 +307,78 @@ void ABPApp::updateBricks()
 
 	}
 	gl::color(Color::white());
+}
+void ABPApp::update()
+{
+	mParameterBag->iChannelTime[0] = getElapsedSeconds();
+	mParameterBag->iChannelTime[1] = getElapsedSeconds() - 1;
+	mParameterBag->iChannelTime[2] = getElapsedSeconds() - 2;
+	mParameterBag->iChannelTime[3] = getElapsedSeconds() - 3;
+	//
+	if (mParameterBag->mUseTimeWithTempo)
+	{
+		mParameterBag->iGlobalTime = mParameterBag->iTempoTime*mParameterBag->iTimeFactor;
+	}
+	else
+	{
+		mParameterBag->iGlobalTime = getElapsedSeconds();
+	}
+	mOSC->update();
+	//! update textures
+	mBatchass->mTextures->update();
+	//! update shaders (must be after the textures update)
+	mBatchass->mShaders->update();
+
+	updateWindowTitle();
+	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
+	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
+	mSize = mLockSize ? sin(getElapsedFrames() / 100.0f) + 0.7f : mSize;
+	mMotionVector = mLockMotionVector ? sin(getElapsedFrames() / 50.0f) : mMotionVector;
+	mRotationMatrix *= rotate(0.06f, normalize(vec3(0.16666f, 0.333333f, 0.666666f)));
+	mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f) + 1) * 20 : mRepetitions;
+	mBend = mLockBend ? sin(getElapsedFrames() / 100.0f) * 10.0f : mBend;
+	if (mParameterBag->mBeat < 64)
+	{
+		mRepetitions = (mParameterBag->mBeat / 8)+1;
+	}
+	else
+	{
+		if (mParameterBag->mBeat % 8 == 0)
+		{
+			if (bricks.size() < 20) addBrick(false);
+			if (mParameterBag->mBeat > 92)
+			{
+				mGlobalMode = true;
+				mR = 1.0f;
+				mB = 0.0f;
+			}	
+			if (mParameterBag->mBeat > 280 && mParameterBag->mBeat < 292 )
+			{
+				mShape = 1;
+			}
+			if (mParameterBag->mBeat > 316)
+			{
+				mRotation += 0.2;
+				if (mRotation>6.35) mRotation = 0;
+			}
+		}
+		else
+		{
+			mR = 0.5f;
+			mB = 0.8f;
+			if (mParameterBag->mBeat > 510 && mParameterBag->mBeat % 2 == 0)
+			{
+				mRotation += 0.2;
+				if (mRotation>6.35) mRotation = 0;
+			}
+		}
+	}
+	updateBricks();
+
+	mParams->update();
+	updateWindowTitle();
+	// move the camera up and down on Y
+	mCam.lookAt(vec3(0, CAMERA_Y_RANGE.first + abs(sin(getElapsedSeconds() / 4)) * (CAMERA_Y_RANGE.second - CAMERA_Y_RANGE.first), 0), vec3(0));
 }
 void ABPApp::draw()
 {

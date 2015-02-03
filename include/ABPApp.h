@@ -57,6 +57,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 using namespace Reymenta;
+using namespace MinimalUI;
 
 // brick
 struct brick {
