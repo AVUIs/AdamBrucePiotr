@@ -50,3 +50,4 @@ OSC messages
 ============
 Receiving on port 9001
 Address: /live/track/meter Type: float Interval: from 0.0 to 1.0
+Address: /live/beat Type: int Interval: incremented from 0 (start)  

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <settings>
-	<AutoLayout value="0"/>
-	<RenderWidth value="1024"/>
-	<RenderHeight value="768"/>
-	<RenderX value="0"/>
+	<AutoLayout value="1"/>
+	<RenderWidth value="1440"/>
+	<RenderHeight value="900"/>
+	<RenderX value="1600"/>
 	<RenderY value="0"/>
 	<FboWidth value="1024"/>
 	<FboHeight value="768"/>
