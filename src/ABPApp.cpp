@@ -23,6 +23,7 @@ void ABPApp::prepareSettings(Settings *settings)
 	settings->setResizable(false); // resize allowed for a receiver, but runtime error on the resize in the shaders drawing
 	// set a high frame rate 1000 to disable limitation
 	settings->setFrameRate(60.0f);
+	settings->enableConsoleWindow();
 	g_Width = mParameterBag->mRenderWidth;
 	g_Height = mParameterBag->mRenderHeight;
 
@@ -61,7 +62,7 @@ void ABPApp::setup()
 	mLockSize = false;
 	mLockMotionVector = false;
 	mLockBend = false;
-	mGlobalMode = false;
+	mGlobalMode = true;
 	mColorFactor = 0.06;
 	mR = 0.5f;
 	mG = 0.0f;
@@ -171,6 +172,14 @@ void ABPApp::keyDown(KeyEvent event)
 	case ci::app::KeyEvent::KEY_u:
 		mParameterBag->mShowUI = !mParameterBag->mShowUI;
 		break;
+	case ci::app::KeyEvent::KEY_r:
+		mR += 0.2;
+		if (mR > 0.9) mR = 0.0;
+		break;
+	case ci::app::KeyEvent::KEY_g:
+		mG += 0.2;
+		if (mG > 0.9) mG = 0.0;
+		break;
 	case ci::app::KeyEvent::KEY_b:
 		mLockBend = !mLockBend;
 		break;
@@ -221,6 +230,7 @@ void ABPApp::updateBricks()
 	float new_y;
 	float bendFactor;
 	float volumeFactor;
+	mBend = mParameterBag->mBend;
 	if (mParameterBag->maxVolume > 0.7)
 	{
 		float between08and1 = mParameterBag->maxVolume - 0.7;
