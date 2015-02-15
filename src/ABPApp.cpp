@@ -62,7 +62,7 @@ void ABPApp::setup()
 	mLockSize = false;
 	mLockMotionVector = false;
 	mLockBend = false;
-	mGlobalMode = true;
+	mGlobalMode = false;
 	mColorFactor = 0.06;
 	mR = 0.5f;
 	mG = 0.0f;
@@ -71,6 +71,7 @@ void ABPApp::setup()
 	presentIndex = 0;
 	// init one brick
 	addBrick(true);
+	alreadyCreated = false;
 	// gl setup
 	gl::enableDepthRead();
 	gl::enableDepthWrite();
@@ -353,9 +354,22 @@ void ABPApp::update()
 	}
 	else
 	{
+
 		if (mParameterBag->mBeat % 8 == 0)
 		{
-			if (bricks.size() < 20) addBrick(false);
+			if (bricks.size() < 20 && !alreadyCreated) 
+			{
+				addBrick(false);
+				alreadyCreated = true;
+			}
+			
+		}
+		else
+		{
+			alreadyCreated = false;
+		}
+		if (mParameterBag->mBeat % 8 == 0)
+		{
 			if (mParameterBag->mBeat > 92)
 			{
 				mGlobalMode = true;

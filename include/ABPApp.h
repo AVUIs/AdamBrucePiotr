@@ -169,6 +169,7 @@ private:
 	void						updateBricks();
 	vector <brick>				bricks;
 	bool						newRecording;
+	bool						alreadyCreated;
 	// -------- SPOUT -------------
 #if defined( CINDER_MSW )
 	SpoutSender					spoutsender;                    // Create a Spout sender object
