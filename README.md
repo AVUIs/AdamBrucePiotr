@@ -36,6 +36,8 @@ Get [Reymenta Cinder block, glNext branch](https://github.com/Reymenta-Visuals/C
 </p>
 Get [MinimalUI Cinder block, glNext branch](https://github.com/nselikoff/Cinder-MinimalUI/tree/glNext), git clone with arguments: -b glNext
 <br />
+Get [Hap2 Cinder block](https://github.com/mpcdigital/Cinder-Hap2)
+<br />
 Get [PureData](http://puredata.info/)
 <p align="center">
   <img src="http://www.batchass.fr/reymenta/puredata.jpg" alt="PureData patch"/>
