@@ -24,7 +24,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/Camera.h"
 #include "cinder/gl/Shader.h"
@@ -76,7 +76,7 @@ const float DRAW_SCALE = 200;
 const pair<float, float> CAMERA_Y_RANGE(32.0f, 80.0f);
 
 
-class ABPApp : public AppNative {
+class ABPApp : public App {
 public:
 	void						prepareSettings(Settings *settings);
 	void						setup();

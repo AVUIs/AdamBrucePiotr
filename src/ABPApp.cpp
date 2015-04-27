@@ -23,7 +23,7 @@ void ABPApp::prepareSettings(Settings *settings)
 	settings->setResizable(false); // resize allowed for a receiver, but runtime error on the resize in the shaders drawing
 	// set a high frame rate 1000 to disable limitation
 	settings->setFrameRate(60.0f);
-	settings->enableConsoleWindow();
+
 	g_Width = mParameterBag->mRenderWidth;
 	g_Height = mParameterBag->mRenderHeight;
 
@@ -159,7 +159,7 @@ void ABPApp::mouseUp(MouseEvent event)
 
 void ABPApp::updateWindowTitle()
 {
-	getWindow()->setTitle("(" + toString(floor(getAverageFps())) + " fps) ABP");
+	//getWindow()->setTitle("(" + toString(floor(getAverageFps())) + " fps) ABP");
 }
 void ABPApp::record(const bool &pressed)
 {
@@ -444,4 +444,4 @@ void ABPApp::shutdown()
 }
 auto options = RendererGl::Options().version(3, 3); // instancing functions are technically only in GL 3.3
 
-CINDER_APP_NATIVE(ABPApp, RendererGl(options))
+CINDER_APP(ABPApp, RendererGl(options))
