@@ -45,8 +45,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "OSCWrapper.h"
 // Utils
 #include "Batchass.h"
-// UserInterface
-#include "UIController.h"
 
 #if defined( CINDER_MSW )
 // spout
@@ -57,7 +55,6 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 using namespace Reymenta;
-using namespace MinimalUI;
 
 // brick
 struct brick {
@@ -78,7 +75,6 @@ const pair<float, float> CAMERA_Y_RANGE(32.0f, 80.0f);
 
 class ABPApp : public App {
 public:
-	void						prepareSettings(Settings *settings);
 	void						setup();
 	void						resize();
 	void						update();
@@ -99,8 +95,8 @@ public:
 	void						lockMotionVector(const bool &pressed) { mLockMotionVector = pressed; }
 	void						lockSize(const bool &pressed) { mLockSize = pressed; }
 	void						lockBend(const bool &pressed) { mLockBend = pressed; }
-	MinimalUI::UIControllerRef	mParams;
-	MinimalUI::UIElementRef		sliderXY, sliderRed, sliderGreen, sliderBlue, sliderAlpha;
+	/*MinimalUI::UIControllerRef	mParams;
+	MinimalUI::UIElementRef		sliderXY, sliderRed, sliderGreen, sliderBlue, sliderAlpha;*/
 	bool						mLockFR;
 	void						lockFR(const bool &pressed) { mLockFR = pressed; };
 	void						sendOSC(const bool &pressed) { mSendOSC = pressed; };

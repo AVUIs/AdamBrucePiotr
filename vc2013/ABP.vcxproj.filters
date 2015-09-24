@@ -34,15 +34,6 @@
     <Filter Include="Blocks\Midi2\src">
       <UniqueIdentifier>{E7080753-D1F8-4CC5-80FD-8FD35DA8C2BF}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Blocks\MinimalUI">
-      <UniqueIdentifier>{56DCAC9C-2787-46F2-8356-73E091F54F66}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\MinimalUI\src">
-      <UniqueIdentifier>{B3E0A943-E59E-4282-8C33-5A3093E5EE77}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\MinimalUI\include">
-      <UniqueIdentifier>{F3EA6BD3-EFDB-434B-A643-69692FDC9186}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Blocks\Reymenta">
       <UniqueIdentifier>{BC7417A4-FBA1-40D3-ADC2-B52ABA444AC8}</UniqueIdentifier>
     </Filter>
@@ -132,48 +123,6 @@
     <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\lib\RtMidi.cpp">
       <Filter>Blocks\Midi2\lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\blocks\Cinder-MinimalUI\src\Button.cpp">
-      <Filter>Blocks\MinimalUI\src</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\..\blocks\Cinder-MinimalUI\include\Button.h">
-      <Filter>Blocks\MinimalUI\include</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\blocks\Cinder-MinimalUI\src\Label.cpp">
-      <Filter>Blocks\MinimalUI\src</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\..\blocks\Cinder-MinimalUI\include\Label.h">
-      <Filter>Blocks\MinimalUI\include</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\blocks\Cinder-MinimalUI\src\Slider.cpp">
-      <Filter>Blocks\MinimalUI\src</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\..\blocks\Cinder-MinimalUI\include\Slider.h">
-      <Filter>Blocks\MinimalUI\include</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\blocks\Cinder-MinimalUI\src\Graph.cpp">
-      <Filter>Blocks\MinimalUI\src</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\..\blocks\Cinder-MinimalUI\include\Graph.h">
-      <Filter>Blocks\MinimalUI\include</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\blocks\Cinder-MinimalUI\src\Image.cpp">
-      <Filter>Blocks\MinimalUI\src</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\..\blocks\Cinder-MinimalUI\include\Image.h">
-      <Filter>Blocks\MinimalUI\include</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\blocks\Cinder-MinimalUI\src\UIController.cpp">
-      <Filter>Blocks\MinimalUI\src</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\..\blocks\Cinder-MinimalUI\include\UIController.h">
-      <Filter>Blocks\MinimalUI\include</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\blocks\Cinder-MinimalUI\src\UIElement.cpp">
-      <Filter>Blocks\MinimalUI\src</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\..\blocks\Cinder-MinimalUI\include\UIElement.h">
-      <Filter>Blocks\MinimalUI\include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\AudioWrapper.h">
       <Filter>Blocks\Reymenta\include</Filter>
     </ClInclude>

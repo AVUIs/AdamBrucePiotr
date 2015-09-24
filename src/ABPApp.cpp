@@ -1,6 +1,6 @@
 #include "ABPApp.h"
 
-void ABPApp::prepareSettings(Settings *settings)
+void ABPApp::setup()
 {
 	// parameters
 	mParameterBag = ParameterBag::create();
@@ -13,23 +13,18 @@ void ABPApp::prepareSettings(Settings *settings)
 	}
 #ifdef _DEBUG
 	// debug mode
-	settings->setWindowSize(mParameterBag->mRenderWidth, mParameterBag->mRenderHeight);
-	settings->setWindowPos(ivec2(mParameterBag->mRenderX, mParameterBag->mRenderY));
+	setWindowSize(mParameterBag->mRenderWidth, mParameterBag->mRenderHeight+20);
+	setWindowPos(ivec2(mParameterBag->mRenderX, mParameterBag->mRenderY));
 #else
-	settings->setWindowSize(mParameterBag->mRenderWidth, mParameterBag->mRenderHeight);
-	settings->setWindowPos(ivec2(mParameterBag->mRenderX, mParameterBag->mRenderY));
+	setWindowSize(mParameterBag->mRenderWidth, mParameterBag->mRenderHeight);
+	setWindowPos(ivec2(mParameterBag->mRenderX, mParameterBag->mRenderY));
 #endif  // _DEBUG
-	settings->setBorderless();
-	settings->setResizable(false); // resize allowed for a receiver, but runtime error on the resize in the shaders drawing
 	// set a high frame rate 1000 to disable limitation
-	settings->setFrameRate(60.0f);
+	setFrameRate(60.0f);
 
 	g_Width = mParameterBag->mRenderWidth;
 	g_Height = mParameterBag->mRenderHeight;
 
-}
-void ABPApp::setup()
-{
 	mBatchass->setup();
 
 	// instanciate the OSC class
@@ -81,7 +76,7 @@ void ABPApp::setup()
 
 	gl::enableDepthWrite();
 	gl::enableDepthRead();
-
+	/*
 	mParams = MinimalUI::UIController::create("{ \"x\":0, \"y\":0, \"depth\":100, \"width\":220, \"height\":820, \"fboNumSamples\":0, \"defaultBackgroundColor\":\"0x9912110c\", \"defaultStrokeColor\":\"0xFF44422f\",\"defaultNameColor\":\"0xFF44422f\", \"activeStrokeColor\":\"0xFF737446\", \"panelColor\":\"0x441e1e1e\" }");
 
 	// 2D Sliders
@@ -112,7 +107,7 @@ void ABPApp::setup()
 	mParams->addButton("Add brick", std::bind(&ABPApp::addBrick, this, std::placeholders::_1), "{ \"width\":78, \"clear\":false, \"stateless\":false, \"pressed\":false }");
 	mParams->addButton("Global\nmode", std::bind(&ABPApp::setGlobalMode, this, std::placeholders::_1), "{ \"width\":58, \"clear\":false }");
 	mParams->addButton("Reset", std::bind(&ABPApp::reset, this, std::placeholders::_1), "{ \"width\":46, \"clear\":false }");
-
+	*/
 
 #if defined( CINDER_MSW )
 	// -------- SPOUT -------------
@@ -399,7 +394,6 @@ void ABPApp::update()
 	}
 	updateBricks();
 
-	mParams->update();
 	updateWindowTitle();
 	// move the camera up and down on Y
 	mCam.lookAt(vec3(0, CAMERA_Y_RANGE.first + abs(sin(getElapsedSeconds() / 4)) * (CAMERA_Y_RANGE.second - CAMERA_Y_RANGE.first), 0), vec3(0));
@@ -433,7 +427,6 @@ void ABPApp::draw()
 	}
 	gl::draw(spoutSenderTexture);
 #endif
-	if (mParameterBag->mShowUI) mParams->draw();
 }
 void ABPApp::shutdown()
 {
