@@ -76,6 +76,21 @@
     <Filter Include="assets">
       <UniqueIdentifier>{77f4b328-3b21-46d6-828f-39f6790a4b7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blocks\imgui">
+      <UniqueIdentifier>{f4b36737-5f1e-46b3-a6d4-63e5eeff2e97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\imgui\include">
+      <UniqueIdentifier>{6667c70c-6d70-4b9d-b2ed-adb7b0f00496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\imgui\lib">
+      <UniqueIdentifier>{460c9f23-2914-475c-bab2-87b3e56eb9a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\imgui\lib\imgui">
+      <UniqueIdentifier>{c8d3050e-4849-4eb9-89fa-51aabcaad75a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\imgui\src">
+      <UniqueIdentifier>{475cdc21-ed66-4e66-83d9-0e3dd2869315}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ABPApp.cpp">
@@ -129,9 +144,6 @@
     <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\Batchass.h">
       <Filter>Blocks\Reymenta\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\Logger.h">
-      <Filter>Blocks\Reymenta\include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\OSCWrapper.h">
       <Filter>Blocks\Reymenta\include</Filter>
     </ClInclude>
@@ -151,9 +163,6 @@
       <Filter>Blocks\Reymenta\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\Batchass.cpp">
-      <Filter>Blocks\Reymenta\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\Logger.cpp">
       <Filter>Blocks\Reymenta\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\OSCWrapper.cpp">
@@ -291,6 +300,33 @@
     <ClCompile Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketServer.cpp">
       <Filter>Blocks\Websockets\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-ImGui\src\CinderImGui.cpp">
+      <Filter>Blocks\imgui\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imgui.cpp">
+      <Filter>Blocks\imgui\lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imgui_demo.cpp">
+      <Filter>Blocks\imgui\lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imgui_draw.cpp">
+      <Filter>Blocks\imgui\lib\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\Logan.cpp">
+      <Filter>Blocks\Reymenta\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\lz4.c">
+      <Filter>Blocks\Reymenta\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\lz4frame.c">
+      <Filter>Blocks\Reymenta\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\lz4hc.c">
+      <Filter>Blocks\Reymenta\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\xxhash.c">
+      <Filter>Blocks\Reymenta\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -326,6 +362,39 @@
     <ClInclude Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketServer.h">
       <Filter>Blocks\Websockets\src</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-ImGui\include\CinderImGui.h">
+      <Filter>Blocks\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-ImGui\include\imgui_user.h">
+      <Filter>Blocks\imgui\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imconfig.h">
+      <Filter>Blocks\imgui\lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imgui.h">
+      <Filter>Blocks\imgui\lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-ImGui\lib\imgui\imgui_internal.h">
+      <Filter>Blocks\imgui\lib\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\Logan.h">
+      <Filter>Blocks\Reymenta\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\lz4.h">
+      <Filter>Blocks\Reymenta\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\lz4frame.h">
+      <Filter>Blocks\Reymenta\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\lz4frame_static.h">
+      <Filter>Blocks\Reymenta\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\lz4hc.h">
+      <Filter>Blocks\Reymenta\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\xxhash.h">
+      <Filter>Blocks\Reymenta\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
@@ -336,5 +405,10 @@
     <Xml Include="..\assets\Settings.xml">
       <Filter>assets</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\blocks\Cinder-ImGui\include\imgui_user.inl">
+      <Filter>Blocks\imgui\include</Filter>
+    </None>
   </ItemGroup>
 </Project>

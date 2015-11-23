@@ -39,8 +39,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "ParameterBag.h"
 // textures
 #include "Textures.h"
-// logger
-#include "Logger.h"
 // Utils
 #include "Batchass.h"
 
@@ -106,8 +104,6 @@ public:
 private:
 	// parameters
 	ParameterBagRef				mParameterBag;
-	// Logger
-	LoggerRef					log;
 	// spout
 	//SpoutWrapperRef				mSpout;
 	// utils
