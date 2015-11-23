@@ -58,6 +58,24 @@
     <Filter Include="Blocks\OSC\src\ip\win32">
       <UniqueIdentifier>{BEB5C1FE-C137-4F9E-821B-BDE8B679B08A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blocks\Cinder-Warping">
+      <UniqueIdentifier>{90cdf625-bfdd-44dc-922f-4a0828e537af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Cinder-Warping\include">
+      <UniqueIdentifier>{1d670e4d-0692-4cbe-aebb-f90d77e70c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Cinder-Warping\src">
+      <UniqueIdentifier>{b80fa323-f4d0-4063-a14a-955ddcd800e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Websockets">
+      <UniqueIdentifier>{1e357828-9a14-45fb-90f2-3f242b988b21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\Websockets\src">
+      <UniqueIdentifier>{52c3f8ed-7f68-4aaf-8af4-47da85e7412a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets">
+      <UniqueIdentifier>{77f4b328-3b21-46d6-828f-39f6790a4b7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ABPApp.cpp">
@@ -81,22 +99,10 @@
     <ClInclude Include="..\..\..\blocks\Cinder-Hap2\src\MovieHap.h">
       <Filter>Blocks\Cinder-Hap2\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiConstants.h">
-      <Filter>Blocks\Midi2\include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiExceptions.h">
       <Filter>Blocks\Midi2\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiHeaders.h">
-      <Filter>Blocks\Midi2\include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiHub.h">
-      <Filter>Blocks\Midi2\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiIn.h">
-      <Filter>Blocks\Midi2\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiMessage.h">
       <Filter>Blocks\Midi2\include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiOut.h">
@@ -109,12 +115,6 @@
       <Filter>Blocks\Midi2\lib</Filter>
     </ClInclude>
     <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\MidiHub.cpp">
-      <Filter>Blocks\Midi2\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\MidiIn.cpp">
-      <Filter>Blocks\Midi2\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\MidiMessage.cpp">
       <Filter>Blocks\Midi2\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\MidiOut.cpp">
@@ -255,6 +255,42 @@
     <ClCompile Include="..\..\..\blocks\OSC\src\ip\win32\UdpSocket.cpp">
       <Filter>Blocks\OSC\src\ip\win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Warping\src\Warp.cpp">
+      <Filter>Blocks\Cinder-Warping\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Warping\src\WarpBilinear.cpp">
+      <Filter>Blocks\Cinder-Warping\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Warping\src\WarpPerspective.cpp">
+      <Filter>Blocks\Cinder-Warping\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Warping\src\WarpPerspectiveBilinear.cpp">
+      <Filter>Blocks\Cinder-Warping\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\CinderMidi.cpp">
+      <Filter>Blocks\Midi2\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\JSONWrapper.cpp">
+      <Filter>Blocks\Reymenta\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\MessageRouter.cpp">
+      <Filter>Blocks\Reymenta\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\SpoutWrapper.cpp">
+      <Filter>Blocks\Reymenta\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\WarpWrapper.cpp">
+      <Filter>Blocks\Reymenta\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketClient.cpp">
+      <Filter>Blocks\Websockets\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketConnection.cpp">
+      <Filter>Blocks\Websockets\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketServer.cpp">
+      <Filter>Blocks\Websockets\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -263,10 +299,42 @@
     <ClInclude Include="..\include\ABPApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-Warping\include\Warp.h">
+      <Filter>Blocks\Cinder-Warping\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\CinderMidi.h">
+      <Filter>Blocks\Midi2\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\JSONWrapper.h">
+      <Filter>Blocks\Reymenta\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\MessageRouter.h">
+      <Filter>Blocks\Reymenta\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\SpoutWrapper.h">
+      <Filter>Blocks\Reymenta\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\WarpWrapper.h">
+      <Filter>Blocks\Reymenta\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketClient.h">
+      <Filter>Blocks\Websockets\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketConnection.h">
+      <Filter>Blocks\Websockets\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketServer.h">
+      <Filter>Blocks\Websockets\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\assets\Settings.xml">
+      <Filter>assets</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

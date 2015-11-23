@@ -28,7 +28,7 @@ void ABPApp::setup()
 	mBatchass->setup();
 
 	// instanciate the OSC class
-	mOSC = OSC::create(mParameterBag, mBatchass->mShaders, mBatchass->mTextures);
+	// done by messageRouter mOSC = OSC::create(mParameterBag, mBatchass->getShadersRef(), mBatchass->getTexturesRef());
 
 	updateWindowTitle();
 
@@ -74,8 +74,6 @@ void ABPApp::setup()
 
 	mCam.lookAt(vec3(0, CAMERA_Y_RANGE.first, 0), vec3(0));
 
-	gl::enableDepthWrite();
-	gl::enableDepthRead();
 	/*
 	mParams = MinimalUI::UIController::create("{ \"x\":0, \"y\":0, \"depth\":100, \"width\":220, \"height\":820, \"fboNumSamples\":0, \"defaultBackgroundColor\":\"0x9912110c\", \"defaultStrokeColor\":\"0xFF44422f\",\"defaultNameColor\":\"0xFF44422f\", \"activeStrokeColor\":\"0xFF737446\", \"panelColor\":\"0x441e1e1e\" }");
 
@@ -329,11 +327,8 @@ void ABPApp::update()
 	{
 		mParameterBag->iGlobalTime = getElapsedSeconds();
 	}
-	mOSC->update();
-	//! update textures
-	mBatchass->mTextures->update();
-	//! update shaders (must be after the textures update)
-	mBatchass->mShaders->update();
+	//! update textures, shaders, messages
+	mBatchass->update();
 
 	updateWindowTitle();
 	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
@@ -343,14 +338,14 @@ void ABPApp::update()
 	mRotationMatrix *= rotate(0.06f, normalize(vec3(0.16666f, 0.333333f, 0.666666f)));
 	mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f) + 1) * 20 : mRepetitions;
 	mBend = mLockBend ? sin(getElapsedFrames() / 100.0f) * 10.0f : mBend;
-	if (mParameterBag->mBeat < 64)
+	if (mParameterBag->iBeat < 64)
 	{
-		mRepetitions = (mParameterBag->mBeat / 8)+1;
+		mRepetitions = (mParameterBag->iBeat / 8)+1;
 	}
 	else
 	{
 
-		if (mParameterBag->mBeat % 8 == 0)
+		if (mParameterBag->iBeat % 8 == 0)
 		{
 			if (bricks.size() < 20 && !alreadyCreated) 
 			{
@@ -363,19 +358,19 @@ void ABPApp::update()
 		{
 			alreadyCreated = false;
 		}
-		if (mParameterBag->mBeat % 8 == 0)
+		if (mParameterBag->iBeat % 8 == 0)
 		{
-			if (mParameterBag->mBeat > 92)
+			if (mParameterBag->iBeat > 92)
 			{
 				mGlobalMode = true;
 				mR = 1.0f;
 				mB = 0.0f;
 			}	
-			if (mParameterBag->mBeat > 280 && mParameterBag->mBeat < 292 )
+			if (mParameterBag->iBeat > 280 && mParameterBag->iBeat < 292 )
 			{
 				mShape = 1;
 			}
-			if (mParameterBag->mBeat > 316)
+			if (mParameterBag->iBeat > 316)
 			{
 				mRotation += 0.2;
 				if (mRotation>6.35) mRotation = 0;
@@ -385,7 +380,7 @@ void ABPApp::update()
 		{
 			mR = 0.5f;
 			mB = 0.8f;
-			if (mParameterBag->mBeat > 510 && mParameterBag->mBeat % 2 == 0)
+			if (mParameterBag->iBeat > 510 && mParameterBag->iBeat % 2 == 0)
 			{
 				mRotation += 0.2;
 				if (mRotation>6.35) mRotation = 0;

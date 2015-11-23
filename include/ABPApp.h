@@ -41,8 +41,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "Textures.h"
 // logger
 #include "Logger.h"
-// OSC
-#include "OSCWrapper.h"
 // Utils
 #include "Batchass.h"
 
@@ -112,8 +110,6 @@ private:
 	LoggerRef					log;
 	// spout
 	//SpoutWrapperRef				mSpout;
-	// osc
-	OSCRef						mOSC;
 	// utils
 	BatchassRef					mBatchass;
 	// log

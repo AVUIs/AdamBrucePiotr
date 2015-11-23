@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\\include;..\..\..\\boost;..\..\..\blocks\Cinder-Hap2\src;..\..\..\blocks\Cinder-Hap2\include\msw;..\..\..\blocks\Cinder-ImGui\lib\imgui;..\..\..\blocks\Cinder-MIDI2\include;..\..\..\blocks\Cinder-MIDI2\lib;..\..\..\blocks\Cinder-MIDI2\src;..\..\..\blocks\Cinder-Reymenta\include;..\..\..\blocks\Cinder-Reymenta\src;..\..\..\blocks\Cinder-Spout\include;..\..\..\blocks\OSC\src;..\..\..\blocks\QuickTime\include\msw;..\..\..\blocks\QuickTime\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\\include;..\..\..\\boost;..\..\..\blocks\Cinder-Hap2\src;..\..\..\blocks\Cinder-Hap2\include\msw;..\..\..\blocks\Cinder-ImGui\lib\imgui;..\..\..\blocks\Cinder-MIDI2\include;..\..\..\blocks\Cinder-MIDI2\lib;..\..\..\blocks\Cinder-MIDI2\src;..\..\..\blocks\Cinder-Reymenta\include;..\..\..\blocks\Cinder-Reymenta\src;..\..\..\blocks\Cinder-Spout\include;..\..\..\blocks\OSC\src;..\..\..\blocks\QuickTime\include\msw;..\..\..\blocks\QuickTime\include;..\..\..\blocks\Cinder-Warping\include;..\..\..\include\asio;..\..\..\blocks\Cinder-WebSocketPP\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -80,7 +80,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\..\..\\include;..\..\..\\boost;..\..\..\blocks\Cinder-Hap2\src;..\..\..\blocks\Cinder-Hap2\include\msw;..\..\..\blocks\Cinder-ImGui\lib\imgui;..\..\..\blocks\Cinder-MIDI2\include;..\..\..\blocks\Cinder-MIDI2\lib;..\..\..\blocks\Cinder-MIDI2\src;..\..\..\blocks\Cinder-Reymenta\include;..\..\..\blocks\Cinder-Reymenta\src;..\..\..\blocks\Cinder-Spout\include;..\..\..\blocks\OSC\src;..\..\..\blocks\QuickTime\include\msw;..\..\..\blocks\QuickTime\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\\include;..\..\..\\boost;..\..\..\blocks\Cinder-Hap2\src;..\..\..\blocks\Cinder-Hap2\include\msw;..\..\..\blocks\Cinder-ImGui\lib\imgui;..\..\..\blocks\Cinder-MIDI2\include;..\..\..\blocks\Cinder-MIDI2\lib;..\..\..\blocks\Cinder-MIDI2\src;..\..\..\blocks\Cinder-Reymenta\include;..\..\..\blocks\Cinder-Reymenta\src;..\..\..\blocks\Cinder-Spout\include;..\..\..\blocks\OSC\src;..\..\..\blocks\QuickTime\include\msw;..\..\..\blocks\QuickTime\include;..\..\..\blocks\Cinder-Warping\include;..\..\..\include\asio;..\..\..\blocks\Cinder-WebSocketPP\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -115,16 +115,21 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\CinderMidi.h" />
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\JSONWrapper.h" />
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\MessageRouter.h" />
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\SpoutWrapper.h" />
+    <ClInclude Include="..\..\..\blocks\Cinder-Reymenta\include\WarpWrapper.h" />
+    <ClInclude Include="..\..\..\blocks\Cinder-Warping\include\Warp.h" />
+    <ClInclude Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketClient.h" />
+    <ClInclude Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketConnection.h" />
+    <ClInclude Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketServer.h" />
     <ClInclude Include="..\include\ABPApp.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-Hap2\src\HapSupport.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-Hap2\src\MovieHap.h" />
-    <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiConstants.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiExceptions.h" />
-    <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiHeaders.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiHub.h" />
-    <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiIn.h" />
-    <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiMessage.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\include\MidiOut.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\lib\RtError.h" />
     <ClInclude Include="..\..\..\blocks\Cinder-MIDI2\lib\RtMidi.h" />
@@ -156,12 +161,22 @@
     <ClInclude Include="..\..\..\blocks\OSC\src\osc\OscTypes.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\CinderMidi.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\JSONWrapper.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\MessageRouter.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\SpoutWrapper.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\WarpWrapper.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-Warping\src\Warp.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-Warping\src\WarpBilinear.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-Warping\src\WarpPerspective.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-Warping\src\WarpPerspectiveBilinear.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketClient.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketConnection.cpp" />
+    <ClCompile Include="..\..\..\blocks\Cinder-WebSocketPP\src\WebSocketServer.cpp" />
     <ClCompile Include="..\src\ABPApp.cpp" />
     <ClCompile Include="..\..\..\blocks\Cinder-Hap2\src\MovieHap.cpp" />
     <ClCompile Include="..\..\..\blocks\Cinder-Hap2\src\HapSupport.c" />
     <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\MidiHub.cpp" />
-    <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\MidiIn.cpp" />
-    <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\MidiMessage.cpp" />
     <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\src\MidiOut.cpp" />
     <ClCompile Include="..\..\..\blocks\Cinder-MIDI2\lib\RtMidi.cpp" />
     <ClCompile Include="..\..\..\blocks\Cinder-Reymenta\src\AudioWrapper.cpp" />
@@ -182,6 +197,11 @@
     <ClCompile Include="..\..\..\blocks\OSC\src\osc\OscTypes.cpp" />
     <ClCompile Include="..\..\..\blocks\OSC\src\ip\win32\NetworkingUtils.cpp" />
     <ClCompile Include="..\..\..\blocks\OSC\src\ip\win32\UdpSocket.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\assets\Settings.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
