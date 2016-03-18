@@ -30,9 +30,9 @@ void BatchassSpidermoonApp::setup()
 
 	gl::enableDepthWrite();
 	gl::enableDepthRead();
-	gl::disableBlending();
-	//gl::enableAlphaBlending();
-	//gl::enableBlending();
+	//gl::disableBlending();
+	gl::enableAlphaBlending();
+
 	// warping
 	updateWindowTitle();
 
@@ -192,11 +192,11 @@ void BatchassSpidermoonApp::renderSceneToFbo()
 	// on non-OpenGL ES platforms, you can just call mFbo->unbindFramebuffer() at the end of the function
 	// but this will restore the "screen" FBO on OpenGL ES, and does the right thing on both platforms
 	gl::ScopedFramebuffer fbScp(mRenderFbo);
-	gl::clear(Color::black(), true);
+	gl::clear(Color::black());
 	// setup the viewport to match the dimensions of the FBO
 	gl::ScopedViewport scpVp(ivec2(0), mRenderFbo->getSize());
-	gl::color(Color::white());
-	mBend = mVDSettings->controlValues[11];
+	//gl::color(Color::white());
+	mBend = mVDSettings->controlValues[11]*10;
 
 	volumeFactor = 1.0f;// CHECK mVDSettings->controlValues[14];
 
@@ -204,7 +204,6 @@ void BatchassSpidermoonApp::renderSceneToFbo()
 	cam.setPerspective(60, 0.75, 1, 1000);//mTextures->getFbo(mVDSettings->mABPFboIndex).getAspectRatio()
 	cam.lookAt(vec3(2.8f, 1.8f, -2.8f), vec3(0.0f, 0.0f, 0.0f));
 	gl::setMatrices(cam);
-	gl::color(Color::white());
 	gl::scale(vec3(1.0f, 1.0f, 1.0f) * mZoom);
 	gl::rotate(mRotation);
 	for (int i = 0; i < bricks.size(); i++)
@@ -237,6 +236,7 @@ void BatchassSpidermoonApp::renderSceneToFbo()
 			b -= mColorFactor / volumeFactor;
 			a -= mColorFactor / volumeFactor;
 			gl::color(r, g, b, a);
+			//gl::color(1.0, 0.0, 0.0, 1.0);
 			new_x = sin(rotation*0.01745329251994329576923690768489) * distance;
 			new_y = cos(rotation*0.01745329251994329576923690768489) * distance;
 
@@ -266,21 +266,37 @@ void BatchassSpidermoonApp::renderSceneToFbo()
 		gl::popMatrices();
 
 	}
-	gl::color(Color::white());
+	//gl::color(Color::white());
 }
 void BatchassSpidermoonApp::draw()
 {
-	renderSceneToFbo();
+renderSceneToFbo();	
+if (mFadeInDelay) {
+		if (getElapsedFrames() > mVDSession->getFadeInDelay()) {
+			mFadeInDelay = false;
+			setWindowSize(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight);
+			setWindowPos(ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY));
+			timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 2.0f, EaseInCubic());
+		}
+	}
+	if (mFadeOutDelay) {
+		if (getElapsedFrames() > mVDSession->getEndFrame()) {
+			mFadeOutDelay = false;
+			timeline().apply(&mVDSettings->iAlpha, 1.0f, 0.0f, 2.0f, EaseInCubic());
+		}
+	}
 
-	/***********************************************
-	* mix 2 FBOs begin
-	* first render the 2 frags to fbos (done before)
-	* then use them as textures for the mix shader
-	*/
+	gl::clear(Color::black());
+	gl::setMatricesWindow(toPixels(getWindowSize()));
+
+	for (auto &warp : mWarps) {
+		warp->draw(mRenderFbo->getColorTexture());
+	}
+	//end
+	/*renderSceneToFbo();
 
 	// draw using the mix shader
 	mVDFbos[mVDSettings->mMixFboIndex]->getFboRef()->bindFramebuffer();
-	//gl::setViewport(mVDFbos[mVDSettings->mMixFboIndex].fbo.getBounds());
 
 	// clear the FBO
 	gl::clear();
@@ -289,7 +305,6 @@ void BatchassSpidermoonApp::draw()
 	aShader = mVDShaders->getMixShader();
 	aShader->bind();
 	aShader->uniform("iGlobalTime", mVDSettings->iGlobalTime);
-	//20140703 aShader->uniform("iResolution", vec3(mVDSettings->mRenderResoXY.x, mVDSettings->mRenderResoXY.y, 1.0));
 	aShader->uniform("iResolution", vec3(mVDSettings->mFboWidth, mVDSettings->mFboHeight, 1.0));
 	aShader->uniform("iChannelResolution", mVDSettings->iChannelResolution, 4);
 	aShader->uniform("iMouse", vec4(mVDSettings->mRenderPosXY.x, mVDSettings->mRenderPosXY.y, mVDSettings->iMouse.z, mVDSettings->iMouse.z));//iMouse =  Vec3i( event.getX(), mRenderHeight - event.getY(), 1 );
@@ -354,13 +369,6 @@ void BatchassSpidermoonApp::draw()
 	mRenderFbo->getColorTexture()->unbind();
 	mRenderFbo->getColorTexture()->unbind();
 
-	//aShader->unbind();
-	//sTextures[5] = mVDFbos[mVDSettings->mMixFboIndex]->getTexture();
-
-	//}
-	/***********************************************
-	* mix 2 FBOs end
-	*/
 	if (mFadeInDelay) {
 		if (getElapsedFrames() > mVDSession->getFadeInDelay()) {
 			mFadeInDelay = false;
@@ -377,11 +385,10 @@ void BatchassSpidermoonApp::draw()
 	}
 	gl::clear(Color::black());
 	gl::setMatricesWindow(toPixels(getWindowSize()));
-	//gl::draw(mRenderFbo->getColorTexture());
 
 	for (auto &warp : mWarps) {		
-		warp->draw(mVDFbos[mVDSettings->mMixFboIndex]->getTexture());// , mSrcArea, warp->getBounds());
-	}
+		warp->draw(mVDFbos[mVDSettings->mMixFboIndex]->getTexture());
+	}*/
 
 }
 void BatchassSpidermoonApp::resize()
@@ -443,6 +450,25 @@ void BatchassSpidermoonApp::keyDown(KeyEvent event)
 			case KeyEvent::KEY_w:
 				// toggle warp edit mode
 				Warp::enableEditMode(!Warp::isEditModeEnabled());
+				break;
+			case KeyEvent::KEY_r:
+				mR += 0.2;
+				if (mR > 0.9) mR = 0.0;
+				break;
+			case KeyEvent::KEY_g:
+				mG += 0.2;
+				if (mG > 0.9) mG = 0.0;
+				break;
+			case KeyEvent::KEY_c:
+				if (mVDSettings->mCursorVisible)
+				{
+					hideCursor();
+				}
+				else
+				{
+					showCursor();
+				}
+				mVDSettings->mCursorVisible = !mVDSettings->mCursorVisible;
 				break;
 			case KeyEvent::KEY_a:
 				fileName = "warps" + toString(getElapsedFrames()) + ".xml";
