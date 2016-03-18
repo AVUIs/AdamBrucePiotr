@@ -1,5 +1,0 @@
-[6:33:48] Batchass constructor
-[6:33:48] Window 1: 1600x900
-[6:33:48] Window 2: 1440x900
-[6:33:48]  mRenderWidth1440mRenderHeight900
-[6:36:32] quit

@@ -1,0 +1,11 @@
+{
+   "params" : {
+      "background_color" : {
+         "b" : "0",
+         "g" : "0",
+         "r" : "0"
+      },
+      "exposure" : "0",
+      "text" : ""
+   }
+}
