@@ -115,7 +115,7 @@ private:
 	bool						mFadeInDelay;
 	bool						mFadeOutDelay;
 	gl::TextureRef				mImage;
-	Area						mSrcArea;
+
 	// fbo
 	void						renderSceneToFbo();
 	gl::FboRef					mRenderFbo;

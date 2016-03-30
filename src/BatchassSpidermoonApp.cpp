@@ -48,8 +48,6 @@ void BatchassSpidermoonApp::setup()
 		mWarps.push_back(WarpPerspectiveBilinear::create());
 	}
 
-	mSrcArea = Area(0, 22, 398, 420);//Area(x1, y1, x2, y2);
-
 	// render fbo
 	gl::Fbo::Format fboFormat;
 	//format.setSamples( 4 ); // uncomment this to enable 4x antialiasing
@@ -115,7 +113,7 @@ void BatchassSpidermoonApp::cleanup()
 }
 void BatchassSpidermoonApp::update()
 {
-	
+
 	mVDAnimation->update();
 	mVDRouter->update();
 	updateWindowTitle();
@@ -141,7 +139,6 @@ void BatchassSpidermoonApp::update()
 				addBrick(false);
 				alreadyCreated = true;
 			}
-
 		}
 		else
 		{
@@ -196,7 +193,7 @@ void BatchassSpidermoonApp::renderSceneToFbo()
 	// setup the viewport to match the dimensions of the FBO
 	gl::ScopedViewport scpVp(ivec2(0), mRenderFbo->getSize());
 	//gl::color(Color::white());
-	mBend = mVDSettings->controlValues[11]*10;
+	mBend = mVDSettings->controlValues[11] * 10;
 
 	volumeFactor = 1.0f;// CHECK mVDSettings->controlValues[14];
 
@@ -236,7 +233,6 @@ void BatchassSpidermoonApp::renderSceneToFbo()
 			b -= mColorFactor / volumeFactor;
 			a -= mColorFactor / volumeFactor;
 			gl::color(r, g, b, a);
-			//gl::color(1.0, 0.0, 0.0, 1.0);
 			new_x = sin(rotation*0.01745329251994329576923690768489) * distance;
 			new_y = cos(rotation*0.01745329251994329576923690768489) * distance;
 
@@ -266,12 +262,12 @@ void BatchassSpidermoonApp::renderSceneToFbo()
 		gl::popMatrices();
 
 	}
-	//gl::color(Color::white());
+	gl::color(Color::white());
 }
 void BatchassSpidermoonApp::draw()
 {
-renderSceneToFbo();	
-if (mFadeInDelay) {
+	renderSceneToFbo();
+	if (mFadeInDelay) {
 		if (getElapsedFrames() > mVDSession->getFadeInDelay()) {
 			mFadeInDelay = false;
 			setWindowSize(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight);
@@ -370,24 +366,24 @@ if (mFadeInDelay) {
 	mRenderFbo->getColorTexture()->unbind();
 
 	if (mFadeInDelay) {
-		if (getElapsedFrames() > mVDSession->getFadeInDelay()) {
-			mFadeInDelay = false;
-			setWindowSize(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight);
-			setWindowPos(ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY));
-			timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 2.0f, EaseInCubic());
-		}
+	if (getElapsedFrames() > mVDSession->getFadeInDelay()) {
+	mFadeInDelay = false;
+	setWindowSize(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight);
+	setWindowPos(ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY));
+	timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 2.0f, EaseInCubic());
+	}
 	}
 	if (mFadeOutDelay) {
-		if (getElapsedFrames() > mVDSession->getEndFrame()) {
-			mFadeOutDelay = false;
-			timeline().apply(&mVDSettings->iAlpha, 1.0f, 0.0f, 2.0f, EaseInCubic());
-		}
+	if (getElapsedFrames() > mVDSession->getEndFrame()) {
+	mFadeOutDelay = false;
+	timeline().apply(&mVDSettings->iAlpha, 1.0f, 0.0f, 2.0f, EaseInCubic());
+	}
 	}
 	gl::clear(Color::black());
 	gl::setMatricesWindow(toPixels(getWindowSize()));
 
-	for (auto &warp : mWarps) {		
-		warp->draw(mVDFbos[mVDSettings->mMixFboIndex]->getTexture());
+	for (auto &warp : mWarps) {
+	warp->draw(mVDFbos[mVDSettings->mMixFboIndex]->getTexture());
 	}*/
 
 }
