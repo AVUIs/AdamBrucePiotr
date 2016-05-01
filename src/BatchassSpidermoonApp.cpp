@@ -26,7 +26,7 @@ void BatchassSpidermoonApp::setup()
 	// Shaders
 	mVDShaders = VDShaders::create(mVDSettings);
 	// mix fbo at index 0
-	mVDFbos.push_back(VDFbo::create(mVDSettings, "mix", mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+	mVDFbos.push_back(VDFbo::create());
 
 	gl::enableDepthWrite();
 	gl::enableDepthRead();
