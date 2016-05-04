@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BatchassSpidermoon", "BatchassSpidermoon.vcxproj", "{26B5EBF1-B87C-4144-A814-3A2C117627BA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BatchassSpidermoon", "BatchassSpidermoon.vcxproj", "{989B3375-CD68-42DA-A4B3-03A0CAEA5458}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{26B5EBF1-B87C-4144-A814-3A2C117627BA}.Debug|Win32.ActiveCfg = Debug|Win32
-		{26B5EBF1-B87C-4144-A814-3A2C117627BA}.Debug|Win32.Build.0 = Debug|Win32
-		{26B5EBF1-B87C-4144-A814-3A2C117627BA}.Release|Win32.ActiveCfg = Release|Win32
-		{26B5EBF1-B87C-4144-A814-3A2C117627BA}.Release|Win32.Build.0 = Release|Win32
+		{989B3375-CD68-42DA-A4B3-03A0CAEA5458}.Debug|Win32.ActiveCfg = Debug|Win32
+		{989B3375-CD68-42DA-A4B3-03A0CAEA5458}.Debug|Win32.Build.0 = Debug|Win32
+		{989B3375-CD68-42DA-A4B3-03A0CAEA5458}.Release|Win32.ActiveCfg = Release|Win32
+		{989B3375-CD68-42DA-A4B3-03A0CAEA5458}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

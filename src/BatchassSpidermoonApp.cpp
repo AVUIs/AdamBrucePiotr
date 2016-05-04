@@ -18,13 +18,13 @@ void BatchassSpidermoonApp::setup()
 	mVDUtils = VDUtils::create(mVDSettings);
 	mVDUtils->getWindowsResolution();
 	// Audio
-	mVDAudio = VDAudio::create(mVDSettings);
+	//mVDAudio = VDAudio::create(mVDSettings);
 	// Animation
 	mVDAnimation = VDAnimation::create(mVDSettings, mVDSession);
 	// Message router
 	mVDRouter = VDRouter::create(mVDSettings, mVDAnimation, mVDSession);
 	// Shaders
-	mVDShaders = VDShaders::create(mVDSettings);
+	//mVDShaders = VDShaders::create(mVDSettings);
 	// mix fbo at index 0
 	mVDFbos.push_back(VDFbo::create());
 
@@ -33,7 +33,16 @@ void BatchassSpidermoonApp::setup()
 	//gl::disableBlending();
 	gl::enableAlphaBlending();
 
-	// warping
+	// Textures 
+	mTexturesFilepath = getAssetPath("") / mVDSettings->mAssetsPath / "textures.xml";
+	if (fs::exists(mTexturesFilepath)) {
+		// load textures from file if one exists
+		mTexs = VDTexture::readSettings(loadFile(mTexturesFilepath));
+	}
+	else {
+		// otherwise create a texture from scratch
+		mTexs.push_back(TextureAudio::create());
+	}
 	updateWindowTitle();
 
 	// initialize warps
@@ -110,9 +119,13 @@ void BatchassSpidermoonApp::cleanup()
 	// Warp::writeSettings(mWarps, writeFile(mSettings)); TODO put back
 	mVDSettings->save();
 	mVDSession->save();
+	// save textures
+	VDTexture::writeSettings(mTexs, writeFile(mTexturesFilepath));
 }
 void BatchassSpidermoonApp::update()
 {
+	// get audio spectrum
+	mTexs[0]->getTexture();
 
 	mVDAnimation->update();
 	mVDRouter->update();
