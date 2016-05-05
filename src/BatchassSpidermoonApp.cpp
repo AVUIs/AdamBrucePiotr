@@ -17,20 +17,15 @@ void BatchassSpidermoonApp::setup()
 	// Utils
 	mVDUtils = VDUtils::create(mVDSettings);
 	mVDUtils->getWindowsResolution();
-	// Audio
-	//mVDAudio = VDAudio::create(mVDSettings);
 	// Animation
 	mVDAnimation = VDAnimation::create(mVDSettings, mVDSession);
 	// Message router
 	mVDRouter = VDRouter::create(mVDSettings, mVDAnimation, mVDSession);
-	// Shaders
-	//mVDShaders = VDShaders::create(mVDSettings);
 	// mix fbo at index 0
 	mVDFbos.push_back(VDFbo::create());
 
 	gl::enableDepthWrite();
 	gl::enableDepthRead();
-	//gl::disableBlending();
 	gl::enableAlphaBlending();
 
 	// Textures 
