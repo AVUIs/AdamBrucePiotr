@@ -49,19 +49,19 @@ void BatchassSpidermoonApp::setup()
 	else {
 		// otherwise create a warp from scratch
 		mWarps.push_back(WarpPerspectiveBilinear::create());
-		mWarps.push_back(WarpPerspectiveBilinear::create());
 	}
 
 	// render fbo
 	gl::Fbo::Format fboFormat;
 	//format.setSamples( 4 ); // uncomment this to enable 4x antialiasing
-	mRenderFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, fboFormat.colorTexture());
+	//mRenderFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, fboFormat.colorTexture());
+	mRenderFbo = gl::Fbo::create(1024, 768, fboFormat.colorTexture());
 	// bpm
 	setFrameRate(mVDSession->getTargetFps());
 	// abp
 	// neRenderer
-	x = mVDSettings->mFboWidth / 2;
-	y = mVDSettings->mFboHeight / 2;
+	x = 512;
+	y = 384;
 
 	mZoom = 0.3f;
 	mXYVector = vec2(1.0);
@@ -87,6 +87,7 @@ void BatchassSpidermoonApp::setup()
 	// init one brick
 	addBrick(true);
 	alreadyCreated = false;
+	mouseX = 2.0f;
 	mCam.lookAt(vec3(0.0f, CAMERA_Y_RANGE.first, 0.0f), vec3(0.0f, 0.0f, 0.0f));
 
 }
@@ -126,63 +127,16 @@ void BatchassSpidermoonApp::update()
 	mVDRouter->update();
 	updateWindowTitle();
 	// abp
-	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
-	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
-	mSize = mLockSize ? sin(getElapsedFrames() / 100.0f) + 0.7f : mSize;
-	mMotionVector = mLockMotionVector ? sin(getElapsedFrames() / 50.0f) : mMotionVector;
+	mZPosition = sin(getElapsedFrames() / 100.0f);
+	mRotation = sin(getElapsedFrames() / 100.0f)*4.0f ;
+	mSize = sin(getElapsedFrames() / 100.0f) + 0.7f;
+	mMotionVector = sin(getElapsedFrames() / 50.0f);
 	//mRotationMatrix *= rotate(0.06f, normalize(vec3(0.16666f, 0.333333f, 0.666666f)));
-	mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f) + 1) * 20 : mRepetitions;
-	mBend = mLockBend ? sin(getElapsedFrames() / 100.0f) * 10.0f : mBend;
-	if (mVDSettings->iBeat < 64)
-	{
-		mRepetitions = (mVDSettings->iBeat / 8) + 1;
-	}
-	else
-	{
-
-		if (mVDSettings->iBeat % 8 == 0)
-		{
-			if (bricks.size() < 20 && !alreadyCreated)
-			{
-				addBrick(false);
-				alreadyCreated = true;
-			}
-		}
-		else
-		{
-			alreadyCreated = false;
-		}
-		if (mVDSettings->iBeat % 8 == 0)
-		{
-			if (mVDSettings->iBeat > 92)
-			{
-				mGlobalMode = true;
-				mR = 1.0f;
-				mB = 0.0f;
-			}
-			if (mVDSettings->iBeat > 280 && mVDSettings->iBeat < 292)
-			{
-				mShape = 1;
-			}
-			if (mVDSettings->iBeat > 316)
-			{
-				mRotation += 0.2;
-				if (mRotation > 6.35) mRotation = 0;
-			}
-		}
-		else
-		{
-			mR = 0.6f;
-			mB = 0.9f;
-			if (mVDSettings->iBeat > 510 && mVDSettings->iBeat % 2 == 0)
-			{
-				mRotation += 0.5 + mVDSettings->controlValues[12]; //was 0.2
-				if (mRotation > 6.35) mRotation = 0;
-			}
-		}
-	}
+	//mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f) + 1) * 20 : mRepetitions;
+	mBend =  sin(getElapsedFrames() / 100.0f) * 10.0f ;
 	// move the camera up and down on Y
-	mCam.lookAt(vec3(0.0f, CAMERA_Y_RANGE.first + abs(sin(getElapsedSeconds() / 4)) * (CAMERA_Y_RANGE.second - CAMERA_Y_RANGE.first), 0.0f), vec3(0.0f, 0.0f, 0.0f));
+	//mCam.lookAt(vec3(0.0f, CAMERA_Y_RANGE.first + abs(sin(getElapsedSeconds() / 4)) * (CAMERA_Y_RANGE.second - CAMERA_Y_RANGE.first), 0.0f), vec3(mouseX, 0.0f, 0.0f));
+	mCam.lookAt(vec3(mouseX, mouseY, 0.0f), vec3(mouseX, 0.0f, 0.0f));
 
 }
 
@@ -204,10 +158,16 @@ void BatchassSpidermoonApp::renderSceneToFbo()
 	mBend = mVDSettings->controlValues[11] * 10;
 
 	volumeFactor = 1.0f;// CHECK mVDSettings->controlValues[14];
+	/*
+		CameraPersp cam(mTextures->getFbo(mParameterBag->mABPFboIndex).getWidth(), mTextures->getFbo(mParameterBag->mABPFboIndex).getHeight(), 60.0f);
+	cam.setPerspective(60, mTextures->getFbo(mParameterBag->mABPFboIndex).getAspectRatio(), 1, 1000);
+	cam.lookAt(Vec3f(2.8f, 1.8f, -2.8f), Vec3f(0.0f, 0.0f, 0.0f));
 
-	CameraPersp cam(640, 480, 60.0f); // hardcoded
+	*/
+	CameraPersp cam(1024, 768, 60.0f); // hardcoded
 	cam.setPerspective(60, 0.75, 1, 1000);//mTextures->getFbo(mVDSettings->mABPFboIndex).getAspectRatio()
-	cam.lookAt(vec3(2.8f, 1.8f, -2.8f), vec3(0.0f, 0.0f, 0.0f));
+	//cam.lookAt(vec3(2.8f, 1.8f, -2.8f), vec3(mouseX, 1.0f, 0.0f));
+	cam.lookAt(vec3(0.0f, 0.0f, -1.0f), vec3(0.0f, 0.0f, 0.0f));
 	gl::setMatrices(cam);
 	gl::scale(vec3(1.0f, 1.0f, 1.0f) * mZoom);
 	gl::rotate(mRotation);
@@ -246,7 +206,7 @@ void BatchassSpidermoonApp::renderSceneToFbo()
 
 			x = new_x + bricks[i].vx;
 			y = new_y + bricks[i].vy;
-			bendFactor += mBend / 10.0f;
+			bendFactor += mBend / 20.0f;
 			gl::translate(x, y, mZPosition + bendFactor);
 
 			if (shape == 0)
@@ -292,86 +252,14 @@ void BatchassSpidermoonApp::draw()
 
 	gl::clear(Color::black());
 	gl::setMatricesWindow(toPixels(getWindowSize()));
-
-	for (auto &warp : mWarps) {
-		warp->draw(mRenderFbo->getColorTexture());
-	}
+	gl::draw(mRenderFbo->getColorTexture());
+	/*for (auto &warp : mWarps) {
+		warp->draw();
+		}*/
 	//end
 	/*renderSceneToFbo();
 
-	// draw using the mix shader
-	mVDFbos[mVDSettings->mMixFboIndex]->getFboRef()->bindFramebuffer();
 
-	// clear the FBO
-	gl::clear();
-	gl::setMatricesWindow(mVDSettings->mFboWidth, mVDSettings->mFboHeight);
-
-	aShader = mVDShaders->getMixShader();
-	aShader->bind();
-	aShader->uniform("iGlobalTime", mVDSettings->iGlobalTime);
-	aShader->uniform("iResolution", vec3(mVDSettings->mFboWidth, mVDSettings->mFboHeight, 1.0));
-	aShader->uniform("iChannelResolution", mVDSettings->iChannelResolution, 4);
-	aShader->uniform("iMouse", vec4(mVDSettings->mRenderPosXY.x, mVDSettings->mRenderPosXY.y, mVDSettings->iMouse.z, mVDSettings->iMouse.z));//iMouse =  Vec3i( event.getX(), mRenderHeight - event.getY(), 1 );
-	aShader->uniform("iChannel0", 0);
-	aShader->uniform("iChannel1", 1);
-	aShader->uniform("iAudio0", 0);
-	aShader->uniform("iFreq0", mVDSettings->iFreqs[0]);
-	aShader->uniform("iFreq1", mVDSettings->iFreqs[1]);
-	aShader->uniform("iFreq2", mVDSettings->iFreqs[2]);
-	aShader->uniform("iFreq3", mVDSettings->iFreqs[3]);
-	aShader->uniform("iChannelTime", mVDSettings->iChannelTime, 4);
-	aShader->uniform("iColor", vec3(mVDSettings->controlValues[1], mVDSettings->controlValues[2], mVDSettings->controlValues[3]));// mVDSettings->iColor);
-	aShader->uniform("iBackgroundColor", vec3(mVDSettings->controlValues[5], mVDSettings->controlValues[6], mVDSettings->controlValues[7]));// mVDSettings->iBackgroundColor);
-	aShader->uniform("iSteps", (int)mVDSettings->controlValues[20]);
-	aShader->uniform("iRatio", 20.0f);// mVDSettings->controlValues[11]);//check if needed: +1;
-	aShader->uniform("width", 1);
-	aShader->uniform("height", 1);
-	aShader->uniform("iRenderXY", mVDSettings->mRenderXY);
-	aShader->uniform("iZoom", mVDSettings->controlValues[22]);
-	aShader->uniform("iAlpha", mVDSettings->controlValues[4] * mVDSettings->iAlpha);
-	aShader->uniform("iBlendmode", mVDSettings->iBlendMode);
-	aShader->uniform("iChromatic", mVDSettings->controlValues[10]);
-	aShader->uniform("iRotationSpeed", mVDSettings->controlValues[19]);
-	aShader->uniform("iCrossfade", mVDSettings->controlValues[18]);
-	aShader->uniform("iPixelate", mVDSettings->controlValues[15]);
-	aShader->uniform("iExposure", mVDSettings->controlValues[14]);
-	aShader->uniform("iDeltaTime", mVDAnimation->iDeltaTime);
-	aShader->uniform("iFade", (int)mVDSettings->iFade);
-	aShader->uniform("iToggle", (int)mVDSettings->controlValues[46]);
-	aShader->uniform("iLight", (int)mVDSettings->iLight);
-	aShader->uniform("iLightAuto", (int)mVDSettings->iLightAuto);
-	aShader->uniform("iGreyScale", (int)mVDSettings->iGreyScale);
-	aShader->uniform("iTransition", mVDSettings->iTransition);
-	aShader->uniform("iAnim", mVDSettings->iAnim.value());
-	aShader->uniform("iRepeat", (int)mVDSettings->iRepeat);
-	aShader->uniform("iVignette", 1);// (int)mVDSettings->controlValues[47]);
-	aShader->uniform("iInvert", (int)mVDSettings->controlValues[48]);
-	aShader->uniform("iDebug", (int)mVDSettings->iDebug);
-	aShader->uniform("iShowFps", (int)mVDSettings->iShowFps);
-	aShader->uniform("iFps", mVDSettings->iFps);
-	aShader->uniform("iTempoTime", mVDAnimation->iTempoTime);
-	aShader->uniform("iGlitch", (int)mVDSettings->controlValues[45]);
-	aShader->uniform("iTrixels", mVDSettings->controlValues[16]);
-	aShader->uniform("iGridSize", mVDSettings->controlValues[17]);
-	aShader->uniform("iBeat", mVDSettings->iBeat);
-	aShader->uniform("iSeed", mVDSettings->iSeed);
-	aShader->uniform("iRedMultiplier", mVDSettings->iRedMultiplier);
-	aShader->uniform("iGreenMultiplier", mVDSettings->iGreenMultiplier);
-	aShader->uniform("iBlueMultiplier", mVDSettings->iBlueMultiplier);
-	aShader->uniform("iFlipH", mVDFbos[mVDSettings->mMixFboIndex]->isFlipH());
-	aShader->uniform("iFlipV", mVDFbos[mVDSettings->mMixFboIndex]->isFlipV());
-	aShader->uniform("iParam1", mVDSettings->iParam1);
-	aShader->uniform("iParam2", mVDSettings->iParam2);
-	aShader->uniform("iXorY", mVDSettings->iXorY);
-	aShader->uniform("iBadTv", mVDSettings->iBadTv);
-
-	mRenderFbo->getColorTexture()->bind(0);
-	mRenderFbo->getColorTexture()->bind(1);
-	gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
-	// stop drawing into the FBO
-	mVDFbos[mVDSettings->mMixFboIndex]->getFboRef()->unbindFramebuffer();
-	mRenderFbo->getColorTexture()->unbind();
-	mRenderFbo->getColorTexture()->unbind();
 
 	if (mFadeInDelay) {
 	if (getElapsedFrames() > mVDSession->getFadeInDelay()) {
@@ -413,11 +301,10 @@ void BatchassSpidermoonApp::mouseMove(MouseEvent event)
 
 void BatchassSpidermoonApp::mouseDown(MouseEvent event)
 {
-	// pass this mouse event to the warp editor first
-	if (!Warp::handleMouseDown(mWarps, event)) {
-		// let your application perform its mouseDown handling here
 		mVDSettings->controlValues[45] = 1.0f;
-	}
+		mouseX = event.getX() / 640.0f;
+		mouseY = event.getY() / 640.0f;
+
 }
 void BatchassSpidermoonApp::mouseDrag(MouseEvent event)
 {
@@ -437,25 +324,27 @@ void BatchassSpidermoonApp::mouseUp(MouseEvent event)
 }
 void BatchassSpidermoonApp::keyDown(KeyEvent event)
 {
-	fs::path moviePath;
-	string fileName;
-
-	// pass this key event to the warp editor first
-	if (!Warp::handleKeyDown(mWarps, event)) {
-		// warp editor did not handle the key, so handle it here
-		if (!mVDAnimation->handleKeyDown(event)) {
-			// Animation did not handle the key, so handle it here
 			switch (event.getCode()) {
 
 			case KeyEvent::KEY_ESCAPE:
 				// quit the application
 				quit();
+				break;			
+			case KeyEvent::KEY_a:
+				addBrick(true);
 				break;
-			case KeyEvent::KEY_w:
-				// toggle warp edit mode
-				Warp::enableEditMode(!Warp::isEditModeEnabled());
+			case KeyEvent::KEY_q:
+				mShape = !mShape;
 				break;
 			case KeyEvent::KEY_r:
+				mRotation += 0.2;
+				if (mRotation > 6.35) mRotation = 0;
+				break;
+			case KeyEvent::KEY_b:
+				mBend = mBend + 1.2f;
+				if (mBend > 10.0f) mBend = 0.0f;
+				break;
+			case KeyEvent::KEY_d:
 				mR += 0.2;
 				if (mR > 0.9) mR = 0.0;
 				break;
@@ -474,16 +363,16 @@ void BatchassSpidermoonApp::keyDown(KeyEvent event)
 				}
 				mVDSettings->mCursorVisible = !mVDSettings->mCursorVisible;
 				break;
-			case KeyEvent::KEY_a:
-				fileName = "warps" + toString(getElapsedFrames()) + ".xml";
-				mSettings = getAssetPath("") / mVDSettings->mAssetsPath / fileName;
-				Warp::writeSettings(mWarps, writeFile(mSettings));
-				mSettings = getAssetPath("") / mVDSettings->mAssetsPath / "warps.xml";
+
+			case KeyEvent::KEY_p:
+				mRepetitions++;
+				break;
+			case KeyEvent::KEY_m:
+				mGlobalMode = !mGlobalMode;
+				break;
+			default:
 				break;
 			}
-
-		}
-	}
 }
 
 void BatchassSpidermoonApp::keyUp(KeyEvent event)

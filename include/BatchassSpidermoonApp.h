@@ -34,12 +34,8 @@ along with Cinder-Warping.  If not, see <http://www.gnu.org/licenses/>.
 #include "VDSession.h"
 // Utils
 #include "VDUtils.h"
-// Audio
-//#include "VDAudio.h"
 // Animation
 #include "VDAnimation.h"
-// shaders
-//#include "VDShaders.h"
 // Message router
 #include "VDRouter.h"
 // fbo
@@ -98,12 +94,8 @@ private:
 	VDSessionRef				mVDSession;
 	// Utils
 	VDUtilsRef					mVDUtils;
-	// Audio
-	//VDAudioRef					mVDAudio;
 	// Animation
 	VDAnimationRef				mVDAnimation;
-	// Shaders
-	//VDShadersRef				mVDShaders;
 	// Fbos
 	vector<VDFboRef>			mVDFbos;
 	// Message router
@@ -132,7 +124,7 @@ private:
 	float						mZoom;
 	float						mBend;
 	vec2						mXYVector;
-	float						mRepetitions;
+	int						mRepetitions;
 	int							mShape;
 	float						mZPosition;
 	float						mRotation;
@@ -162,4 +154,6 @@ private:
 	void						newRendering();
 	vector <brick>				bricks;
 	bool						alreadyCreated;
+	float						mouseX, mouseY;
+	
 };
