@@ -1,14 +1,12 @@
 {
    "assets" : {
-      "moviefile" : "none.mov",
       "movieplaybackdelay" : 10,
-      "wavefile" : "none.wav",
       "waveplaybackdelay" : 10
    },
    "settings" : {
       "beatsperbar" : 1,
       "bpm" : 166,
-      "endframe" : 20000,
+      "endframe" : 20000000,
       "fadeindelay" : 1,
       "fadeoutdelay" : 1
    }

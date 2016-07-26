@@ -26,18 +26,20 @@ Mac
 
 Run from the source
 ===================
-Get [Cinder, glNext branch](https://github.com/cinder/Cinder/tree/glNext), git clone with arguments: --recursive -b glNext
-<p align="center">
-  <img src="http://libcinder.org/images/logo.png" alt="Cinder Logo"/>
-</p>
-Get [Reymenta Cinder block, glNext branch](https://github.com/Reymenta-Visuals/Cinder-Reymenta/tree/glNext), git clone with arguments: -b glNext (Windows only)
-<p align="center">
-  <img src="http://www.batchass.fr/reymenta/reymenta-logo150.jpg" alt="Reymenta Logo"/>
-</p>
-Get [MinimalUI Cinder block, glNext branch](https://github.com/nselikoff/Cinder-MinimalUI/tree/glNext), git clone with arguments: -b glNext
-<br />
-Get [Hap2 Cinder block](https://github.com/mpcdigital/Cinder-Hap2)
-<br />
+
+Get [Cinder](https://github.com/cinder/Cinder),git clone Cinder --recursive
+In the blocks folders clone:
+- https://github.com/videodromm/Cinder-Videodromm.git
+- https://github.com/mpcdigital/Cinder-Hap2.git (TODO can be removed on Mac, does not compile)
+- https://github.com/paulhoux/Cinder-Warping.git
+- https://github.com/videodromm/Cinder-WebSocketPP.git
+- https://github.com/simongeilfus/Cinder-Imgui.git
+- https://github.com/brucelane/Cinder-MIDI2.git
+- https://github.com/brucelane/Cinder-Spout.git (Windows only)
+- https://github.com/naychrist/Cinder-Syphon/tree/glNext (glNext branch, Mac only)
+
+In the parent folder of Cinder create a folder named AVUIs and git clone https://github.com/AVUIs/AdamBrucePiotr
+
 Get [PureData](http://puredata.info/)
 <p align="center">
   <img src="http://www.batchass.fr/reymenta/puredata.jpg" alt="PureData patch"/>
@@ -45,7 +47,6 @@ Get [PureData](http://puredata.info/)
 
 Keyboard shortcuts
 ==================
-- u: show/hide UI
 - c: show/hide mouse cursor
 
 OSC messages

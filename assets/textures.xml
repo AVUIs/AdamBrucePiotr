@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <textures version="1.0">
 	<texture id="1" texturetype="audio">
-		<details path="" width="640" height="480" topdown="0" uselinein="="/>
+		<details path="" width="640" height="480" topdown="1" uselinein="1"/>
 	</texture>
 </textures>
 

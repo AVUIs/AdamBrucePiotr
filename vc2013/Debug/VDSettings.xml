@@ -15,7 +15,7 @@
 	<FboHeight value="480"/>
 	<MIDIEnabled value="1"/>
 	<OSCEnabled value="1"/>
-	<OSCReceiverPort value="9001"/>
+	<OSCReceiverPort value="7000"/>
 	<OSCDestinationPort value="7001"/>
 	<OSCDestinationHost value="127.0.0.1"/>
 	<OSCDestinationPort2 value="7002"/>
@@ -32,7 +32,7 @@
 	<FftSize value="512"/>
 	<WindowSize value="1024"/>
 	<Info value=""/>
-	<AssetsPath value="spidermoon"/>
+	<AssetsPath value=""/>
 	<SplitWarpH value="0"/>
 	<SplitWarpV value="0"/>
 </settings>
