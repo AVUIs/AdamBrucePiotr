@@ -21,23 +21,11 @@ void BatchassSpidermoonApp::setup()
 	mVDAnimation = VDAnimation::create(mVDSettings, mVDSession);
 	// Message router
 	mVDRouter = VDRouter::create(mVDSettings, mVDAnimation, mVDSession);
-	// mix fbo at index 0
-	mVDFbos.push_back(VDFbo::create());
 
 	gl::enableDepthWrite();
 	gl::enableDepthRead();
 	gl::enableAlphaBlending();
 
-	// Textures 
-	mTexturesFilepath = getAssetPath("") / mVDSettings->mAssetsPath / "textures.xml";
-	if (fs::exists(mTexturesFilepath)) {
-		// load textures from file if one exists
-		mTexs = VDTexture::readSettings(loadFile(mTexturesFilepath));
-	}
-	else {
-		// otherwise create a texture from scratch
-		mTexs.push_back(TextureAudio::create());
-	}
 	updateWindowTitle();
 
 	// initialize warps
@@ -89,7 +77,6 @@ void BatchassSpidermoonApp::setup()
 	alreadyCreated = false;
 	mouseX = 2.0f;
 	mCam.lookAt(vec3(0.0f, CAMERA_Y_RANGE.first, 0.0f), vec3(0.0f, 0.0f, 0.0f));
-
 }
 void BatchassSpidermoonApp::addBrick(const bool &pressed)
 {
@@ -115,14 +102,10 @@ void BatchassSpidermoonApp::cleanup()
 	// Warp::writeSettings(mWarps, writeFile(mSettings)); TODO put back
 	mVDSettings->save();
 	mVDSession->save();
-	// save textures
-	VDTexture::writeSettings(mTexs, writeFile(mTexturesFilepath));
 }
 void BatchassSpidermoonApp::update()
 {
 	// get audio spectrum
-	mTexs[0]->getTexture();
-
 	mVDAnimation->update();
 	mVDRouter->update();
 	updateWindowTitle();
@@ -137,7 +120,6 @@ void BatchassSpidermoonApp::update()
 	// move the camera up and down on Y
 	//mCam.lookAt(vec3(0.0f, CAMERA_Y_RANGE.first + abs(sin(getElapsedSeconds() / 4)) * (CAMERA_Y_RANGE.second - CAMERA_Y_RANGE.first), 0.0f), vec3(mouseX, 0.0f, 0.0f));
 	mCam.lookAt(vec3(mouseX, mouseY, 0.0f), vec3(mouseX, 0.0f, 0.0f));
-
 }
 
 // Render the scene into the FBO
@@ -155,9 +137,9 @@ void BatchassSpidermoonApp::renderSceneToFbo()
 	// setup the viewport to match the dimensions of the FBO
 	gl::ScopedViewport scpVp(ivec2(0), mRenderFbo->getSize());
 	//gl::color(Color::white());
-	mBend = mVDSettings->controlValues[11] * 10;
+	mBend = mVDAnimation->controlValues[11] * 10;
 
-	volumeFactor = 1.0f;// CHECK mVDSettings->controlValues[14];
+	volumeFactor = 1.0f;// CHECK mVDAnimation->controlValues[14];
 	/*
 		CameraPersp cam(mTextures->getFbo(mParameterBag->mABPFboIndex).getWidth(), mTextures->getFbo(mParameterBag->mABPFboIndex).getHeight(), 60.0f);
 	cam.setPerspective(60, mTextures->getFbo(mParameterBag->mABPFboIndex).getAspectRatio(), 1, 1000);
@@ -253,35 +235,6 @@ void BatchassSpidermoonApp::draw()
 	gl::clear(Color::black());
 	gl::setMatricesWindow(toPixels(getWindowSize()));
 	gl::draw(mRenderFbo->getColorTexture());
-	/*for (auto &warp : mWarps) {
-		warp->draw();
-		}*/
-	//end
-	/*renderSceneToFbo();
-
-
-
-	if (mFadeInDelay) {
-	if (getElapsedFrames() > mVDSession->getFadeInDelay()) {
-	mFadeInDelay = false;
-	setWindowSize(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight);
-	setWindowPos(ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY));
-	timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 2.0f, EaseInCubic());
-	}
-	}
-	if (mFadeOutDelay) {
-	if (getElapsedFrames() > mVDSession->getEndFrame()) {
-	mFadeOutDelay = false;
-	timeline().apply(&mVDSettings->iAlpha, 1.0f, 0.0f, 2.0f, EaseInCubic());
-	}
-	}
-	gl::clear(Color::black());
-	gl::setMatricesWindow(toPixels(getWindowSize()));
-
-	for (auto &warp : mWarps) {
-	warp->draw(mVDFbos[mVDSettings->mMixFboIndex]->getTexture());
-	}*/
-
 }
 void BatchassSpidermoonApp::resize()
 {
@@ -294,14 +247,13 @@ void BatchassSpidermoonApp::mouseMove(MouseEvent event)
 	// pass this mouse event to the warp editor first
 	if (!Warp::handleMouseMove(mWarps, event)) {
 		// let your application perform its mouseMove handling here
-		mVDSettings->controlValues[10] = event.getX() / mVDSettings->mRenderWidth;
-
+		mVDAnimation->controlValues[10] = event.getX() / mVDSettings->mRenderWidth;
 	}
 }
 
 void BatchassSpidermoonApp::mouseDown(MouseEvent event)
 {
-		mVDSettings->controlValues[45] = 1.0f;
+		mVDAnimation->controlValues[45] = 1.0f;
 		mouseX = event.getX() / 640.0f;
 		mouseY = event.getY() / 640.0f;
 
@@ -319,7 +271,7 @@ void BatchassSpidermoonApp::mouseUp(MouseEvent event)
 	// pass this mouse event to the warp editor first
 	if (!Warp::handleMouseUp(mWarps, event)) {
 		// let your application perform its mouseUp handling here
-		mVDSettings->controlValues[45] = 0.0f;
+		mVDAnimation->controlValues[45] = 0.0f;
 	}
 }
 void BatchassSpidermoonApp::keyDown(KeyEvent event)

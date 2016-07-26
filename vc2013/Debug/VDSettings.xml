@@ -2,12 +2,12 @@
 <settings>
 	<AutoLayout value="1"/>
 	<Standalone value="0"/>
-	<MainWindowWidth value="1600"/>
-	<MainWindowHeight value="900"/>
+	<MainWindowWidth value="1920"/>
+	<MainWindowHeight value="1080"/>
 	<MainWindowX value="0"/>
 	<MainWindowY value="0"/>
-	<RenderWidth value="1600"/>
-	<RenderHeight value="900"/>
+	<RenderWidth value="1920"/>
+	<RenderHeight value="1080"/>
 	<RenderX value="0"/>
 	<RenderY value="0"/>
 	<AspectRatio value="0.75"/>
@@ -33,7 +33,6 @@
 	<WindowSize value="1024"/>
 	<Info value=""/>
 	<AssetsPath value="spidermoon"/>
-	<UseLineIn value="0"/>
 	<SplitWarpH value="0"/>
 	<SplitWarpV value="0"/>
 </settings>

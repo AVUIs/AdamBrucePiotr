@@ -43,42 +43,6 @@
     <Filter Include="Blocks\Videodromm\src">
       <UniqueIdentifier>{93445EED-A92A-4263-9906-44BD1FA6C5F8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Blocks\Videodromm-Fbos">
-      <UniqueIdentifier>{AFB944CD-0DF8-4D7D-8D8E-2AE6227AF89B}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\Videodromm-Fbos\include">
-      <UniqueIdentifier>{793E7CFF-9040-4AF9-9F08-713450CF8CFF}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\Videodromm-Fbos\src">
-      <UniqueIdentifier>{E88F01BD-874E-4579-ADAE-44E91E64AAD0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\Videodromm-Router">
-      <UniqueIdentifier>{0B20506A-5295-42B3-9CBD-BD3F119AD671}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\Videodromm-Router\include">
-      <UniqueIdentifier>{5F8C32E6-AD0F-4BA5-8F8A-6C269C72A7A4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\Videodromm-Router\src">
-      <UniqueIdentifier>{1E384EC2-DE96-4339-B479-CF9A742205C1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\Videodromm-Textures">
-      <UniqueIdentifier>{1D160E38-7D23-41FA-B88C-2DB674A37BC8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\Videodromm-Textures\include">
-      <UniqueIdentifier>{8C2967D6-986C-40B9-9A2B-5B0E67976FB1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\Videodromm-Textures\src">
-      <UniqueIdentifier>{2A8B8D0F-BA95-4156-8697-1CC49FC89CD4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\Videodromm-Warps">
-      <UniqueIdentifier>{5A94EC01-3E6B-4FC2-B9D8-99F0077B32FD}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\Videodromm-Warps\include">
-      <UniqueIdentifier>{7392C57B-BCDF-4638-8079-5B9220CCEA43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blocks\Videodromm-Warps\src">
-      <UniqueIdentifier>{7BE6CDE8-1EB1-4871-9E6A-775C4A33323A}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Blocks\Cinder-Warping">
       <UniqueIdentifier>{066791F1-E951-4847-8576-81E125E063C9}</UniqueIdentifier>
     </Filter>
@@ -189,36 +153,6 @@
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDUtils.cpp">
       <Filter>Blocks\Videodromm\src</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Fbos\include\VDFbo.h">
-      <Filter>Blocks\Videodromm-Fbos\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Fbos\include\VDMix.h">
-      <Filter>Blocks\Videodromm-Fbos\include</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Fbos\src\VDFbo.cpp">
-      <Filter>Blocks\Videodromm-Fbos\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Fbos\src\VDMix.cpp">
-      <Filter>Blocks\Videodromm-Fbos\src</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Router\include\VDRouter.h">
-      <Filter>Blocks\Videodromm-Router\include</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Router\src\VDRouter.cpp">
-      <Filter>Blocks\Videodromm-Router\src</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Textures\include\VDTexture.h">
-      <Filter>Blocks\Videodromm-Textures\include</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Textures\src\VDTexture.cpp">
-      <Filter>Blocks\Videodromm-Textures\src</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Warps\include\VDWarp.h">
-      <Filter>Blocks\Videodromm-Warps\include</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Warps\src\VDWarp.cpp">
-      <Filter>Blocks\Videodromm-Warps\src</Filter>
-    </ClCompile>
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Warping\include\Warp.h">
       <Filter>Blocks\Cinder-Warping\include</Filter>
     </ClInclude>
@@ -258,6 +192,9 @@
     <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\Osc.h">
       <Filter>Blocks\OSC\src</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDRouter.cpp">
+      <Filter>Blocks\Videodromm\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -265,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="..\include\BatchassSpidermoonApp.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm\include\VDRouter.h">
+      <Filter>Blocks\Videodromm\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\Cinder\include";..\..\..\Cinder\blocks\Cinder-Hap2\src;..\..\..\Cinder\blocks\Cinder-MIDI2\include;..\..\..\Cinder\blocks\Cinder-MIDI2\lib;..\..\..\Cinder\blocks\Cinder-MIDI2\src;..\..\..\Cinder\blocks\Cinder-Spout\include;..\..\..\Cinder\blocks\Cinder-Videodromm\include;..\..\..\Cinder\blocks\Cinder-Videodromm\src;..\..\..\Cinder\blocks\Cinder-Videodromm-Fbos\include;..\..\..\Cinder\blocks\Cinder-Videodromm-Fbos\src;..\..\..\Cinder\blocks\Cinder-Videodromm-Router\include;..\..\..\Cinder\blocks\Cinder-Videodromm-Router\src;..\..\..\Cinder\blocks\Cinder-Videodromm-Textures\include;..\..\..\Cinder\blocks\Cinder-Videodromm-Textures\src;..\..\..\Cinder\blocks\Cinder-Videodromm-UI\include;..\..\..\Cinder\blocks\Cinder-Videodromm-UI\src;..\..\..\Cinder\blocks\Cinder-Videodromm-Warps\include;..\..\..\Cinder\blocks\Cinder-Videodromm-Warps\src;..\..\..\Cinder\blocks\Cinder-Warping\include;..\..\..\Cinder\blocks\Cinder-WebSocketPP\src;..\..\..\Cinder\include\asio;..\..\..\Cinder\blocks\OSC\src;..\..\..\Cinder\blocks\QuickTime\include\msw;..\..\..\Cinder\blocks\QuickTime\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\Cinder\include;..\..\..\Cinder\blocks\Cinder-Hap2\src;..\..\..\Cinder\blocks\Cinder-MIDI2\include;..\..\..\Cinder\blocks\Cinder-MIDI2\lib;..\..\..\Cinder\blocks\Cinder-MIDI2\src;..\..\..\Cinder\blocks\Cinder-Spout\include;..\..\..\Cinder\blocks\Cinder-Videodromm\include;..\..\..\Cinder\blocks\Cinder-Videodromm\src;..\..\..\Cinder\blocks\Cinder-Warping\include;..\..\..\Cinder\blocks\Cinder-WebSocketPP\src;..\..\..\Cinder\include\asio;..\..\..\Cinder\blocks\OSC\src;..\..\..\Cinder\blocks\QuickTime\include\msw;..\..\..\Cinder\blocks\QuickTime\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -80,7 +80,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\Cinder\include";..\..\..\Cinder\blocks\Cinder-Hap2\src;..\..\..\Cinder\blocks\Cinder-MIDI2\include;..\..\..\Cinder\blocks\Cinder-MIDI2\lib;..\..\..\Cinder\blocks\Cinder-MIDI2\src;..\..\..\Cinder\blocks\Cinder-Spout\include;..\..\..\Cinder\blocks\Cinder-Videodromm\include;..\..\..\Cinder\blocks\Cinder-Videodromm\src;..\..\..\Cinder\blocks\Cinder-Videodromm-Fbos\include;..\..\..\Cinder\blocks\Cinder-Videodromm-Fbos\src;..\..\..\Cinder\blocks\Cinder-Videodromm-Router\include;..\..\..\Cinder\blocks\Cinder-Videodromm-Router\src;..\..\..\Cinder\blocks\Cinder-Videodromm-Textures\include;..\..\..\Cinder\blocks\Cinder-Videodromm-Textures\src;..\..\..\Cinder\blocks\Cinder-Videodromm-UI\include;..\..\..\Cinder\blocks\Cinder-Videodromm-UI\src;..\..\..\Cinder\blocks\Cinder-Videodromm-Warps\include;..\..\..\Cinder\blocks\Cinder-Videodromm-Warps\src;..\..\..\Cinder\blocks\Cinder-Warping\include;..\..\..\Cinder\blocks\Cinder-WebSocketPP\src;..\..\..\Cinder\include\asio;..\..\..\Cinder\blocks\OSC\src;..\..\..\Cinder\blocks\QuickTime\include\msw;..\..\..\Cinder\blocks\QuickTime\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\Cinder\include;..\..\..\Cinder\blocks\Cinder-Hap2\src;..\..\..\Cinder\blocks\Cinder-MIDI2\include;..\..\..\Cinder\blocks\Cinder-MIDI2\lib;..\..\..\Cinder\blocks\Cinder-MIDI2\src;..\..\..\Cinder\blocks\Cinder-Spout\include;..\..\..\Cinder\blocks\Cinder-Videodromm\include;..\..\..\Cinder\blocks\Cinder-Videodromm\src;..\..\..\Cinder\blocks\Cinder-Warping\include;..\..\..\Cinder\blocks\Cinder-WebSocketPP\src;..\..\..\Cinder\include\asio;..\..\..\Cinder\blocks\OSC\src;..\..\..\Cinder\blocks\QuickTime\include\msw;..\..\..\Cinder\blocks\QuickTime\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -117,6 +117,7 @@
   <ItemGroup />
   <ItemGroup />
   <ItemGroup>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm\include\VDRouter.h" />
     <ClInclude Include="..\include\BatchassSpidermoonApp.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Hap2\src\HapSupport.h" />
@@ -133,11 +134,6 @@
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm\include\VDSettings.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm\include\VDUtils.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm\include\Watchdog.h" />
-    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Fbos\include\VDFbo.h" />
-    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Fbos\include\VDMix.h" />
-    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Router\include\VDRouter.h" />
-    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Textures\include\VDTexture.h" />
-    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Warps\include\VDWarp.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Warping\include\Warp.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketClient.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketConnection.h" />
@@ -145,6 +141,7 @@
     <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\Osc.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDRouter.cpp" />
     <ClCompile Include="..\src\BatchassSpidermoonApp.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Hap2\src\MovieHap.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Hap2\src\HapSupport.c" />
@@ -158,11 +155,6 @@
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDSession.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDSettings.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDUtils.cpp" />
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Fbos\src\VDFbo.cpp" />
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Fbos\src\VDMix.cpp" />
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Router\src\VDRouter.cpp" />
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Textures\src\VDTexture.cpp" />
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm-Warps\src\VDWarp.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Warping\src\Warp.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Warping\src\WarpBilinear.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Warping\src\WarpPerspective.cpp" />
