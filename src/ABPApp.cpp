@@ -116,34 +116,34 @@ void ABPApp::update()
 	else
 	{
 		if (mVDSettings->iBeat % 8 == 0)
-	{
-	if (bricks.size() < 20) addBrick(false);
-	if (mVDSettings->iBeat > 92)
-	{
-	mGlobalMode = true;
-	mR = 1.0f;
-	mB = 0.0f;
-	}
-	if (mVDSettings->iBeat > 280 && mVDSettings->iBeat < 292)
-	{
-	mShape = 1;
-	}
-	if (mVDSettings->iBeat > 316)
-	{
-	mRotation += 0.2;
-	if (mRotation>6.35) mRotation = 0;
-	}
-	}
-	else
-	{
-	mR = 0.5f;
-	mB = 0.8f;
-	if (mVDSettings->iBeat > 510 && mVDSettings->iBeat % 2 == 0)
-	{
-	mRotation += 0.2;
-	if (mRotation>6.35) mRotation = 0;
-	}
-	}
+		{
+			if (bricks.size() < 20) addBrick(false);
+			if (mVDSettings->iBeat > 92)
+			{
+				mGlobalMode = true;
+				mR = 1.0f;
+				mB = 0.0f;
+			}
+			if (mVDSettings->iBeat > 280 && mVDSettings->iBeat < 292)
+			{
+				mShape = 1;
+			}
+			if (mVDSettings->iBeat > 316)
+			{
+				mRotation += 0.2;
+				if (mRotation > 6.35) mRotation = 0;
+			}
+		}
+		else
+		{
+			mR = 0.5f;
+			mB = 0.8f;
+			if (mVDSettings->iBeat > 510 && mVDSettings->iBeat % 2 == 0)
+			{
+				mRotation += 0.2;
+				if (mRotation > 6.35) mRotation = 0;
+			}
+		}
 	}
 	updateBricks();
 
@@ -345,40 +345,7 @@ void ABPApp::updateBricks()
 			if (shape == 0)
 			{
 				gl::drawSphere(vec3(0.0), bricks[i].size * mSize, 16);
-				// new begin
-				gl::pushMatrices();
-				for (int k = 0; k < mRepetitions; k++)
-				{
-					
-					gl::color(1.0, g, b, a);
-					new_x = sin(rotation*0.017) * distance*2;
-					new_y = cos(rotation*0.017) * distance*2;
 
-					x = new_x + bricks[i].vx;
-					y = new_y + bricks[i].vy;
-					bendFactor -= mBend / 10.0f;
-					gl::translate(x, y, mZPosition + bendFactor);
-
-					if (shape == 0)
-					{
-						gl::drawSphere(vec3(0.0), bricks[i].size * mSize/2, 16);
-					}
-					if (shape == 1)
-					{
-						gl::drawCube(vec3(0.0), vec3(bricks[i].size * mSize));
-					}
-					if (shape == 2)
-					{
-						gl::drawSolidCircle(vec2(0, 0), bricks[i].size * mSize);
-					}
-					if (shape == 3)
-					{
-						vec2 dupa[3] = { vec2(0, bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize) };
-						gl::drawSolidTriangle(dupa);
-					}
-				}
-				gl::popMatrices();
-				// new end
 			}
 			if (shape == 1)
 			{
@@ -393,6 +360,40 @@ void ABPApp::updateBricks()
 				vec2 dupa[3] = { vec2(0, bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize) };
 				gl::drawSolidTriangle(dupa);
 			}
+			// branch begin
+			gl::pushMatrices();
+			for (int k = 0; k < mRepetitions; k++)
+			{
+
+				gl::color(r - 0.1f, g - 0.1f, b - 0.1f, a - 0.1f);
+				new_x = sin(rotation*0.017) * distance * 2;
+				new_y = cos(rotation*0.017) * distance * 2;
+
+				x = new_x + bricks[i].vx;
+				y = new_y + bricks[i].vy;
+				bendFactor -= mBend / 10.0f;
+				gl::translate(x, y, mZPosition + bendFactor);
+
+				if (shape == 0)
+				{
+					gl::drawSphere(vec3(0.0), bricks[i].size * mSize / 2, 16);
+				}
+				if (shape == 1)
+				{
+					gl::drawCube(vec3(0.0), vec3(bricks[i].size * mSize / 2));
+				}
+				if (shape == 2)
+				{
+					gl::drawSolidCircle(vec2(0, 0), bricks[i].size * mSize / 2);
+				}
+				if (shape == 3)
+				{
+					vec2 dupa[3] = { vec2(0, bricks[i].size * mSize / 2), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize) };
+					gl::drawSolidTriangle(dupa);
+				}
+			}
+			gl::popMatrices();
+			// branch end
 		}
 		gl::popMatrices();
 
@@ -407,8 +408,15 @@ void ABPApp::draw()
 	if (mFadeInDelay) {
 		if (getElapsedFrames() > mVDSession->getFadeInDelay()) {
 			mFadeInDelay = false;
-			setWindowSize(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight);
-			setWindowPos(ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY));
+			if (mVDSettings->mStandalone) {
+				setWindowSize(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight);
+				setWindowPos(ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY));
+			}
+			else {
+				setWindowSize(1024, 768);
+				setWindowPos(ivec2(0, 0));
+
+			}
 			timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 2.0f, EaseInCubic());
 		}
 	}
@@ -418,7 +426,7 @@ void ABPApp::draw()
 			timeline().apply(&mVDSettings->iAlpha, 1.0f, 0.0f, 2.0f, EaseInCubic());
 		}
 	}
-	gl::clear( Color::black() );
+	gl::clear(Color::black());
 	gl::color(Color::white());
 	if (mUseCam)
 	{

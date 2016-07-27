@@ -79,6 +79,12 @@
     <Filter Include="Blocks\OSC\src">
       <UniqueIdentifier>{78491AD2-3B0D-42E3-869E-EEE26C0DCE65}</UniqueIdentifier>
     </Filter>
+    <Filter Include="debug">
+      <UniqueIdentifier>{05842b3b-108a-4cb9-8f86-d65f92e0a9fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="release">
+      <UniqueIdentifier>{384d10c8-0294-403f-b5ac-4aa0c17583ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ABPApp.cpp">
@@ -370,5 +376,13 @@
     <ResourceCompile Include="Resources.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Debug\VDSettings.xml">
+      <Filter>debug</Filter>
+    </Xml>
+    <Xml Include="Release\VDSettings.xml">
+      <Filter>release</Filter>
+    </Xml>
   </ItemGroup>
 </Project>
