@@ -345,6 +345,40 @@ void ABPApp::updateBricks()
 			if (shape == 0)
 			{
 				gl::drawSphere(vec3(0.0), bricks[i].size * mSize, 16);
+				// new begin
+				gl::pushMatrices();
+				for (int k = 0; k < mRepetitions; k++)
+				{
+					
+					gl::color(1.0, g, b, a);
+					new_x = sin(rotation*0.017) * distance*2;
+					new_y = cos(rotation*0.017) * distance*2;
+
+					x = new_x + bricks[i].vx;
+					y = new_y + bricks[i].vy;
+					bendFactor -= mBend / 10.0f;
+					gl::translate(x, y, mZPosition + bendFactor);
+
+					if (shape == 0)
+					{
+						gl::drawSphere(vec3(0.0), bricks[i].size * mSize/2, 16);
+					}
+					if (shape == 1)
+					{
+						gl::drawCube(vec3(0.0), vec3(bricks[i].size * mSize));
+					}
+					if (shape == 2)
+					{
+						gl::drawSolidCircle(vec2(0, 0), bricks[i].size * mSize);
+					}
+					if (shape == 3)
+					{
+						vec2 dupa[3] = { vec2(0, bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize) };
+						gl::drawSolidTriangle(dupa);
+					}
+				}
+				gl::popMatrices();
+				// new end
 			}
 			if (shape == 1)
 			{
@@ -361,6 +395,9 @@ void ABPApp::updateBricks()
 			}
 		}
 		gl::popMatrices();
+
+
+
 
 	}
 	gl::color(Color::white());
