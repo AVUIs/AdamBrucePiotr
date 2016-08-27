@@ -357,12 +357,9 @@
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketServer.h">
       <Filter>Blocks\Cinder-WebSocketPP\src</Filter>
     </ClInclude>
-    <ClCompile Include="..\..\..\Cinder\blocks\OSC\src\Osc.cpp">
+    <ClCompile Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.cpp">
       <Filter>Blocks\OSC\src</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\Osc.h">
-      <Filter>Blocks\OSC\src</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -370,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="..\include\ABPApp.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.h">
+      <Filter>Blocks\OSC\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

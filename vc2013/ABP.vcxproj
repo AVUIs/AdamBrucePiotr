@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\Cinder\include";..\..\..\Cinder\blocks\Cinder-Hap2\src;..\..\..\Cinder\blocks\Cinder-ImGui\lib\imgui;..\..\..\Cinder\blocks\Cinder-ImGui\include;..\..\..\Cinder\blocks\Cinder-MIDI2\include;..\..\..\Cinder\blocks\Cinder-MIDI2\lib;..\..\..\Cinder\blocks\Cinder-MIDI2\src;..\..\..\Cinder\blocks\Cinder-Spout\include;..\..\..\Cinder\blocks\Cinder-Videodromm\include;..\..\..\Cinder\blocks\Cinder-Videodromm\src;..\..\..\Cinder\blocks\Cinder-Warping\include;..\..\..\Cinder\blocks\Cinder-WebSocketPP\src;..\..\..\Cinder\include\asio;..\..\..\Cinder\blocks\OSC\src;..\..\..\Cinder\blocks\QuickTime\include\msw;..\..\..\Cinder\blocks\QuickTime\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\Cinder\include;..\..\..\Cinder\blocks\Cinder-Hap2\src;..\..\..\Cinder\blocks\Cinder-ImGui\lib\imgui;..\..\..\Cinder\blocks\Cinder-ImGui\include;..\..\..\Cinder\blocks\Cinder-MIDI2\include;..\..\..\Cinder\blocks\Cinder-MIDI2\lib;..\..\..\Cinder\blocks\Cinder-MIDI2\src;..\..\..\Cinder\blocks\Cinder-Spout\include;..\..\..\Cinder\blocks\Cinder-Videodromm\include;..\..\..\Cinder\blocks\Cinder-Videodromm\src;..\..\..\Cinder\blocks\Cinder-Warping\include;..\..\..\Cinder\blocks\Cinder-WebSocketPP\src;..\..\..\Cinder\include\asio;..\..\..\Cinder\blocks\OSC\src\cinder\osc;..\..\..\Cinder\blocks\QuickTime\include\msw;..\..\..\Cinder\blocks\QuickTime\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -80,7 +80,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\Cinder\include";..\..\..\Cinder\blocks\Cinder-Hap2\src;..\..\..\Cinder\blocks\Cinder-ImGui\lib\imgui;..\..\..\Cinder\blocks\Cinder-ImGui\include;..\..\..\Cinder\blocks\Cinder-MIDI2\include;..\..\..\Cinder\blocks\Cinder-MIDI2\lib;..\..\..\Cinder\blocks\Cinder-MIDI2\src;..\..\..\Cinder\blocks\Cinder-Spout\include;..\..\..\Cinder\blocks\Cinder-Videodromm\include;..\..\..\Cinder\blocks\Cinder-Videodromm\src;..\..\..\Cinder\blocks\Cinder-Warping\include;..\..\..\Cinder\blocks\Cinder-WebSocketPP\src;..\..\..\Cinder\include\asio;..\..\..\Cinder\blocks\OSC\src;..\..\..\Cinder\blocks\QuickTime\include\msw;..\..\..\Cinder\blocks\QuickTime\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\Cinder\include;..\..\..\Cinder\blocks\Cinder-Hap2\src;..\..\..\Cinder\blocks\Cinder-ImGui\lib\imgui;..\..\..\Cinder\blocks\Cinder-ImGui\include;..\..\..\Cinder\blocks\Cinder-MIDI2\include;..\..\..\Cinder\blocks\Cinder-MIDI2\lib;..\..\..\Cinder\blocks\Cinder-MIDI2\src;..\..\..\Cinder\blocks\Cinder-Spout\include;..\..\..\Cinder\blocks\Cinder-Videodromm\include;..\..\..\Cinder\blocks\Cinder-Videodromm\src;..\..\..\Cinder\blocks\Cinder-Warping\include;..\..\..\Cinder\blocks\Cinder-WebSocketPP\src;..\..\..\Cinder\include\asio;..\..\..\Cinder\blocks\OSC\src\cinder\osc;..\..\..\Cinder\blocks\QuickTime\include\msw;..\..\..\Cinder\blocks\QuickTime\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.h" />
     <ClInclude Include="..\include\ABPApp.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Hap2\src\HapSupport.h" />
@@ -166,9 +167,9 @@
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketClient.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketConnection.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketServer.h" />
-    <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\Osc.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.cpp" />
     <ClCompile Include="..\src\ABPApp.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Hap2\src\MovieHap.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Hap2\src\HapSupport.c" />
@@ -213,7 +214,6 @@
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketClient.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketConnection.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketServer.cpp" />
-    <ClCompile Include="..\..\..\Cinder\blocks\OSC\src\Osc.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
