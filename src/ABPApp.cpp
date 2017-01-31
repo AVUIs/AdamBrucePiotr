@@ -12,25 +12,7 @@ void ABPApp::setup()
 	mVDSettings = VDSettings::create();
 	// Session
 	mVDSession = VDSession::create(mVDSettings);
-	// Utils
-	mVDUtils = VDUtils::create(mVDSettings);
-	mVDUtils->getWindowsResolution();
-	// Animation
-	mVDAnimation = VDAnimation::create(mVDSettings, mVDSession);
-	// Message router
-	mVDRouter = VDRouter::create(mVDSettings, mVDAnimation, mVDSession);
 
-	// initialize 
-	mTexturesFilepath = getAssetPath("") / "textures.xml";
-
-	if (fs::exists(mTexturesFilepath)) {
-		// load textures from file if one exists
-		mTexs = VDTexture::readSettings(mVDAnimation, loadFile(mTexturesFilepath));
-	}
-	else {
-		// otherwise create a texture from scratch
-		mTexs.push_back(TextureAudio::create(mVDAnimation));
-	}
 	g_Width = 1024;
 	g_Height = 768;
 
@@ -98,9 +80,8 @@ void ABPApp::fileDrop(FileDropEvent event)
 }
 void ABPApp::update()
 {
-	// get audio spectrum
-	mVDAnimation->update();
-	mVDRouter->update();
+	mVDSession->setControlValue(mVDSettings->IFPS, getAverageFps());
+	mVDSession->update();
 
 	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
 	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
@@ -155,8 +136,6 @@ void ABPApp::update()
 }
 void ABPApp::cleanup()
 {
-	// save textures
-	VDTexture::writeSettings(mTexs, writeFile(mTexturesFilepath));
 	mVDSettings->save();
 	mVDSession->save();
 	quit();
@@ -420,12 +399,12 @@ void ABPApp::draw()
 			timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 2.0f, EaseInCubic());
 		}
 	}
-	if (mFadeOutDelay) {
+	/*if (mFadeOutDelay) {
 		if (getElapsedFrames() > mVDSession->getEndFrame()) {
 			mFadeOutDelay = false;
 			timeline().apply(&mVDSettings->iAlpha, 1.0f, 0.0f, 2.0f, EaseInCubic());
 		}
-	}
+	}*/
 	gl::clear(Color::black());
 	gl::color(Color::white());
 	if (mUseCam)

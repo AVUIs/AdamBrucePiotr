@@ -6,14 +6,6 @@
 #include "VDSettings.h"
 // Session
 #include "VDSession.h"
-// Animation
-#include "VDAnimation.h"
-// Utils
-#include "VDUtils.h"
-// Textures
-#include "VDTexture.h"
-// Message router
-#include "VDRouter.h"
 
 #if defined( CINDER_MSW )
 // spout
@@ -83,15 +75,6 @@ private:
 	VDSessionRef				mVDSession;
 	// Log
 	VDLogRef					mVDLog;
-	// Utils
-	VDUtilsRef					mVDUtils;
-	// Animation
-	VDAnimationRef				mVDAnimation;
-	// Message router
-	VDRouterRef					mVDRouter;
-
-	VDTextureList				mTexs;
-	fs::path					mTexturesFilepath;
 
 	// ABP
 	string						mLogMsg;
