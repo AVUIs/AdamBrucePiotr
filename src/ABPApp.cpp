@@ -6,24 +6,33 @@ void ABPApp::prepare(Settings *settings)
 }
 void ABPApp::setup()
 {
-	mFadeInDelay = mFadeOutDelay = true;
+	mWaveDelay = mFadeInDelay = mFadeOutDelay = true;
 
 	// Settings
 	mVDSettings = VDSettings::create();
 	// Session
 	mVDSession = VDSession::create(mVDSettings);
-
-	g_Width = 1024;
-	g_Height = 768;
+	mVDSession->getWindowsResolution();
+	gl::Fbo::Format format;
+	if (mVDSettings->mStandalone) {
+		g_Width = mVDSettings->mRenderWidth;
+		g_Height = mVDSettings->mRenderHeight;
+		x = mVDSettings->mRenderWidth / 2;
+		y = mVDSettings->mRenderHeight / 2;
+		mFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, format.depthTexture());
+	}
+	else {
+		g_Width = 1024;
+		g_Height = 768;
+		x = 1024 / 2;
+		y = 768 / 2;
+		mFbo = gl::Fbo::create(1024, 768, format.depthTexture());
+	}
 
 	updateWindowTitle();
 
 	mSendOSC = false;
-	// neRenderer
-	x = 1024 / 2;
-	y = 768 / 2;
-	gl::Fbo::Format format;
-	mFbo = gl::Fbo::create(1024, 768, format.depthTexture());
+
 	mUseCam = false;
 	mMouseIndex = 0;
 	isMouseDown = false;
@@ -70,7 +79,9 @@ void ABPApp::setup()
 	bSenderInitialized = spoutsender.CreateSender(SenderName, g_Width, g_Height);
 #endif
 
+
 }
+
 void ABPApp::newRendering() {
 	gl::clear();
 }
@@ -397,6 +408,13 @@ void ABPApp::draw()
 
 			}
 			timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 2.0f, EaseInCubic());
+		}
+	}
+	if (mWaveDelay) {
+		if (getElapsedFrames() > mVDSession->getWavePlaybackDelay()) {
+			mWaveDelay = false;
+			fs::path waveFile = getAssetPath("") / mVDSettings->mAssetsPath / mVDSession->getWaveFileName();
+			mVDSession->loadAudioFile(waveFile.string());
 		}
 	}
 	/*if (mFadeOutDelay) {

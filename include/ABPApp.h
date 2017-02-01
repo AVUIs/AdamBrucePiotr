@@ -137,6 +137,7 @@ private:
 	// window management
 	bool						mFadeInDelay;
 	bool						mFadeOutDelay;
+	bool						mWaveDelay;
 
 };
 
