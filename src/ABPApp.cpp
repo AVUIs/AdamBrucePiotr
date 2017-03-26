@@ -91,7 +91,7 @@ void ABPApp::fileDrop(FileDropEvent event)
 }
 void ABPApp::update()
 {
-	mVDSession->setControlValue(mVDSettings->IFPS, getAverageFps());
+	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
 	mVDSession->update();
 
 	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
