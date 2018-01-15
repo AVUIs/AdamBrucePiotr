@@ -64,8 +64,8 @@
       <AdditionalIncludeDirectories>"..\..\..\Cinder\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;OpenGL32.lib;%(AdditionalDependencies);winmm.lib;..\..\..\Cinder\blocks\Cinder-Spout\lib\Spout.lib;..\..\..\Cinder\blocks\QuickTime\lib\msw\x86\CVClient.lib;..\..\..\Cinder\blocks\QuickTime\lib\msw\x86\QTMLClient.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\Cinder\lib\msw\$(PlatformTarget)";..\..\..\Cinder\blocks\Cinder-Videodromm\lib;..\..\..\Cinder\blocks\Cinder-WebSocketPP\lib\msw</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies);winmm.lib;..\..\..\Cinder\blocks\Cinder-Spout\lib\Spout.lib;..\..\..\Cinder\blocks\QuickTime\lib\msw\x86\CVClient.lib;..\..\..\Cinder\blocks\QuickTime\lib\msw\x86\QTMLClient.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\Cinder\lib\msw\$(PlatformTarget);..\..\..\Cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\..\Cinder\blocks\Cinder-Videodromm\lib;..\..\..\Cinder\blocks\Cinder-WebSocketPP\lib\msw</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -95,8 +95,8 @@
       <AdditionalIncludeDirectories>"..\..\..\Cinder\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset).lib;OpenGL32.lib;%(AdditionalDependencies);winmm.lib;..\..\..\Cinder\blocks\Cinder-Spout\lib\Spout.lib;..\..\..\Cinder\blocks\QuickTime\lib\msw\x86\CVClient.lib;..\..\..\Cinder\blocks\QuickTime\lib\msw\x86\QTMLClient.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\Cinder\lib\msw\$(PlatformTarget)";..\..\..\Cinder\blocks\Cinder-Videodromm\lib;..\..\..\Cinder\blocks\Cinder-WebSocketPP\lib\msw</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies);winmm.lib;..\..\..\Cinder\blocks\Cinder-Spout\lib\Spout.lib;..\..\..\Cinder\blocks\QuickTime\lib\msw\x86\CVClient.lib;..\..\..\Cinder\blocks\QuickTime\lib\msw\x86\QTMLClient.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\Cinder\lib\msw\$(PlatformTarget);..\..\..\Cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\..\Cinder\blocks\Cinder-Videodromm\lib;..\..\..\Cinder\blocks\Cinder-WebSocketPP\lib\msw</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -122,6 +122,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm\include\VDUIWarps.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.h" />
+    <ClInclude Include="..\..\..\Cinder\samples\_audio\common\AudioDrawUtils.h" />
     <ClInclude Include="..\include\ABPApp.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Hap2\src\HapSupport.h" />
@@ -171,12 +172,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-MIDI2\src\MidiIn.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-MIDI2\src\MidiMessage.cpp" />
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDTriangle.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDUIRender.cpp" />
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDUITriangles.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDUIWarps.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDWebsocket.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.cpp" />
+    <ClCompile Include="..\..\..\Cinder\samples\_audio\common\AudioDrawUtils.cpp" />
     <ClCompile Include="..\src\ABPApp.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Hap2\src\MovieHap.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Hap2\src\HapSupport.c" />

@@ -363,17 +363,14 @@
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-MIDI2\src\MidiMessage.cpp">
       <Filter>Blocks\Midi2\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDTriangle.cpp">
-      <Filter>Blocks\Videodromm\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDUIRender.cpp">
-      <Filter>Blocks\Videodromm\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDUITriangles.cpp">
       <Filter>Blocks\Videodromm\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDWebsocket.cpp">
       <Filter>Blocks\Videodromm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Cinder\samples\_audio\common\AudioDrawUtils.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm\include\VDUIWarps.h">
       <Filter>Blocks\Videodromm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\samples\_audio\common\AudioDrawUtils.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
