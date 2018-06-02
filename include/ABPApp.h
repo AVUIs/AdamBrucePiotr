@@ -45,7 +45,6 @@ public:
 	void						fileDrop(FileDropEvent event) override;
 	void						cleanup() override;
 	void						resize();
-	void						shutdown();
 	void						updateWindowTitle();
 	// mouse events
 	void						mouseDown(MouseEvent event) override;
@@ -67,7 +66,7 @@ public:
 	void						addBrick(const bool &pressed);
 	void						setGlobalMode(const bool &pressed);
 	void						reset(const bool &pressed);
-	CameraPersp					mCam; 
+	//CameraPersp					mCam; 
 private:
 	// Settings
 	VDSettingsRef				mVDSettings;
@@ -80,7 +79,6 @@ private:
 	string						mLogMsg;
 	bool						newLogMsg;
 	static const int			MAX = 16;
-	bool						mUseCam;
 	bool						mSendOSC;
 	float						mR, mG, mB;
 	ci::Anim<float> 			mA;
@@ -106,10 +104,6 @@ private:
 
 	int							mMouseIndex;
 	bool						isMouseDown;
-	// recording
-	bool						isRecording;
-	int							presentIndex;
-	void						record(const bool &pressed);
 	// neRenderer
 	float						x, y;
 	float						r, g, b, a;
@@ -127,7 +121,6 @@ private:
 	void						newRendering();
 	void						updateBricks();
 	vector <brick>				bricks;
-	bool						newRecording;
 	int							bBegin;
 	int							bEnd;
 	int							bBreakBegin;

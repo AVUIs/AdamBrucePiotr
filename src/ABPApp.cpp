@@ -33,16 +33,14 @@ void ABPApp::setup()
 
 	mSendOSC = false;
 
-	mUseCam = false;
 	mMouseIndex = 0;
 	isMouseDown = false;
-	isRecording = false;
 	mZoom = 0.3f;
 	mXYVector = vec2(1.0);
 	mRepetitions = 1;
 	mBranchesRepetitions = 0;
 	mShape = 0;
-	mZPosition = 0.0f;
+	mZPosition = -1.0f;
 	mRotation = 2.5f;
 	mSize = 1.0f;
 	mMotionVector = 0.2f;
@@ -58,16 +56,13 @@ void ABPApp::setup()
 	mR = 0.5f;
 	mG = 0.0f;
 	mB = 0.8f;
-	mA = 1.0f;
-	presentIndex = 0;
+	mA = 0.0f;
 	// init one brick
 	addBrick(true);
 	// gl setup
 	gl::enableDepthRead();
 	gl::enableDepthWrite();
 	gl::enableAlphaBlending();
-
-	mCam.lookAt(vec3(0, CAMERA_Y_RANGE.first, 0), vec3(0));
 
 #if defined( CINDER_MSW )
 	// -------- SPOUT -------------
@@ -82,7 +77,7 @@ void ABPApp::setup()
 	bBegin = 64;
 	bEnd = 552;
 	bBreakBegin = 278;
-	bBreakEnd = 312;
+	bBreakEnd = 320;
 }
 
 void ABPApp::newRendering() {
@@ -102,7 +97,7 @@ void ABPApp::update()
 	mSize = mLockSize ? sin(getElapsedFrames() / 100.0f) + 0.7f : mSize;
 	mMotionVector = mLockMotionVector ? sin(getElapsedFrames() / 50.0f) : mMotionVector;
 	mRotationMatrix *= rotate(0.06f, normalize(vec3(0.16666f, 0.333333f, 0.666666f)));
-	mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f) + 1) * 20 : mRepetitions;
+	mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f) + 2) * 20 : mRepetitions;
 	mBend = mLockBend ? sin(getElapsedFrames() / 100.0f) * 4.0f : mBend;
 	if (mVDSettings->iBeat < bBegin)
 	{
@@ -113,10 +108,10 @@ void ABPApp::update()
 		if (mVDSettings->iBeat % 8 == 0)
 		{
 			if (bricks.size() < 20) {
-				mLockBend = false;
+				
 				addBrick(false);
 			}
-			if (mVDSettings->iBeat > 92 && mVDSettings->iBeat < 153)
+			if (mVDSettings->iBeat > 92 && mVDSettings->iBeat < 150)
 			{
 				mGlobalMode = true;
 				mR = 1.0f;
@@ -127,6 +122,7 @@ void ABPApp::update()
 			{
 				if (mVDSettings->iBeat < bBreakEnd - 8) {
 					mShape = 3;
+					mLockBend = false;
 				}
 				else {
 					mShape = 1;
@@ -157,9 +153,6 @@ void ABPApp::update()
 	updateBricks();
 
 	updateWindowTitle();
-	// move the camera up and down on Y
-	mCam.lookAt(vec3(0, CAMERA_Y_RANGE.first + abs(sin(getElapsedSeconds() / 4)) * (CAMERA_Y_RANGE.second - CAMERA_Y_RANGE.first), 0), vec3(0));
-
 }
 void ABPApp::cleanup()
 {
@@ -170,10 +163,10 @@ void ABPApp::cleanup()
 void ABPApp::resize()
 {
 	// now tell our Camera that the window aspect ratio has changed
-	mCam.setPerspective(60, getWindowAspectRatio(), 1, 1000);
+	/*mCam.setPerspective(60, getWindowAspectRatio(), 1, 1000);
 
 	// and in turn, let OpenGL know we have a new camera
-	gl::setMatrices(mCam);
+	gl::setMatrices(mCam); */
 }
 void ABPApp::mouseDown(MouseEvent event)
 {
@@ -187,14 +180,10 @@ void ABPApp::mouseUp(MouseEvent event)
 {
 	isMouseDown = false;
 }
-void ABPApp::record(const bool &pressed)
-{
-	mRotation++;
-	isRecording = !isRecording;
-}
+
 void ABPApp::updateWindowTitle()
 {
-	getWindow()->setTitle(toString(mVDSettings->iBeat) + " " + toString(floor(getElapsedFrames())) + " " + toString(floor(getAverageFps())));
+	getWindow()->setTitle(toString(mVDSettings->iBeat) + " " + toString(floor(getElapsedFrames())) + " " + toString(mBranchesRepetitions) + " " + toString(floor(getAverageFps())));
 }
 void ABPApp::keyDown(KeyEvent event)
 {
@@ -291,20 +280,9 @@ void ABPApp::updateBricks()
 #ifdef _DEBUG
 #else
 	// avoid fps drop
-	if (mVDSettings->iBeat > bBegin) mBranchesRepetitions = mVDSession->getMaxVolume() / 10;
+	if (mVDSettings->iBeat > 158) mBranchesRepetitions = mVDSession->getMaxVolume() / 10;
 #endif  // _DEBUG
-	/*if (mVDSession->getMaxVolume() > 0.7)
-	{
-		float between08and1 = mVDSession->getMaxVolume() - 0.7;
-		volumeFactor = lmap<float>(between08and1, 0.0, 0.3, 0.1, 0.8);
-	}
-	else
-	{
-		volumeFactor = 0.01;
-	} */
-	if (newRecording == true) {
-		newRendering();
-	}
+
 	gl::ScopedFramebuffer fbScp(mFbo);
 
 	// clear out the FBO with red
@@ -422,14 +400,14 @@ void ABPApp::draw()
 		if (getElapsedFrames() > mVDSession->getFadeInDelay()) {
 			mFadeInDelay = false;
 			if (mVDSettings->mStandalone) {
-				setWindowSize(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight);
+				setWindowSize(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight + 1);
 				setWindowPos(ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY));
 			}
 			else {
 				setWindowSize(1280, 720);
 				setWindowPos(ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY));
 			}
-			timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 2.0f, EaseInCubic());
+			timeline().apply(&mA, 0.0f, 1.0f, 3.0f, EaseInCubic());
 		}
 	}
 	if (mWaveDelay) {
@@ -447,14 +425,9 @@ void ABPApp::draw()
 	}
 	gl::clear(Color::black());
 	gl::color(Color::white());
-	if (mUseCam)
-	{
-		gl::setMatrices(mCam);
-	}
-	else
-	{
-		gl::setMatricesWindow(toPixels(getWindowSize()));
-	}
+	
+	gl::setMatricesWindow(toPixels(getWindowSize()));
+	
 
 	gl::draw(mFbo->getColorTexture(), Rectf(0, 0, g_Width, g_Height));
 
