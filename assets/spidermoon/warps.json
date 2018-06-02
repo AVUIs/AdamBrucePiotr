@@ -1,0 +1,68 @@
+{
+   "warps" : [
+      {
+         "adaptive" : true,
+         "id" : 1,
+         "linear" : false,
+         "resolution" : 16,
+         "warp" : {
+            "afboindex" : 1,
+            "ashaderfilename" : "PlasmaGlobe.glsl",
+            "ashaderindex" : 0,
+            "bfboindex" : 2,
+            "brightness" : 1,
+            "bshaderfilename" : "PlasmaGlobe.glsl",
+            "bshaderindex" : 2,
+            "controlpoints" : [
+               {
+                  "controlpoint" : 0,
+                  "x" : 0,
+                  "y" : 0
+               },
+               {
+                  "controlpoint" : 1,
+                  "x" : 0,
+                  "y" : 1
+               },
+               {
+                  "controlpoint" : 2,
+                  "x" : 1,
+                  "y" : 0
+               },
+               {
+                  "controlpoint" : 3,
+                  "x" : 0.99707000000000001,
+                  "y" : 1
+               }
+            ],
+            "corners" : [
+               {
+                  "corner" : 0,
+                  "x" : 0.084960900000000006,
+                  "y" : 0.328125
+               },
+               {
+                  "corner" : 1,
+                  "x" : 0.1875,
+                  "y" : 0.14453099999999999
+               },
+               {
+                  "corner" : 2,
+                  "x" : 0.33984399999999998,
+                  "y" : 0.22916700000000001
+               },
+               {
+                  "corner" : 3,
+                  "x" : 0.21875,
+                  "y" : 0.35416700000000001
+               }
+            ],
+            "crossfade" : 1,
+            "height" : 2,
+            "method" : "perspectivebilinear",
+            "mixfboindex" : 0,
+            "width" : 2
+         }
+      }
+   ]
+}

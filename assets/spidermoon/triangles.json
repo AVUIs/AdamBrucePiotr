@@ -1,0 +1,13 @@
+{
+   "triangles" : [
+      {
+         "triangle" : {
+            "afboindex" : 1,
+            "ashaderfilename" : "tex1",
+            "ashaderindex" : 1,
+            "bfboindex" : 2,
+            "bshaderindex" : 2
+         }
+      }
+   ]
+}

@@ -165,9 +165,6 @@
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm\include\VDAnimation.h">
       <Filter>Blocks\Videodromm\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm\include\VDConsole.h">
-      <Filter>Blocks\Videodromm\include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-Videodromm\include\VDFbo.h">
       <Filter>Blocks\Videodromm\include</Filter>
     </ClInclude>
@@ -244,9 +241,6 @@
       <Filter>Blocks\Videodromm\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDAnimation.cpp">
-      <Filter>Blocks\Videodromm\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDConsole.cpp">
       <Filter>Blocks\Videodromm\src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-Videodromm\src\VDFbo.cpp">

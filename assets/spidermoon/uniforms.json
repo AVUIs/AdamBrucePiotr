@@ -1,0 +1,811 @@
+{
+   "uniforms" : [
+      {
+         "uniform" : {
+            "index" : 0,
+            "max" : 1,
+            "min" : 0,
+            "name" : "iGlobalTime",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 1,
+            "max" : 1,
+            "min" : 0,
+            "name" : "iFR",
+            "type" : 0,
+            "value" : 1
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 2,
+            "max" : 1,
+            "min" : 0,
+            "name" : "iFG",
+            "type" : 0,
+            "value" : 0.29999999999999999
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 3,
+            "max" : 1,
+            "min" : 0,
+            "name" : "iFB",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 4,
+            "max" : 1,
+            "min" : 0,
+            "name" : "iAlpha",
+            "type" : 0,
+            "value" : 1
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 5,
+            "max" : 3,
+            "min" : 0,
+            "name" : "iRedMultiplier",
+            "type" : 0,
+            "value" : 1
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 6,
+            "max" : 3,
+            "min" : 0,
+            "name" : "iGreenMultiplier",
+            "type" : 0,
+            "value" : 1
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 7,
+            "max" : 3,
+            "min" : 0,
+            "name" : "iBlueMultiplier",
+            "type" : 0,
+            "value" : 1
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 8,
+            "max" : 5,
+            "min" : 0,
+            "name" : "iBadTv",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 9,
+            "max" : 2,
+            "min" : -2,
+            "name" : "iRotationSpeed",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 10,
+            "max" : 128,
+            "min" : 1,
+            "name" : "iSteps",
+            "type" : 0,
+            "value" : 16
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 11,
+            "max" : 20,
+            "min" : 9.9999999999999994e-12,
+            "name" : "iRatio",
+            "type" : 0,
+            "value" : 20
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 12,
+            "max" : 3,
+            "min" : -3,
+            "name" : "iZoom",
+            "type" : 0,
+            "value" : 1
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 13,
+            "max" : 12,
+            "min" : 0.01,
+            "name" : "iAudioMult",
+            "type" : 0,
+            "value" : 1
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 14,
+            "max" : 3,
+            "min" : 0,
+            "name" : "iExposure",
+            "type" : 0,
+            "value" : 1
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 15,
+            "max" : 1,
+            "min" : 0.01,
+            "name" : "iPixelate",
+            "type" : 0,
+            "value" : 1
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 16,
+            "max" : 1,
+            "min" : 0,
+            "name" : "iTrixels",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 17,
+            "max" : 1,
+            "min" : 1.0000000000000001e-09,
+            "name" : "iChromatic",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 18,
+            "max" : 1,
+            "min" : 0,
+            "name" : "iCrossfade",
+            "type" : 0,
+            "value" : 1
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 19,
+            "max" : 1,
+            "min" : 0,
+            "name" : "iBR",
+            "type" : 0,
+            "value" : 0.10000000000000001
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 20,
+            "max" : 1,
+            "min" : 0,
+            "name" : "iBG",
+            "type" : 0,
+            "value" : 0.5
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 21,
+            "max" : 1,
+            "min" : 0,
+            "name" : "iBB",
+            "type" : 0,
+            "value" : 0.10000000000000001
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 22,
+            "max" : 12,
+            "min" : 0.01,
+            "name" : "iSpeed",
+            "type" : 0,
+            "value" : 12
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 23,
+            "max" : 1,
+            "min" : 0,
+            "name" : "iBA",
+            "type" : 0,
+            "value" : 0.20000000000000001
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 24,
+            "max" : 1,
+            "min" : 0,
+            "name" : "iTempoTime",
+            "type" : 0,
+            "value" : 0.10000000000000001
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 25,
+            "max" : 500,
+            "min" : 0,
+            "name" : "iFps",
+            "type" : 0,
+            "value" : 60
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 26,
+            "max" : 0.5,
+            "min" : 0,
+            "name" : "iContour",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 27,
+            "max" : 100,
+            "min" : 0.01,
+            "name" : "iParam1",
+            "type" : 0,
+            "value" : 1
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 28,
+            "max" : 100,
+            "min" : 0.01,
+            "name" : "iParam2",
+            "type" : 0,
+            "value" : 1
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 29,
+            "max" : 1024,
+            "min" : 0.01,
+            "name" : "iResolutionX",
+            "type" : 0,
+            "value" : 640
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 30,
+            "max" : 800,
+            "min" : 0.01,
+            "name" : "iResolutionY",
+            "type" : 0,
+            "value" : 480
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 31,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 32,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 33,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 34,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 35,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 36,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 37,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 38,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 39,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 40,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 41,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 42,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 43,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 44,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 45,
+            "name" : "iGlitch",
+            "type" : 6,
+            "value" : false
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 46,
+            "name" : "iToggle",
+            "type" : 6,
+            "value" : false
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 47,
+            "name" : "iVignette",
+            "type" : 6,
+            "value" : false
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 48,
+            "name" : "iInvert",
+            "type" : 6,
+            "value" : false
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 49,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 50,
+            "name" : "iBlendmode",
+            "type" : 5,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 51,
+            "name" : "iGreyScale",
+            "type" : 5,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 52,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 53,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 54,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 55,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 56,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 57,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 58,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 59,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 60,
+            "name" : "iResolution",
+            "type" : 3
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 61,
+            "name" : "iColor",
+            "type" : 3
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 62,
+            "name" : "iBackgroundColor",
+            "type" : 3
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 63,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 64,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 65,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 66,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 67,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 68,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 69,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 70,
+            "name" : "iMouse",
+            "type" : 4
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 71,
+            "name" : "iDate",
+            "type" : 4
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 72,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 73,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 74,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 75,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 76,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 77,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 78,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 79,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 80,
+            "max" : 0,
+            "min" : 0,
+            "name" : "",
+            "type" : 0,
+            "value" : 0
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 81,
+            "name" : "iFlipH",
+            "type" : 6,
+            "value" : false
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 82,
+            "name" : "iFlipV",
+            "type" : 6,
+            "value" : false
+         }
+      },
+      {
+         "uniform" : {
+            "index" : 83,
+            "name" : "iXorY",
+            "type" : 6,
+            "value" : false
+         }
+      }
+   ]
+}

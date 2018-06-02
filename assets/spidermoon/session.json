@@ -1,0 +1,26 @@
+{
+   "assets" : {
+      "moviefile" : "none.mov",
+      "movieplaybackdelay" : 10,
+      "wavefile" : "batchass-spidermoon.wav",
+      "waveplaybackdelay" : 10
+   },
+   "settings" : {
+      "beatsperbar" : 4,
+      "bpm" : 166,
+      "endframe" : 20000000,
+      "fadeindelay" : 10,
+      "fadeoutdelay" : 10
+   },
+   "warp0" : {
+      "afboindex" : 1,
+      "ashaderindex" : 0,
+      "bfboindex" : 2,
+      "bshaderindex" : 2,
+      "name" : "",
+      "xfade" : 1
+   },
+   "warps" : {
+      "size" : 1
+   }
+}
