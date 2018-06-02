@@ -22,11 +22,11 @@ void ABPApp::setup()
 		mFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, format.depthTexture());
 	}
 	else {
-		g_Width = 1024;
-		g_Height = 768;
-		x = 1024 / 2;
-		y = 768 / 2;
-		mFbo = gl::Fbo::create(1024, 768, format.depthTexture());
+		g_Width = 1280;
+		g_Height = 720;
+		x = g_Width / 2;
+		y = g_Height / 2;
+		mFbo = gl::Fbo::create(g_Width, g_Height, format.depthTexture());
 	}
 
 	updateWindowTitle();
@@ -40,6 +40,7 @@ void ABPApp::setup()
 	mZoom = 0.3f;
 	mXYVector = vec2(1.0);
 	mRepetitions = 1;
+	mBranchesRepetitions = 0;
 	mShape = 0;
 	mZPosition = 0.0f;
 	mRotation = 2.5f;
@@ -51,7 +52,7 @@ void ABPApp::setup()
 	mLockRotation = false;
 	mLockSize = false;
 	mLockMotionVector = false;
-	mLockBend = false;
+	mLockBend = true;
 	mGlobalMode = true;
 	mColorFactor = 0.06;
 	mR = 0.5f;
@@ -78,8 +79,10 @@ void ABPApp::setup()
 	// Initialize a sender
 	bSenderInitialized = spoutsender.CreateSender(SenderName, g_Width, g_Height);
 #endif
-
-	//mVDSettings->iBeat = -1;
+	bBegin = 64;
+	bEnd = 552;
+	bBreakBegin = 278;
+	bBreakEnd = 312;
 }
 
 void ABPApp::newRendering() {
@@ -100,8 +103,8 @@ void ABPApp::update()
 	mMotionVector = mLockMotionVector ? sin(getElapsedFrames() / 50.0f) : mMotionVector;
 	mRotationMatrix *= rotate(0.06f, normalize(vec3(0.16666f, 0.333333f, 0.666666f)));
 	mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f) + 1) * 20 : mRepetitions;
-	mBend = mLockBend ? sin(getElapsedFrames() / 100.0f) * 10.0f : mBend;
-	if (mVDSettings->iBeat < 64)
+	mBend = mLockBend ? sin(getElapsedFrames() / 100.0f) * 4.0f : mBend;
+	if (mVDSettings->iBeat < bBegin)
 	{
 		mRepetitions = (mVDSettings->iBeat / 8) + 1;
 	}
@@ -109,31 +112,45 @@ void ABPApp::update()
 	{
 		if (mVDSettings->iBeat % 8 == 0)
 		{
-			if (bricks.size() < 20) addBrick(false);
-			if (mVDSettings->iBeat > 92)
+			if (bricks.size() < 20) {
+				mLockBend = false;
+				addBrick(false);
+			}
+			if (mVDSettings->iBeat > 92 && mVDSettings->iBeat < 153)
 			{
 				mGlobalMode = true;
 				mR = 1.0f;
 				mB = 0.0f;
 			}
-			if (mVDSettings->iBeat > 280 && mVDSettings->iBeat < 292)
+			// change to cube
+			if (mVDSettings->iBeat > bBreakBegin && mVDSettings->iBeat < bBreakEnd)
 			{
-				mShape = 1;
+				if (mVDSettings->iBeat < bBreakEnd - 8) {
+					mShape = 3;
+				}
+				else {
+					mShape = 1;
+				}
 			}
-			if (mVDSettings->iBeat > 316)
+			/*if (mVDSettings->iBeat > 316)
 			{
-				mRotation += 0.2;
+				mRotation += 0.05;
 				if (mRotation > 6.35) mRotation = 0;
-			}
+			} */
 		}
 		else
 		{
 			mR = 0.5f;
 			mB = 0.8f;
-			if (mVDSettings->iBeat > 510 && mVDSettings->iBeat % 2 == 0)
+			if (mVDSettings->iBeat > 494 && mVDSettings->iBeat < bEnd && mVDSettings->iBeat % 2 == 0)
 			{
 				mRotation += 0.2;
 				if (mRotation > 6.35) mRotation = 0;
+			}
+			// end
+			if (mVDSettings->iBeat > bEnd) {
+				mR = mG = mB = 0.8f;
+				mShape = 3;
 			}
 		}
 	}
@@ -177,7 +194,7 @@ void ABPApp::record(const bool &pressed)
 }
 void ABPApp::updateWindowTitle()
 {
-	getWindow()->setTitle(toString(floor(getElapsedFrames())) + " " + toString(floor(getAverageFps())));
+	getWindow()->setTitle(toString(mVDSettings->iBeat) + " " + toString(floor(getElapsedFrames())) + " " + toString(floor(getAverageFps())));
 }
 void ABPApp::keyDown(KeyEvent event)
 {
@@ -230,6 +247,10 @@ void ABPApp::keyDown(KeyEvent event)
 	case KeyEvent::KEY_m:
 		mGlobalMode = !mGlobalMode;
 		break;
+	case KeyEvent::KEY_s:
+		mShape++;
+		if (mShape > 3) mShape = 0;
+		break;
 	default:
 		break;
 	}
@@ -267,15 +288,20 @@ void ABPApp::updateBricks()
 	float bendFactor;
 	float volumeFactor;
 	volumeFactor = 1.0f;// CHECK mVDAnimation->controlValues[14];
-	/*if (mVDSettings->maxVolume > 0.7)
+#ifdef _DEBUG
+#else
+	// avoid fps drop
+	if (mVDSettings->iBeat > bBegin) mBranchesRepetitions = mVDSession->getMaxVolume() / 10;
+#endif  // _DEBUG
+	/*if (mVDSession->getMaxVolume() > 0.7)
 	{
-	float between08and1 = mParameterBag->maxVolume - 0.7;
-	volumeFactor = lmap<float>(between08and1, 0.0, 0.3, 0.1, 0.8);
+		float between08and1 = mVDSession->getMaxVolume() - 0.7;
+		volumeFactor = lmap<float>(between08and1, 0.0, 0.3, 0.1, 0.8);
 	}
 	else
 	{
-	volumeFactor = 0.01;
-	}*/
+		volumeFactor = 0.01;
+	} */
 	if (newRecording == true) {
 		newRendering();
 	}
@@ -346,12 +372,13 @@ void ABPApp::updateBricks()
 			}
 			if (shape == 3)
 			{
-				vec2 dupa[3] = { vec2(0, bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize) };
-				gl::drawSolidTriangle(dupa);
+				//vec2 dupa[3] = { vec2(0, bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize) };
+				//gl::drawSolidTriangle(dupa);
+				gl::drawStrokedCircle(vec2(0, 0), bricks[i].size * mSize);
 			}
 			// branch begin
 			gl::pushMatrices();
-			for (int k = 0; k < mRepetitions; k++)
+			for (int k = 0; k < mBranchesRepetitions; k++)
 			{
 
 				gl::color(r - 0.1f, g - 0.1f, b - 0.1f, a - 0.1f);
@@ -360,7 +387,7 @@ void ABPApp::updateBricks()
 
 				x = new_x + bricks[i].vx;
 				y = new_y + bricks[i].vy;
-				bendFactor -= mBend / 10.0f;
+				bendFactor += mBend / 10.0f;
 				gl::translate(x, y, mZPosition + bendFactor);
 
 				if (shape == 0)
@@ -377,8 +404,9 @@ void ABPApp::updateBricks()
 				}
 				if (shape == 3)
 				{
-					vec2 dupa[3] = { vec2(0, bricks[i].size * mSize / 2), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize) };
-					gl::drawSolidTriangle(dupa);
+					//vec2 dupa[3] = { vec2(0, bricks[i].size * mSize / 2), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize) };
+					//gl::drawSolidTriangle(dupa);
+					gl::drawStrokedCircle(vec2(0, 0), bricks[i].size * mSize);
 				}
 			}
 			gl::popMatrices();
@@ -414,7 +442,7 @@ void ABPApp::draw()
 	if (mFadeOutDelay) {
 		if (getElapsedFrames() > mVDSession->getEndFrame()) {
 			mFadeOutDelay = false;
-			timeline().apply(&mVDSettings->iAlpha, 1.0f, 0.0f, 2.0f, EaseInCubic());
+			timeline().apply(&mA, 1.0f, 0.0f, 10.0f, EaseInCubic());
 		}
 	}
 	gl::clear(Color::black());
@@ -428,7 +456,7 @@ void ABPApp::draw()
 		gl::setMatricesWindow(toPixels(getWindowSize()));
 	}
 
-	gl::draw(mFbo->getColorTexture(), Rectf(0, 0, 1024, 768));
+	gl::draw(mFbo->getColorTexture(), Rectf(0, 0, g_Width, g_Height));
 
 #if defined( CINDER_MSW )
 	// -------- SPOUT SENDER-------------

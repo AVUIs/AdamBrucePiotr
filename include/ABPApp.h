@@ -82,11 +82,14 @@ private:
 	static const int			MAX = 16;
 	bool						mUseCam;
 	bool						mSendOSC;
-	float						mR, mG, mB, mA;
+	float						mR, mG, mB;
+	ci::Anim<float> 			mA;
+
 	float						mZoom;
 	float						mBend;
 	vec2						mXYVector;
 	int							mRepetitions;
+	int							mBranchesRepetitions;
 	int							mShape;
 	float						mZPosition;
 	float						mRotation;
@@ -125,6 +128,13 @@ private:
 	void						updateBricks();
 	vector <brick>				bricks;
 	bool						newRecording;
+	int							bBegin;
+	int							bEnd;
+	int							bBreakBegin;
+	int							bBreakEnd; 
+	int							bRedBegin;
+	int							bRedEnd;
+
 	// -------- SPOUT -------------
 #if defined( CINDER_MSW )
 	SpoutSender					spoutsender;                    // Create a Spout sender object
