@@ -8,7 +8,7 @@
    "settings" : {
       "beatsperbar" : 4,
       "bpm" : 174,
-      "endframe" : 11400,
+      "endframe" : 11500,
       "fadeindelay" : 10,
       "fadeoutdelay" : 10
    },

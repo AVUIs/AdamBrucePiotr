@@ -42,7 +42,7 @@ void ABPApp::setup()
 	mShape = 0;
 	mZPosition = -1.0f;
 	mRotation = 2.5f;
-	mSize = 1.0f;
+	mSize = 0.9f;
 	mMotionVector = 0.2f;
 	mBend = 0.1f;
 	mLockZ = false;
@@ -58,7 +58,7 @@ void ABPApp::setup()
 	mB = 0.8f;
 	mA = 0.0f;
 	// init one brick
-	addBrick(true);
+	addBrick();
 	// gl setup
 	gl::enableDepthRead();
 	gl::enableDepthWrite();
@@ -83,90 +83,12 @@ void ABPApp::setup()
 void ABPApp::newRendering() {
 	gl::clear();
 }
-void ABPApp::fileDrop(FileDropEvent event)
-{
 
-}
-void ABPApp::update()
-{
-	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
-	mVDSession->update();
-
-	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
-	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
-	mSize = mLockSize ? sin(getElapsedFrames() / 100.0f) + 0.7f : mSize;
-	mMotionVector = mLockMotionVector ? sin(getElapsedFrames() / 50.0f) : mMotionVector;
-	mRotationMatrix *= rotate(0.06f, normalize(vec3(0.16666f, 0.333333f, 0.666666f)));
-	mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f) + 2) * 20 : mRepetitions;
-	mBend = mLockBend ? sin(getElapsedFrames() / 100.0f) * 4.0f : mBend;
-	if (mVDSettings->iBeat < bBegin)
-	{
-		mRepetitions = (mVDSettings->iBeat / 8) + 1;
-	}
-	else
-	{
-		if (mVDSettings->iBeat % 8 == 0)
-		{
-			if (bricks.size() < 20) {
-				
-				addBrick(false);
-			}
-			if (mVDSettings->iBeat > 92 && mVDSettings->iBeat < 150)
-			{
-				mGlobalMode = true;
-				mR = 1.0f;
-				mB = 0.0f;
-			}
-			// change to cube
-			if (mVDSettings->iBeat > bBreakBegin && mVDSettings->iBeat < bBreakEnd)
-			{
-				if (mVDSettings->iBeat < bBreakEnd - 8) {
-					mShape = 3;
-					mLockBend = false;
-				}
-				else {
-					mShape = 1;
-				}
-			}
-			/*if (mVDSettings->iBeat > 316)
-			{
-				mRotation += 0.05;
-				if (mRotation > 6.35) mRotation = 0;
-			} */
-		}
-		else
-		{
-			mR = 0.5f;
-			mB = 0.8f;
-			if (mVDSettings->iBeat > 494 && mVDSettings->iBeat < bEnd && mVDSettings->iBeat % 2 == 0)
-			{
-				mRotation += 0.2;
-				if (mRotation > 6.35) mRotation = 0;
-			}
-			// end
-			if (mVDSettings->iBeat > bEnd) {
-				mR = mG = mB = 0.8f;
-				mShape = 3;
-			}
-		}
-	}
-	updateBricks();
-
-	updateWindowTitle();
-}
 void ABPApp::cleanup()
 {
 	mVDSettings->save();
 	mVDSession->save();
 	quit();
-}
-void ABPApp::resize()
-{
-	// now tell our Camera that the window aspect ratio has changed
-	/*mCam.setPerspective(60, getWindowAspectRatio(), 1, 1000);
-
-	// and in turn, let OpenGL know we have a new camera
-	gl::setMatrices(mCam); */
 }
 void ABPApp::mouseDown(MouseEvent event)
 {
@@ -183,7 +105,7 @@ void ABPApp::mouseUp(MouseEvent event)
 
 void ABPApp::updateWindowTitle()
 {
-	getWindow()->setTitle(toString(mVDSettings->iBeat) + " " + toString(floor(getElapsedFrames())) + " " + toString(mBranchesRepetitions) + " " + toString(floor(getAverageFps())));
+	getWindow()->setTitle(toString(mVDSettings->iBeat) + " " + toString(floor(getElapsedFrames())) + " " + toString(mRepetitions) + " " + toString(mBranchesRepetitions) + " " + toString(floor(getAverageFps())));
 }
 void ABPApp::keyDown(KeyEvent event)
 {
@@ -194,10 +116,7 @@ void ABPApp::keyDown(KeyEvent event)
 		quit();
 		break;
 	case KeyEvent::KEY_a:
-		addBrick(true);
-		break;
-	case KeyEvent::KEY_q:
-		mShape = !mShape;
+		addBrick();
 		break;
 	case KeyEvent::KEY_o:
 		mRotation += 0.2;
@@ -234,6 +153,9 @@ void ABPApp::keyDown(KeyEvent event)
 		mRepetitions++;
 		break;
 	case KeyEvent::KEY_m:
+		mRepetitions--;
+		break;
+	case KeyEvent::KEY_q:
 		mGlobalMode = !mGlobalMode;
 		break;
 	case KeyEvent::KEY_s:
@@ -253,7 +175,7 @@ void ABPApp::reset(const bool &pressed)
 {
 	bricks.clear();
 }
-void ABPApp::addBrick(const bool &pressed)
+void ABPApp::addBrick()
 {
 	brick newBrick;
 	newBrick.r = mR;
@@ -270,6 +192,72 @@ void ABPApp::addBrick(const bool &pressed)
 	mXYVector.x = Rand::randFloat(-2.0, 2.0);
 	mXYVector.y = Rand::randFloat(-2.0, 2.0);
 }
+void ABPApp::update()
+{
+	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
+	mVDSession->update();
+
+	mZPosition = mLockZ ? sin(getElapsedFrames() / 100.0f) : mZPosition;
+	mRotation = mLockRotation ? sin(getElapsedFrames() / 100.0f)*4.0f : mRotation;
+	mSize = mLockSize ? sin(getElapsedFrames() / 100.0f) + 0.7f : mSize;
+	mMotionVector = mLockMotionVector ? sin(getElapsedFrames() / 50.0f) : mMotionVector;
+	mRotationMatrix *= rotate(0.06f, normalize(vec3(0.16666f, 0.333333f, 0.666666f)));
+	mRepetitions = mLockRepetitions ? (sin(getElapsedFrames() / 100.0f) + 2) * 20 : mRepetitions;
+	mBend = mLockBend ? sin(getElapsedFrames() / 100.0f) * 4.0f : mBend;
+	if (mVDSettings->iBeat < bBegin)
+	{
+		mRepetitions = (mVDSettings->iBeat / 8) + 1;
+	}
+	else
+	{
+		if (mVDSettings->iBeat % 8 == 0)
+		{
+			if (bricks.size() < 20) {
+				addBrick();
+			}
+			if (mVDSettings->iBeat > 92 && mVDSettings->iBeat < 150)
+			{
+				mGlobalMode = true;
+				mR = 1.0f;
+				mB = 0.0f;
+			}
+			// change to cube
+			if (mVDSettings->iBeat > bBreakBegin && mVDSettings->iBeat < bBreakEnd)
+			{
+				if (mVDSettings->iBeat < bBreakEnd - 8) {
+					mShape = 3;
+					mLockBend = false;
+				}
+				else {
+					mShape = 1;
+				}
+			}
+
+		}
+		else
+		{
+			mR = 0.5f;
+			mB = 0.8f;
+		}
+		if (mVDSettings->iBeat > 492 && mVDSettings->iBeat < bEnd && mVDSettings->iBeat % 2 == 0)
+		{
+			mRotation += 0.2;
+			if (mRotation > 6.35) mRotation = 0;
+		}
+		if (mVDSettings->iBeat > 370)
+		{
+			mShape = 0;
+		}
+		// end
+		if (mVDSettings->iBeat > bEnd) {
+			mR = mG = mB = 0.8f;
+			mShape = 3;
+		}
+	}
+	updateBricks();
+
+	updateWindowTitle();
+}
 void ABPApp::updateBricks()
 {
 	float new_x;
@@ -280,7 +268,12 @@ void ABPApp::updateBricks()
 #ifdef _DEBUG
 #else
 	// avoid fps drop
-	if (mVDSettings->iBeat > 158) mBranchesRepetitions = mVDSession->getMaxVolume() / 10;
+	if (mVDSettings->iBeat > 158) {
+		mBranchesRepetitions = mVDSession->getMaxVolume() / 10;
+	}
+	if (mVDSettings->iBeat > 370) {
+		mZoom = mVDSession->getMaxVolume() / 300;
+	}
 #endif  // _DEBUG
 
 	gl::ScopedFramebuffer fbScp(mFbo);
@@ -317,7 +310,7 @@ void ABPApp::updateBricks()
 		}
 		rotation = bricks[i].rotation++;
 		distance = mMotionVector * mSize;
-		bendFactor = 0.0f;
+		bendFactor = 0.1f;
 		//save state to restart translation from center point
 		gl::pushMatrices();
 		for (int j = 0; j < mRepetitions; j++)
@@ -350,8 +343,6 @@ void ABPApp::updateBricks()
 			}
 			if (shape == 3)
 			{
-				//vec2 dupa[3] = { vec2(0, bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize) };
-				//gl::drawSolidTriangle(dupa);
 				gl::drawStrokedCircle(vec2(0, 0), bricks[i].size * mSize);
 			}
 			// branch begin
@@ -382,8 +373,6 @@ void ABPApp::updateBricks()
 				}
 				if (shape == 3)
 				{
-					//vec2 dupa[3] = { vec2(0, bricks[i].size * mSize / 2), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize), vec2(-bricks[i].size * mSize, -bricks[i].size * mSize) };
-					//gl::drawSolidTriangle(dupa);
 					gl::drawStrokedCircle(vec2(0, 0), bricks[i].size * mSize);
 				}
 			}
@@ -425,9 +414,9 @@ void ABPApp::draw()
 	}
 	gl::clear(Color::black());
 	gl::color(Color::white());
-	
+
 	gl::setMatricesWindow(toPixels(getWindowSize()));
-	
+
 
 	gl::draw(mFbo->getColorTexture(), Rectf(0, 0, g_Width, g_Height));
 

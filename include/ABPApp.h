@@ -42,9 +42,7 @@ public:
 	void						setup() override;
 	void						update() override;
 	void						draw() override;
-	void						fileDrop(FileDropEvent event) override;
 	void						cleanup() override;
-	void						resize();
 	void						updateWindowTitle();
 	// mouse events
 	void						mouseDown(MouseEvent event) override;
@@ -63,7 +61,7 @@ public:
 	bool						mLockFR;
 	void						lockFR(const bool &pressed) { mLockFR = pressed; };
 	void						sendOSC(const bool &pressed) { mSendOSC = pressed; };
-	void						addBrick(const bool &pressed);
+	void						addBrick();
 	void						setGlobalMode(const bool &pressed);
 	void						reset(const bool &pressed);
 	//CameraPersp					mCam; 
