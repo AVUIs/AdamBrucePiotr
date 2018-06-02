@@ -3,12 +3,12 @@
       "moviefile" : "none.mov",
       "movieplaybackdelay" : 10,
       "wavefile" : "batchass-spidermoon.wav",
-      "waveplaybackdelay" : 10
+      "waveplaybackdelay" : 100
    },
    "settings" : {
       "beatsperbar" : 4,
       "bpm" : 166,
-      "endframe" : 20000000,
+      "endframe" : 11100,
       "fadeindelay" : 10,
       "fadeoutdelay" : 10
    },

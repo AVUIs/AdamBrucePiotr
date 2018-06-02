@@ -112,6 +112,7 @@ namespace VideoDromm {
 			// done in router mVDAnimation->changeFloatValue(aCtrl, aValue);
 			mVDWebsocket->changeFloatValue(aCtrl, aValue);
 		};
+		int								getEndFrame() { return mVDAnimation->getEndFrame(); };
 
 		// tempo
 		float							getBpm() { return mVDAnimation->getBpm(); };

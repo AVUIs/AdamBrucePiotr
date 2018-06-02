@@ -73,6 +73,12 @@
     <Filter Include="release">
       <UniqueIdentifier>{384d10c8-0294-403f-b5ac-4aa0c17583ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="assets">
+      <UniqueIdentifier>{a21019e0-6681-4a1c-86ea-4a607a0032f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\spidermoon">
+      <UniqueIdentifier>{7c614bae-6ae4-4fe6-850f-e19e4ea022e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ABPApp.cpp">
@@ -366,5 +372,16 @@
     <Xml Include="Release\VDSettings.xml">
       <Filter>release</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\assets\spidermoon\animation.json">
+      <Filter>assets\spidermoon</Filter>
+    </None>
+    <None Include="..\assets\spidermoon\live_params.json">
+      <Filter>assets\spidermoon</Filter>
+    </None>
+    <None Include="..\assets\spidermoon\session.json">
+      <Filter>assets\spidermoon</Filter>
+    </None>
   </ItemGroup>
 </Project>

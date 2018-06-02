@@ -139,7 +139,6 @@ void ABPApp::update()
 	}
 	updateBricks();
 
-	//mParams->update();
 	updateWindowTitle();
 	// move the camera up and down on Y
 	mCam.lookAt(vec3(0, CAMERA_Y_RANGE.first + abs(sin(getElapsedSeconds() / 4)) * (CAMERA_Y_RANGE.second - CAMERA_Y_RANGE.first), 0), vec3(0));
@@ -178,7 +177,7 @@ void ABPApp::record(const bool &pressed)
 }
 void ABPApp::updateWindowTitle()
 {
-	getWindow()->setTitle("(" + toString(floor(getAverageFps())) + " fps) ABP");
+	getWindow()->setTitle(toString(floor(getElapsedFrames())) + " " + toString(floor(getAverageFps())));
 }
 void ABPApp::keyDown(KeyEvent event)
 {
@@ -386,10 +385,6 @@ void ABPApp::updateBricks()
 			// branch end
 		}
 		gl::popMatrices();
-
-
-
-
 	}
 	gl::color(Color::white());
 }
@@ -403,9 +398,8 @@ void ABPApp::draw()
 				setWindowPos(ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY));
 			}
 			else {
-				setWindowSize(1024, 768);
-				setWindowPos(ivec2(0, 0));
-
+				setWindowSize(1280, 720);
+				setWindowPos(ivec2(mVDSettings->mRenderX, mVDSettings->mRenderY));
 			}
 			timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 2.0f, EaseInCubic());
 		}
@@ -417,12 +411,12 @@ void ABPApp::draw()
 			mVDSession->loadAudioFile(waveFile.string());
 		}
 	}
-	/*if (mFadeOutDelay) {
+	if (mFadeOutDelay) {
 		if (getElapsedFrames() > mVDSession->getEndFrame()) {
 			mFadeOutDelay = false;
 			timeline().apply(&mVDSettings->iAlpha, 1.0f, 0.0f, 2.0f, EaseInCubic());
 		}
-	}*/
+	}
 	gl::clear(Color::black());
 	gl::color(Color::white());
 	if (mUseCam)
@@ -435,9 +429,7 @@ void ABPApp::draw()
 	}
 
 	gl::draw(mFbo->getColorTexture(), Rectf(0, 0, 1024, 768));
-	// draw textures
-	//mBatchass->mTextures->draw();
-	//mBatch->drawInstanced(mRepetitions * mRepetitions);
+
 #if defined( CINDER_MSW )
 	// -------- SPOUT SENDER-------------
 	if (bSenderInitialized) {

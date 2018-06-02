@@ -121,7 +121,11 @@ xcopy /y "..\blocks\Cinder-Spout\lib\SpoutPanel.exe" "$(OutDir)"</Command>
     <Xml Include="Debug\VDSettings.xml" />
     <Xml Include="Release\VDSettings.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="..\assets\spidermoon\animation.json" />
+    <None Include="..\assets\spidermoon\live_params.json" />
+    <None Include="..\assets\spidermoon\session.json" />
+  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\blocks\Cinder-Videodromm\include\VDUIWarps.h" />
     <ClInclude Include="..\..\..\Cinder\samples\_audio\common\AudioDrawUtils.h" />
