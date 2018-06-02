@@ -79,7 +79,7 @@ void ABPApp::setup()
 	bSenderInitialized = spoutsender.CreateSender(SenderName, g_Width, g_Height);
 #endif
 
-	mVDSettings->iBeat = -1;
+	//mVDSettings->iBeat = -1;
 }
 
 void ABPApp::newRendering() {

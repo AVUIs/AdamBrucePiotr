@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cinder>
+<block
+	name="Videodromm"
+	id="com.videodromm.Videodromm"
+	author="Bruce Lane"
+	license="GNU AFFERO GENERAL PUBLIC LICENSE"
+    version="1.0"
+	summary="Videodromm block for Cinder 0.9"
+	url="https://github.com/Videodromm/Cinder-Videodromm"
+	git="git://github.com/brucelane/Cinder-Videodromm.git"
+	>
+	<supports os="msw" />
+  	<supports os="macosx" />
+    <supports os="ios" />
+	<requires>ocornut.imgui</requires>
+	<requires>com.wk.websocketpp</requires>
+	<requires>org.libcinder.ndi</requires>
+	<includePath>include</includePath>
+	<includePath>src</includePath>
+	<headerPattern>include/*.h</headerPattern>
+	<sourcePattern>src/*.cpp</sourcePattern>
+	<sourcePattern>src/*.c</sourcePattern>
+	<platform os="msw">
+		<libraryPath>lib</libraryPath>
+		<requires>org.libcinder.hap2</requires>
+		<requires>fr.batchass.spout</requires>
+		<requires>mb.cinder.midi2</requires>
+	</platform>
+	<platform os="macosx">
+		<requires>org.libcinder.quicktime</requires>
+		<requires>info.v002.syphon</requires>
+	</platform>
+</block>
+<template>templates/Videodromm/template.xml</template>
+</cinder>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cinder>
+<block
+	name="Cinder-Warping"
+	id="nl.cowlumbus.warping"
+	author="Paul Houx"
+	license="GPL, Commercial"
+	summary="A Cinder block that enables you to easily create editable bi-linear and perspective warps, or a combination of the two."
+	url="https://github.com/paulhoux/Cinder-Warping"
+	git="git://github.com/paulhoux/Cinder-Warping.git"
+	>
+	<supports os="macosx" />
+	<supports os="msw" />
+	<includePath>include</includePath>
+	<header>include/Warp.h</header>
+	<source>src/Warp.cpp</source>
+	<source>src/WarpBilinear.cpp</source>
+	<source>src/WarpPerspective.cpp</source>
+	<source>src/WarpPerspectiveBilinear.cpp</source>
+</block>
+<template>templates/Basic Warping/template.xml</template>
+</cinder>

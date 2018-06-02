@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cinder>
+<block
+	name="Cinder-WebSocketPP"
+	id="com.wk.websocketpp"
+	author="Stephen Schieberl"
+	license="BSD"
+	summary="A wrapper for the library WebSocketPP"
+	version="0.7.0"
+	library="https://github.com/zaphoyd/websocketpp"
+	url="https://github.com/wieden-kennedy/Cinder-WebSocketPP"
+	>
+	<supports os="macosx" />
+	<supports os="msw" />
+	
+	<sourcePattern>src/*.cpp</sourcePattern>
+    	<headerPattern>src/*.h</headerPattern>
+    	<headerPattern>src/*.hpp</headerPattern>
+ 	
+    	<includePath system="true">src</includePath>
+    	<includePath cinder="true">include/asio</includePath>
+	
+	
+	<platform os="msw">
+		<libraryPath>lib/msw</libraryPath>
+	</platform>
+</block>
+</cinder>
